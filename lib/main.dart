@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
+import 'package:mydictionaryapp/src/ui/widgets/environment_banner.dart';
+
+void runMyDictionaryApp() {
+  runApp(MyDictionaryApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyDictionaryApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return EnvironmentBanner(
+      child: MaterialApp(
+        title: 'MyDictionary',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: Scaffold(),
       ),
-      home: Scaffold(),
     );
   }
 }
