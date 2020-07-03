@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/ui/dictionary_screen/widgets/word_tile.dart';
+import 'package:mydictionaryapp/src/ui/dictionary_screen/widgets/word_tile/word_tile.dart';
 
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
 

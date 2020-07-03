@@ -1,13 +1,9 @@
-import 'package:flutter/material.dart';
+part of 'word_tile.dart';
 
-import 'package:mydictionaryapp/src/domain/entities/word.dart';
-
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
-
-class TranslationPopupButton extends StatelessWidget {
+class _TranslationPopupButton extends StatelessWidget {
   final List<Translation> translations;
 
-  TranslationPopupButton({Key key, this.translations}) : super(key: key);
+  _TranslationPopupButton({Key key, this.translations}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

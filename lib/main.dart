@@ -24,44 +24,82 @@ class MyDictionaryApp extends StatelessWidget {
     );
   }
 
-  final _dictionary = Dictionary(
-    title: 'English',
-    words: [
-      Word(
-        word: 'name',
-        translations: [
-          Translation(translation: 'имя'),
-          Translation(translation: 'название'),
-        ],
-        hint: 'Дается при родждении',
+  Dictionary get _dictionary {
+    final tags = {
+      'new': Tag(
+        color: Colors.red,
+        tag: 'New',
       ),
-      Word(
-        word: 'dog',
-        translations: [
-          Translation(translation: 'собака'),
-          Translation(translation: 'пес'),
-        ],
-        hint: 'Домашнее гавкающее животное',
+      'noun': Tag(
+        color: Colors.green,
+        tag: 'Noun',
       ),
-      Word(
-        word: 'home',
-        translations: [
-          Translation(
-            translation: 'дом',
-          )
-        ],
+      'verb': Tag(
+        color: Colors.blue,
+        tag: 'Verb',
       ),
-      Word(
-        word: 'word',
-        translations: [
-          Translation(
-            translation: 'слово',
-          )
-        ],
+      'learned': Tag(
+        color: Colors.lime,
+        tag: 'Learned',
       ),
-      Word(
-        word: 'to admit',
+      'lost series': Tag(
+        color: Colors.indigo,
+        tag: 'Lost series',
       ),
-    ],
-  );
+    };
+    return Dictionary(
+      title: 'English',
+      words: [
+        Word(
+          word: 'name',
+          translations: [
+            Translation(translation: 'имя'),
+            Translation(translation: 'название'),
+          ],
+          hint: 'Дается при родждении',
+          tags: [
+            tags['new'],
+            tags['noun'],
+          ],
+        ),
+        Word(
+          word: 'dog',
+          translations: [
+            Translation(translation: 'собака'),
+            Translation(translation: 'пёс'),
+          ],
+          hint: 'Домашнее гавкающее животное',
+        ),
+        Word(
+          word: 'home',
+          translations: [
+            Translation(
+              translation: 'дом',
+            )
+          ],
+          tags: [
+            tags['new'],
+            tags['noun'],
+            tags['learned'],
+            tags['lost series'],
+          ],
+        ),
+        Word(
+          word: 'word',
+          translations: [
+            Translation(
+              translation: 'слово',
+            )
+          ],
+        ),
+        Word(
+          word: 'to admit',
+          tags: [
+            tags['new'],
+            tags['verb'],
+          ],
+        ),
+      ],
+    );
+  }
 }

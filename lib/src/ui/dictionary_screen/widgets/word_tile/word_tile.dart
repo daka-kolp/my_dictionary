@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/ui/dictionary_screen/widgets/translation_popup_button.dart';
-import 'package:mydictionaryapp/src/ui/dictionary_screen/widgets/word_widget.dart';
 
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
+
+part '_tags_list.dart';
+part '_translation_popup_button.dart';
+part '_word_widget.dart';
 
 class WordTile extends StatelessWidget {
   final Word word;
@@ -26,11 +30,10 @@ class WordTile extends StatelessWidget {
     return Material(
       color: _getTileColor(theme),
       child: Container(
+        padding: EdgeInsets.all(0.5),
         child: Row(
           children: <Widget>[
-            Expanded(
-              child: WordWidget(word: word)
-            ),
+            Expanded(child: _WordWidget(word: word)),
             IconButton(
               tooltip: listen,
               icon: Icon(Icons.volume_up),
@@ -38,13 +41,10 @@ class WordTile extends StatelessWidget {
                 //TODO: listen the word
               },
             ),
-            TranslationPopupButton(translations: word.translations),
-            IconButton(
-              tooltip: showTags,
-              icon: Icon(Icons.local_offer),
-              onPressed: () {
-                //TODO: show tags
-              },
+            _TranslationPopupButton(translations: word.translations),
+            SizedBox(
+              width: 48.0,
+              child: _TagsList(tags: word.tags),
             ),
             IconButton(
               tooltip: edit,

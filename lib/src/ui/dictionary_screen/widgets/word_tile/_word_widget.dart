@@ -1,16 +1,9 @@
-import 'dart:io';
+part of 'word_tile.dart';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-import 'package:mydictionaryapp/src/domain/entities/word.dart';
-
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
-
-class WordWidget extends StatelessWidget {
+class _WordWidget extends StatelessWidget {
   final Word word;
 
-  const WordWidget({Key key, @required this.word})
+  const _WordWidget({Key key, @required this.word})
       : assert(word != null),
         super(key: key);
 
