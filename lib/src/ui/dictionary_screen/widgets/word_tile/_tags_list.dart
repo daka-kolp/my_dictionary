@@ -12,11 +12,14 @@ class _TagsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: tags.map(_buildTagItem).toList(),
+      children: tags.map((tag) => _buildTagItem(context, tag)).toList(),
     );
   }
 
-  Widget _buildTagItem(Tag tag) {
+  Widget _buildTagItem(
+    BuildContext context,
+    Tag tag,
+  ) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 0.5),
@@ -28,6 +31,7 @@ class _TagsList extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         tag.tag,
+        style: Theme.of(context).textTheme.overline,
         softWrap: false,
         overflow: TextOverflow.fade,
       ),
