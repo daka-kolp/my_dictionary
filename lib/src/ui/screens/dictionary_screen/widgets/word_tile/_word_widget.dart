@@ -17,7 +17,7 @@ class _WordWidget extends StatelessWidget {
       child: Container(
         height: 48.0,
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Text(word.word),
       ),
     );

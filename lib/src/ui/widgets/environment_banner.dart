@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:mydictionaryapp/src/domain/entities/global_config.dart';
+import 'package:mydictionaryapp/src/device/utils/global_config.dart';
 
 class EnvironmentBanner extends StatelessWidget {
   final Environment environment;
