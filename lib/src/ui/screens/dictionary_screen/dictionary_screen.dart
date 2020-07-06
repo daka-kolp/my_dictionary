@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/ui/dictionary_screen/widgets/word_tile/word_tile.dart';
+import 'package:mydictionaryapp/src/ui/screens/dictionary_screen/widgets/word_tile/word_tile.dart';
+import 'package:mydictionaryapp/src/ui/screens/new_word_screen/new_word_screen.dart';
 
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
@@ -23,45 +24,44 @@ class DictionaryScreen extends StatefulWidget {
 }
 
 class _DictionaryScreenState extends State<DictionaryScreen> {
+  bool get _isIOS => Platform.isIOS;
   String get _title => widget.dictionary.title;
-
   List<Word> get _words => widget.dictionary.words;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
+      floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
       body: _buildBody(),
     );
   }
 
   PreferredSizeWidget _buildAppBar() {
-    final title =  Text(_title);
+    final title = Text(_title);
 
-    if (Platform.isIOS) {
+    if (_isIOS) {
       return CupertinoNavigationBar(
         middle: title,
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           child: Text(add),
-          onPressed: onAddNewWordPressed,
+          onPressed: _onAddNewWordPressed,
         ),
       );
     }
-    return AppBar(
-      title: title,
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add),
-          tooltip: add,
-          onPressed: onAddNewWordPressed,
-        ),
-      ],
+    return AppBar(title: title);
+  }
+
+  Widget _buildFloatingActionButton() {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: _onAddNewWordPressed,
     );
   }
 
-  void onAddNewWordPressed() {
-    //TODO: delete or add words
+  void _onAddNewWordPressed() {
+    Navigator.of(context).push(NewWordScreen.buildPageRoute());
   }
 
   Widget _buildBody() {

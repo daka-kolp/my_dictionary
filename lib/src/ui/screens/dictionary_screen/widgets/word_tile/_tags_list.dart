@@ -22,8 +22,8 @@ class _TagsList extends StatelessWidget {
   ) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(vertical: 0.5),
-      padding: EdgeInsets.symmetric(horizontal: 2.0),
+      margin: const EdgeInsets.symmetric(vertical: 0.5),
+      padding: const EdgeInsets.symmetric(horizontal: 2.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4.0),
         color: tag.color.withOpacity(0.5),

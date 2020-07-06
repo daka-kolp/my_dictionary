@@ -7,15 +7,18 @@ class Word {
   final List<Translation> translations;
   final String hint;
   final List<Tag> tags;
+  final DateTime addingTime;
 
   Word({
     @required this.word,
     List<Translation> translations,
     String hint,
     List<Tag> tags,
+    DateTime addingTime,
   })  : this.translations = translations ?? [],
         this.hint = hint ?? '',
         this.tags = tags ?? [],
+        this.addingTime = addingTime ?? DateTime(1970),
         assert(word != null);
 
   Word copyWith({

@@ -8,8 +8,11 @@ enum Environment {
 
 class GlobalConfig {
   final Environment environment;
+  final ThemeData theme;
 
   GlobalConfig({
     @required this.environment,
-  })  : assert(environment != null);
+    @required this.theme,
+  })  : assert(environment != null),
+        assert(theme != null);
 }
