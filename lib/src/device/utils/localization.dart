@@ -11,4 +11,3 @@ final addHint = 'Добавьте подсказку';
 final addNewWord = 'Добавить новое слово';
 final writeTranslation = 'Напишите предполагаемый перевод';
 final writeAssociationOrHint = 'Напишите ассоциацию или подсказку';
-final fieldCanNotBeEmpty = 'Это поле не может быть пустым';

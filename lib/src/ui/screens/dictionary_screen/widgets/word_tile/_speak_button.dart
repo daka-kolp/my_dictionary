@@ -2,7 +2,7 @@ part of 'word_tile.dart';
 
 class _SpeakButton extends StatelessWidget {
   final Word word;
-  final FlutterTtsImproved tts;
+  final FlutterTts tts;
 
   const _SpeakButton({
     Key key,
@@ -16,7 +16,11 @@ class _SpeakButton extends StatelessWidget {
     return IconButton(
       tooltip: listen,
       icon: Icon(Icons.volume_up),
-      onPressed: () async => await tts.speak(word.word),
+      onPressed: _onSpeak,
     );
+  }
+
+  Future<void> _onSpeak() async {
+    await tts.speak(word.word);
   }
 }
