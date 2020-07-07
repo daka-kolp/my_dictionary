@@ -41,13 +41,16 @@ class _WordTileState extends State<WordTile> {
     _ttsInit();
   }
 
-  void _ttsInit() {
+  void _ttsInit() async {
     final ttsProp = TtsProperties();
-    tts = FlutterTtsImproved()
-      ..setLanguage(ttsProp.language)
-      ..setSpeechRate(ttsProp.speechRate)
-      ..setVolume(ttsProp.volume)
-      ..setPitch(ttsProp.pitch);
+    tts = FlutterTtsImproved();
+
+    await Future.wait([
+      tts.setLanguage(ttsProp.language),
+      tts.setSpeechRate(ttsProp.speechRate),
+      tts.setVolume(ttsProp.volume),
+      tts.setPitch(ttsProp.pitch),
+    ]);
   }
 
   @override
