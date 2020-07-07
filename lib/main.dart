@@ -26,34 +26,49 @@ class MyDictionaryApp extends StatelessWidget {
   Dictionary get _dictionary {
     final tags = {
       'new': Tag(
+        id: '1',
         color: Colors.red,
         tag: 'New',
       ),
       'noun': Tag(
+        id: '2',
         color: Colors.green,
         tag: 'Noun',
       ),
       'verb': Tag(
+        id: '3',
         color: Colors.blue,
         tag: 'Verb',
       ),
       'learned': Tag(
+        id: '4',
         color: Colors.lime,
         tag: 'Learned',
       ),
       'lost series': Tag(
+        id: '5',
         color: Colors.indigo,
         tag: 'Lost series',
       ),
     };
     return Dictionary(
+      id: '111',
+      originalLanguage: 'en',
+      translationLanguage: 'ru',
       title: 'English',
       words: [
         Word(
+          id: '11',
           word: 'name',
           translations: [
-            Translation(translation: 'имя'),
-            Translation(translation: 'название'),
+            Translation(
+              id: '1',
+              translation: 'имя',
+            ),
+            Translation(
+              id: '2',
+              translation: 'название',
+            ),
           ],
           hint: 'Дается при родждении',
           tags: [
@@ -62,17 +77,26 @@ class MyDictionaryApp extends StatelessWidget {
           ],
         ),
         Word(
+          id: '22',
           word: 'dog',
           translations: [
-            Translation(translation: 'собака'),
-            Translation(translation: 'пёс'),
+            Translation(
+              id: '1',
+              translation: 'собака',
+            ),
+            Translation(
+              id: '2',
+              translation: 'пёс',
+            ),
           ],
           hint: 'Домашнее гавкающее животное',
         ),
         Word(
+          id: '33',
           word: 'home',
           translations: [
             Translation(
+              id: '1',
               translation: 'дом',
             )
           ],
@@ -84,14 +108,17 @@ class MyDictionaryApp extends StatelessWidget {
           ],
         ),
         Word(
+          id: '44',
           word: 'word',
           translations: [
             Translation(
+              id: '1',
               translation: 'слово',
             )
           ],
         ),
         Word(
+          id: '55',
           word: 'to admit',
           tags: [
             tags['new'],
@@ -99,25 +126,31 @@ class MyDictionaryApp extends StatelessWidget {
           ],
         ),
         Word(
+          id: '66',
           word: 'to embarrass',
           translations: [
             Translation(
+              id: '1',
               translation: 'смущать',
             )
           ],
         ),
         Word(
+          id: '77',
           word: 'flabbergasted',
           translations: [
             Translation(
+              id: '1',
               translation: 'ошеломлен',
             )
           ],
         ),
         Word(
+          id: '88',
           word: 'to discombobulated',
           translations: [
             Translation(
+              id: '1',
               translation: 'ходить кругами',
             )
           ],
