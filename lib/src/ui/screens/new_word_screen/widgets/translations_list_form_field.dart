@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
@@ -20,19 +21,19 @@ class TranslationListFormField extends FormField<List<Translation>> {
           },
           builder: (field) {
             return _TranslationList(
-              onChange: field.didChange,
+              onChanged: field.didChange,
             );
           },
         );
 }
 
 class _TranslationList extends StatefulWidget {
-  final ValueChanged<List<Translation>> onChange;
+  final ValueChanged<List<Translation>> onChanged;
 
   const _TranslationList({
     Key key,
-    @required this.onChange,
-  })  : assert(onChange != null),
+    @required this.onChanged,
+  })  : assert(onChanged != null),
         super(key: key);
 
   @override
@@ -40,6 +41,8 @@ class _TranslationList extends StatefulWidget {
 }
 
 class _TranslationListState extends State<_TranslationList> {
+  final _uuid = Uuid();
+
   TextEditingController _translationController = TextEditingController();
   bool _translationIsNotEmpty = false;
   List<Translation> _translationsList = [];
@@ -82,16 +85,20 @@ class _TranslationListState extends State<_TranslationList> {
   void _onAdd() {
     setState(() {
       _translationsList.add(
-        Translation(translation: _translationController.text),
+        Translation(
+          id: _uuid.v1(),
+          translation: _translationController.text,
+        ),
       );
       _translationController.clear();
     });
-    widget.onChange(_translationsList);
+    widget.onChanged(_translationsList);
   }
 
   Widget _buildTranslationsList() {
     return _translationsList.isNotEmpty
         ? ListView(
+            padding: const EdgeInsets.only(top: 8.0),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             children:
@@ -110,7 +117,7 @@ class _TranslationListState extends State<_TranslationList> {
 
   void _onRemove(Translation data) {
     setState(() => _translationsList.remove(data));
-    widget.onChange(_translationsList);
+    widget.onChanged(_translationsList);
   }
 
   @override

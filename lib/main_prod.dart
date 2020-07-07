@@ -13,6 +13,14 @@ void main() {
         accentColor: Colors.yellowAccent,
         cursorColor: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.yellowAccent[100],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+          ),
+        ),
       ),
     ),
   );

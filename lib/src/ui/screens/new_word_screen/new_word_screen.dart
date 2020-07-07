@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/ui/screens/new_word_screen/widgets/translations_list_form_field.dart';
 import 'package:mydictionaryapp/src/ui/widgets/no_scroll_behavior.dart';
+import 'package:mydictionaryapp/src/ui/widgets/without_error_text_form_field.dart';
 
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
@@ -47,8 +48,8 @@ class _NewWordScreenState extends State<NewWordScreen> {
         onChanged: _onFormChange,
         child: Scaffold(
           appBar: _buildAppBar(),
-          bottomNavigationBar: _buildBottomNavigationBar(),
           body: _buildBody(),
+          bottomNavigationBar: _buildBottomNavigationBar(),
         ),
       ),
     );
@@ -73,24 +74,6 @@ class _NewWordScreenState extends State<NewWordScreen> {
     return AppBar(title: title);
   }
 
-  Widget _buildBottomNavigationBar() {
-    return SafeArea(
-      child: Container(
-        margin: const EdgeInsets.all(16.0),
-        height: 48.0,
-        width: double.infinity,
-        child: RaisedButton(
-          child: Text(add),
-          onPressed: _isFromValid ?? false ? _onAdd : null,
-        ),
-      ),
-    );
-  }
-
-  void _onAdd() {
-    //TODO: add word to list
-  }
-
   Widget _buildBody() {
     return ScrollConfiguration(
       behavior: NoOverScrollBehavior(),
@@ -112,15 +95,19 @@ class _NewWordScreenState extends State<NewWordScreen> {
 
   Widget _buildWordFormField() {
     return _PaddingWrapper(
-      child: TextFormField(
+      child: WithoutErrorTextFormField(
         key: _wordStateKey,
-        validator: (value) {
-          if (value.isEmpty) return fieldCanNotBeEmpty;
-          return null;
-        },
+        validator: _validateTextFormField,
         onSaved: (value) {},
       ),
     );
+  }
+
+  String _validateTextFormField(String value) {
+    if (value.isEmpty) {
+      return '';
+    }
+    return null;
   }
 
   Widget _buildTranslationsListFormField() {
@@ -145,5 +132,23 @@ class _NewWordScreenState extends State<NewWordScreen> {
         onSaved: (list) {},
       ),
     );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.all(16.0),
+        height: 48.0,
+        width: double.infinity,
+        child: RaisedButton(
+          child: Text(add),
+          onPressed: _isFromValid ?? false ? _onAdd : null,
+        ),
+      ),
+    );
+  }
+
+  void _onAdd() {
+    //TODO: add word to list
   }
 }

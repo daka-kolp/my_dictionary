@@ -21,7 +21,8 @@ class Word {
         this.hint = hint ?? '',
         this.tags = tags ?? [],
         this.addingTime = addingTime ?? DateTime(1970),
-        assert(word != null);
+        assert(id != null),
+        assert(word != null && word.isNotEmpty);
 
   Word copyWith({
     String word,

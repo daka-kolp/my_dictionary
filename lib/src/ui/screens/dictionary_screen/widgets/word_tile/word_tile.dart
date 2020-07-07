@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts_improved/flutter_tts_improved.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+
 import 'package:mydictionaryapp/src/device/utils/tts_properties.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
@@ -33,23 +34,23 @@ class WordTile extends StatefulWidget {
 }
 
 class _WordTileState extends State<WordTile> {
-  FlutterTtsImproved tts;
+  FlutterTts _tts;
 
   @override
   void initState() {
     super.initState();
-    _ttsInit();
+    _initTts();
   }
 
-  void _ttsInit() async {
+  void _initTts() async {
     final ttsProp = TtsProperties();
-    tts = FlutterTtsImproved();
+    _tts = FlutterTts();
 
     await Future.wait([
-      tts.setLanguage(ttsProp.language),
-      tts.setSpeechRate(ttsProp.speechRate),
-      tts.setVolume(ttsProp.volume),
-      tts.setPitch(ttsProp.pitch),
+      _tts.setLanguage(ttsProp.language),
+      _tts.setSpeechRate(ttsProp.speechRate),
+      _tts.setVolume(ttsProp.volume),
+      _tts.setPitch(ttsProp.pitch),
     ]);
   }
 
@@ -66,7 +67,7 @@ class _WordTileState extends State<WordTile> {
             Expanded(child: _WordWidget(word: widget.word)),
             _SpeakButton(
               word: widget.word,
-              tts: tts,
+              tts: _tts,
             ),
             _TranslationPopupButton(translations: widget.word.translations),
             SizedBox(
@@ -94,7 +95,7 @@ class _WordTileState extends State<WordTile> {
 
   @override
   void dispose() {
-    tts.stop();
+    _tts.stop();
     super.dispose();
   }
 }
