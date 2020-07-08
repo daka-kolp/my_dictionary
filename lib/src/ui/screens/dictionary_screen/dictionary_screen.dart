@@ -12,7 +12,7 @@ import 'package:mydictionaryapp/src/ui/screens/new_word_screen/new_word_screen.d
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/data/repositories/mocks/mock_dictionary_repository.dart';
-import 'package:mydictionaryapp/src/utils/localizations/localization.dart';
+import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 
 class DictionaryScreen extends StatefulWidget {
   final Dictionary dictionary;

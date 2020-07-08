@@ -7,7 +7,7 @@ import 'package:mydictionaryapp/src/ui/widgets/environment_banner.dart';
 
 //TODO: remove the imports
 import 'package:mydictionaryapp/src/data/repositories/mocks/mock_user_repository.dart';
-import 'package:mydictionaryapp/src/utils/localizations/localization.dart';
+import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 
 void runMyDictionaryApp() {
   runApp(MyDictionaryApp());
