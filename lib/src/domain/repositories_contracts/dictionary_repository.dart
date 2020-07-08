@@ -5,7 +5,7 @@ abstract class DictionaryRepository {
 
   Future<bool> addNewWord(Word newWord);
 
-  Future<bool> removeWord(String id);
+  Future<bool> editWord(Word word);
 
-  Future<Word> editWord(String id);
+  Future<bool> removeWord(String id);
 }

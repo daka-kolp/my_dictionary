@@ -9,6 +9,7 @@ enum Environment {
 class GlobalConfig {
   final Environment environment;
   final ThemeData theme;
+  final int fetchStep = 10;
 
   GlobalConfig({
     @required this.environment,

@@ -8,10 +8,10 @@ import 'package:mydictionaryapp/src/ui/screens/new_word_screen/widgets/translati
 import 'package:mydictionaryapp/src/ui/widgets/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/ui/widgets/without_error_text_form_field.dart';
 
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
+//TODO: remove the import
+import 'package:mydictionaryapp/src/utils/localizations/localization.dart';
 
 part 'widgets/_title_tile.dart';
-
 part 'widgets/_padding_wrapper.dart';
 
 class NewWordScreen extends StatefulWidget {

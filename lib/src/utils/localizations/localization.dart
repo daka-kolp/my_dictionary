@@ -1,3 +1,4 @@
+final appName = 'MyDictionary';
 final hint = 'Подсказка';
 final noData = 'Нет данных';
 final ok = 'Ок';
