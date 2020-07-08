@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
@@ -56,48 +57,42 @@ class MockDictionaryRepository extends DictionaryRepository {
   }
 
   @override
-  Future<bool> addNewWord(Word newWord) async {
+  Future<void> addNewWord(Word newWord) async {
     await Future.delayed(Duration(seconds: 3));
+
     if (_words.contains(newWord)) {
-      return false;
+      throw WordAlreadyExistException();
     }
     _words.add(newWord);
-    return true;
   }
 
   @override
-  Future<bool> editWord(Word word) async {
+  Future<void> editWord(Word word) async {
     await Future.delayed(Duration(seconds: 3));
 
     int wordIndex = _words.indexWhere(
       (w) => w.id == word.id,
     );
-
     if (wordIndex == -1) {
-      return false;
+      throw WordNotExistException();
     }
-
     _words
       ..removeAt(wordIndex)
       ..insert(wordIndex, word);
-    return true;
   }
 
   @override
-  Future<bool> removeWord(String id) async {
+  Future<void> removeWord(String id) async {
     await Future.delayed(Duration(seconds: 3));
 
     Word word;
-
     try {
       word = _words.firstWhere(
         (w) => w.id == id,
       );
     } on StateError {
-      return false;
+      throw WordNotExistException();
     }
-
     _words.remove(word);
-    return true;
   }
 }

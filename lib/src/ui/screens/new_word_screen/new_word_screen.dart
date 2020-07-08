@@ -9,7 +9,7 @@ import 'package:mydictionaryapp/src/ui/widgets/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/ui/widgets/without_error_text_form_field.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/utils/localizations/localization.dart';
+import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 
 part 'widgets/_title_tile.dart';
 part 'widgets/_padding_wrapper.dart';

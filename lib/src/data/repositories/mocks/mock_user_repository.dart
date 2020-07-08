@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
@@ -32,30 +33,27 @@ class MockUserRepository extends UserRepository {
   }
 
   @override
-  Future<bool> createNewDictionary(Dictionary dictionary) async {
+  Future<void> createNewDictionary(Dictionary dictionary) async {
     await Future.delayed(Duration(seconds: 3));
+
     if (_dictionaries.contains(dictionary)) {
-      return false;
+      throw DictionaryAlreadyExistException();
     }
     _dictionaries.add(dictionary);
-    return true;
   }
 
   @override
-  Future<bool> removeDictionary(String id) async {
+  Future<void> removeDictionary(String id) async {
     await Future.delayed(Duration(seconds: 3));
 
     Dictionary dictionary;
-
     try {
       dictionary = _dictionaries.firstWhere(
         (dictionary) => dictionary.id == id,
       );
     } on StateError {
-      return false;
+      throw DictionaryNotExistException();
     }
-
     _dictionaries.remove(dictionary);
-    return true;
   }
 }

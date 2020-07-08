@@ -7,7 +7,7 @@ import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/ui/screens/dictionary_screen/widgets/tts_provider.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/utils/localizations/localization.dart';
+import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 
 part '_speak_button.dart';
 part '_translation_popup_button.dart';
