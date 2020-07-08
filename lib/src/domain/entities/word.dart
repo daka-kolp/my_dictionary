@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:meta/meta.dart';
 
 class Word {
@@ -7,7 +5,6 @@ class Word {
   final String word;
   final List<Translation> translations;
   final String hint;
-  final List<Tag> tags;
   final DateTime addingTime;
 
   Word({
@@ -15,11 +12,9 @@ class Word {
     @required this.word,
     List<Translation> translations,
     String hint,
-    List<Tag> tags,
     DateTime addingTime,
   })  : this.translations = translations ?? [],
         this.hint = hint ?? '',
-        this.tags = tags ?? [],
         this.addingTime = addingTime ?? DateTime(1970),
         assert(id != null),
         assert(word != null && word.isNotEmpty);
@@ -28,17 +23,23 @@ class Word {
     String word,
     List<Translation> translations,
     String hint,
-    List<Tag> tags,
   }) {
     return Word(
       id: id,
       word: word ?? this.word,
       translations: translations ?? this.translations,
       hint: hint ?? this.hint,
-      tags: tags ?? this.tags,
       addingTime: addingTime,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Word && runtimeType == other.runtimeType && word == other.word;
+
+  @override
+  int get hashCode => word.hashCode;
 }
 
 class Translation {
@@ -52,16 +53,3 @@ class Translation {
         assert(translation != null);
 }
 
-class Tag {
-  final String id;
-  final Color color;
-  final String tag;
-
-  Tag({
-    @required this.id,
-    @required this.color,
-    @required this.tag,
-  })  : assert(id != null),
-        assert(color != null),
-        assert(tag != null);
-}

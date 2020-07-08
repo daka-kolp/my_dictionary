@@ -2,13 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
+import 'package:mydictionaryapp/src/ui/screens/dictionary_screen/widgets/tts_provider.dart';
 import 'package:mydictionaryapp/src/ui/screens/dictionary_screen/widgets/word_tile/word_tile.dart';
 import 'package:mydictionaryapp/src/ui/screens/new_word_screen/new_word_screen.dart';
 
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
+//TODO: remove the import
+import 'package:mydictionaryapp/src/data/repositories/mocks/mock_dictionary_repository.dart';
+import 'package:mydictionaryapp/src/utils/localizations/localization.dart';
 
 class DictionaryScreen extends StatefulWidget {
   final Dictionary dictionary;
@@ -25,8 +29,31 @@ class DictionaryScreen extends StatefulWidget {
 
 class _DictionaryScreenState extends State<DictionaryScreen> {
   bool get _isIOS => Platform.isIOS;
+
   String get _title => widget.dictionary.title;
-  List<Word> get _words => widget.dictionary.words;
+
+  //TODO: remove
+  List<Word> get _words => MockDictionaryRepository().words;
+
+  FlutterTts _tts;
+
+  @override
+  void initState() {
+    super.initState();
+    _initTts();
+  }
+
+  Future<void> _initTts() async {
+    final ttsProp = widget.dictionary.ttsProperties;
+    _tts = FlutterTts();
+
+    await Future.wait([
+      _tts.setLanguage(ttsProp.language),
+      _tts.setSpeechRate(ttsProp.speechRate),
+      _tts.setVolume(ttsProp.volume),
+      _tts.setPitch(ttsProp.pitch),
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +92,23 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   }
 
   Widget _buildBody() {
-    return ListView.builder(
-      itemCount: _words.length,
-      itemBuilder: (context, index) {
-        return WordTile(
-          isEven: (index + 1).isEven,
-          word: _words[index],
-        );
-      },
+    return TtsProvider(
+      tts: _tts,
+      child: ListView.builder(
+        itemCount: _words.length,
+        itemBuilder: (context, index) {
+          return WordTile(
+            isEven: (index + 1).isEven,
+            word: _words[index],
+          );
+        },
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _tts.stop();
+    super.dispose();
   }
 }
