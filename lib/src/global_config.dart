@@ -8,12 +8,9 @@ enum Environment {
 
 class GlobalConfig {
   final Environment environment;
-  final ThemeData theme;
-  final int fetchStep = 10;
+  final int fetchStep = 20;
 
   GlobalConfig({
     @required this.environment,
-    @required this.theme,
-  })  : assert(environment != null),
-        assert(theme != null);
+  })  : assert(environment != null);
 }

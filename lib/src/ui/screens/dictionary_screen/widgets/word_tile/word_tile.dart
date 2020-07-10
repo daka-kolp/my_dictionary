@@ -13,7 +13,7 @@ part '_speak_button.dart';
 part '_translation_popup_button.dart';
 part '_word_widget.dart';
 
-class WordTile extends StatefulWidget {
+class WordTile extends StatelessWidget {
   final Word word;
   final bool isEven;
 
@@ -26,11 +26,6 @@ class WordTile extends StatefulWidget {
         super(key: key);
 
   @override
-  _WordTileState createState() => _WordTileState();
-}
-
-class _WordTileState extends State<WordTile> {
-  @override
   Widget build(BuildContext context) {
     return Material(
       color: _getTileColor(Theme.of(context)),
@@ -38,9 +33,9 @@ class _WordTileState extends State<WordTile> {
         padding: const EdgeInsets.all(0.5),
         child: Row(
           children: <Widget>[
-            Expanded(child: _WordWidget(word: widget.word)),
-            _SpeakButton(word: widget.word),
-            _TranslationPopupButton(translations: widget.word.translations),
+            Expanded(child: _WordWidget(word: word)),
+            _SpeakButton(word: word),
+            _TranslationPopupButton(translations: word.translations),
             SizedBox(width: 48.0),
             _buildEditButton(),
           ],
@@ -50,7 +45,7 @@ class _WordTileState extends State<WordTile> {
   }
 
   Color _getTileColor(ThemeData theme) {
-    return widget.isEven
+    return isEven
         ? theme.primaryColor.withOpacity(0.3)
         : theme.scaffoldBackgroundColor;
   }

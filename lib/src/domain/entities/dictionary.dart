@@ -1,12 +1,11 @@
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 
-import 'package:mydictionaryapp/src/data/repositories/mocks/mock_dictionary_repository.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/utils/tts_properties.dart';
 
 class Dictionary {
-  final DictionaryRepository _dictionaryRepository;
   final String id;
   final String originalLanguage;
   final String translationLanguage;
@@ -18,8 +17,7 @@ class Dictionary {
     @required this.originalLanguage,
     @required this.translationLanguage,
     @required this.title,
-  })  : _dictionaryRepository = MockDictionaryRepository(), //TODO: use get_it library instead
-        ttsProperties = TtsProperties(originalLanguage),
+  })  : ttsProperties = TtsProperties(originalLanguage),
         assert(id != null),
         assert(originalLanguage != null),
         assert(translationLanguage != null),
@@ -36,7 +34,9 @@ class Dictionary {
   @override
   int get hashCode => id.hashCode ^ title.hashCode;
 
-  Future <List<Word>> getWords(int offset) async {
-    return await _dictionaryRepository.getWords(offset);
+  Future<List<Word>> getWords(int offset) async {
+    final dictionaryRepository =
+        GetIt.I.get<DictionaryRepository>(instanceName: id);
+    return await dictionaryRepository.getWords(offset);
   }
 }

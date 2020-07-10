@@ -11,9 +11,8 @@ part '_translation_list_tile.dart';
 class TranslationListFormField extends FormField<List<Translation>> {
   TranslationListFormField({
     Key key,
-    @required FormFieldSetter<List<Translation>> onSaved,
-  })  : assert(onSaved != null),
-        super(
+    FormFieldSetter<List<Translation>> onSaved,
+  }) : super(
           key: key,
           initialValue: [],
           validator: (list) {
@@ -43,20 +42,20 @@ class _TranslationList extends StatefulWidget {
 
 class _TranslationListState extends State<_TranslationList> {
   final _uuid = Uuid();
+  final _translationController = TextEditingController();
 
-  TextEditingController _translationController = TextEditingController();
-  bool _translationIsNotEmpty = false;
   List<Translation> _translationsList = [];
+  bool _textNotEmpty = false;
 
   @override
   void initState() {
     super.initState();
-    _translationController.addListener(_setTextFieldState);
+    _translationController.addListener(_controllerListener);
   }
 
-  void _setTextFieldState() {
+  void _controllerListener() {
     setState(() {
-      _translationIsNotEmpty = _translationController.text.isNotEmpty;
+      _textNotEmpty = _translationController.text.isNotEmpty;
     });
   }
 
@@ -77,7 +76,7 @@ class _TranslationListState extends State<_TranslationList> {
         hintText: writeTranslation,
         suffixIcon: IconButton(
           icon: Icon(Icons.add),
-          onPressed: _translationIsNotEmpty ? _onAdd : null,
+          onPressed: _textNotEmpty ? _onAdd : null,
         ),
       ),
     );
@@ -110,7 +109,7 @@ class _TranslationListState extends State<_TranslationList> {
 
   Widget _buildTranslationTile(Translation translation) {
     return _TranslationListTile(
-      key: ValueKey(translation),
+      key: Key(translation.id),
       translation: translation,
       onRemove: _onRemove,
     );

@@ -20,12 +20,11 @@ void main() {
     ),
   );
 
-  GetIt.I.registerSingleton<GlobalConfig>(
-    GlobalConfig(
-      environment: Environment.prod,
-      theme: theme,
-    ),
-  );
+  GetIt.I
+    ..registerSingleton<ThemeData>(theme)
+    ..registerSingleton<GlobalConfig>(
+      GlobalConfig(environment: Environment.prod),
+    );
 
   runMyDictionaryApp();
 }

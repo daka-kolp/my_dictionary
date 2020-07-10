@@ -9,7 +9,7 @@ class EnvironmentBanner extends StatelessWidget {
 
   EnvironmentBanner({@required this.child})
       : assert(child != null),
-        environment = GetIt.I.get<GlobalConfig>().environment;
+        environment = GetIt.I<GlobalConfig>().environment;
 
   _BannerProps get _bannerProps {
     switch (environment) {
