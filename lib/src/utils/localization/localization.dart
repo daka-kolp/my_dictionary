@@ -12,3 +12,5 @@ final addHint = 'Добавьте подсказку';
 final addNewWord = 'Добавить новое слово';
 final writeTranslation = 'Напишите предполагаемый перевод';
 final writeAssociationOrHint = 'Напишите ассоциацию или подсказку';
+final wordAlreadyExistException = 'Это слово уже существует в словаре';
+final userDictionaries = 'User\'s dictionaries';
