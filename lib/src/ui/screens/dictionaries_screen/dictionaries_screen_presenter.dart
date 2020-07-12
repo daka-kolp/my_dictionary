@@ -6,60 +6,68 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repositor
 import 'package:mydictionaryapp/src/global_config.dart';
 
 class DictionariesScreenPresenter extends ChangeNotifier {
+  final BuildContext context;
   final _userRepository = GetIt.I<UserRepository>();
   final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
 
-  List<Dictionary> _dictionaries = [];
+  List<Dictionary> _dictionaries;
   int _offset = 0;
   bool _isNewDictionariesAvailable = true;
-  bool _isLoading = false;
+  bool _isNewDictionariesLoading = false;
 
   List<Dictionary> get dictionaries => _dictionaries;
+  bool get isNewDictionariesLoading => _isNewDictionariesLoading;
+  bool get isLoading => _dictionaries == null;
 
-  bool get isLoading => _isLoading;
-
-  DictionariesScreenPresenter() {
+  DictionariesScreenPresenter(this.context) {
     _init();
   }
 
   Future<void> _init() async {
-    _isLoading = true;
-    notifyListeners();
-
     try {
       _dictionaries = await _userRepository.getDictionaries(_offset);
+      if (_isScrollControllerNotActive) {
+        await uploadNewDictionaries();
+      }
     } catch (e) {
       print('DictionariesScreenPresenter: _init() => $e');
       rethrow;
     } finally {
-      _isLoading = false;
+      _isNewDictionariesLoading = false;
       notifyListeners();
     }
   }
 
   Future<void> uploadNewDictionaries() async {
     if (_isNewDictionariesAvailable) {
-      _isLoading = true;
+      _isNewDictionariesLoading = true;
       notifyListeners();
 
       try {
         _offset += _fetchStep;
-
-        final List<Dictionary> newDictionaries =
-            await _userRepository.getDictionaries(_offset);
+        final newDictionaries = await _userRepository.getDictionaries(_offset);
 
         if (newDictionaries.isEmpty) {
           _isNewDictionariesAvailable = false;
         } else {
           _dictionaries += newDictionaries;
         }
+        if (_isScrollControllerNotActive) {
+          await uploadNewDictionaries();
+        }
+      } on RangeError catch (e) {
+        print(e.message);
+        _isNewDictionariesAvailable = false;
       } catch (e) {
         print('DictionariesScreenPresenter: uploadNewDictionaries() => $e');
         rethrow;
       } finally {
-        _isLoading = false;
+        _isNewDictionariesLoading = false;
         notifyListeners();
       }
     }
   }
+
+  bool get _isScrollControllerNotActive =>
+      48.0 * _dictionaries.length < MediaQuery.of(context).size.height;
 }

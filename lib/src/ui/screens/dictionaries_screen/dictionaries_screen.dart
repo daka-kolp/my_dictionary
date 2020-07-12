@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/ui/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
-import 'package:mydictionaryapp/src/ui/screens/dictionary_screen/dictionary_screen.dart';
+import 'package:mydictionaryapp/src/ui/screens/words_screen/words_screen.dart';
 import 'package:mydictionaryapp/src/ui/widgets/loading_widget.dart';
 
 //TODO: remove the import
@@ -24,7 +24,7 @@ class DictionariesScreen extends StatefulWidget {
 
   static Widget _builder(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => DictionariesScreenPresenter(),
+      create: (_) => DictionariesScreenPresenter(context),
       child: DictionariesScreen(),
     );
   }
@@ -37,23 +37,21 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   final _controller = ScrollController();
 
   bool get _isIOS => Platform.isIOS;
-
   DictionariesScreenPresenter get _watch =>
       context.watch<DictionariesScreenPresenter>();
-
   DictionariesScreenPresenter get _read =>
       context.read<DictionariesScreenPresenter>();
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() async => await _scrollListener());
+    _controller.addListener(_scrollListener);
   }
 
   Future<void> _scrollListener() async {
     final position = _controller.position;
 
-    if (position.pixels >= position.maxScrollExtent - 200) {
+    if (position.pixels == position.maxScrollExtent * 0.8) {
       await _read.uploadNewDictionaries();
     }
   }
@@ -84,6 +82,10 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   Widget _buildBody() {
+    if (_watch.isLoading) {
+      return LoadingWidget();
+    }
+
     final dictionaries = _watch.dictionaries;
     return CustomScrollView(
       controller: _controller,
@@ -101,10 +103,10 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
             childCount: dictionaries.length,
           ),
         ),
-        if (_watch.isLoading)
+        if (_watch.isNewDictionariesLoading)
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 48.0,
+              height: 96.0,
               child: LoadingWidget(),
             ),
           ),
@@ -113,8 +115,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   Future<void> _onItemPressed(Dictionary dictionary) async {
-    await Navigator.of(context)
-        .push(DictionaryScreen.buildPageRoute(dictionary));
+    await Navigator.of(context).push(WordsScreen.buildPageRoute(dictionary));
   }
 
   Widget _buildFloatingActionButton() {
@@ -126,5 +127,11 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
 
   Future<void> _onAddNewDictionaryPressed() async {
     //TODO: add new dictionary
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

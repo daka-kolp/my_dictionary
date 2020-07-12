@@ -40,10 +40,11 @@ class MockUserRepository extends UserRepository {
     final length = _dictionaries.length;
 
     final endOffset = lastIndex > length ? length : lastIndex;
-    return _dictionaries.sublist(
-      offset,
-      endOffset,
-    );
+
+    if(offset > endOffset) {
+      throw RangeError('offset > endOffset is ${offset > endOffset}');
+    }
+    return _dictionaries.sublist(offset, endOffset);
   }
 
   @override
