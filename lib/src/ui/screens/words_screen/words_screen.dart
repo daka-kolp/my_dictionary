@@ -6,17 +6,17 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
-import 'package:mydictionaryapp/src/ui/screens/dictionary_screen/dictionary_screen_presenter.dart';
-import 'package:mydictionaryapp/src/ui/screens/dictionary_screen/widgets/tts_provider.dart';
-import 'package:mydictionaryapp/src/ui/screens/dictionary_screen/widgets/word_tile/word_tile.dart';
 import 'package:mydictionaryapp/src/ui/screens/new_word_screen/new_word_screen.dart';
 import 'package:mydictionaryapp/src/ui/widgets/loading_widget.dart';
+import 'package:mydictionaryapp/src/ui/screens/words_screen/words_screen_presenter.dart';
+import 'package:mydictionaryapp/src/ui/screens/words_screen/widgets/tts_provider.dart';
+import 'package:mydictionaryapp/src/ui/screens/words_screen/widgets/word_tile/word_tile.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 
-class DictionaryScreen extends StatefulWidget {
-  static PageRoute<DictionaryScreen> buildPageRoute(Dictionary dictionary) {
+class WordsScreen extends StatefulWidget {
+  static PageRoute<WordsScreen> buildPageRoute(Dictionary dictionary) {
     if (Platform.isIOS) {
       return CupertinoPageRoute(builder: _builder(dictionary));
     }
@@ -25,25 +25,22 @@ class DictionaryScreen extends StatefulWidget {
 
   static WidgetBuilder _builder(Dictionary dictionary) {
     return (context) => ChangeNotifierProvider(
-          create: (context) => DictionaryScreenPresenter(dictionary),
-          child: DictionaryScreen(),
+          create: (context) => WordsScreenPresenter(context, dictionary),
+          child: WordsScreen(),
         );
   }
 
   @override
-  _DictionaryScreenState createState() => _DictionaryScreenState();
+  _WordsScreenState createState() => _WordsScreenState();
 }
 
-class _DictionaryScreenState extends State<DictionaryScreen> {
+class _WordsScreenState extends State<WordsScreen> {
   final _controller = ScrollController();
 
   bool get _isIOS => Platform.isIOS;
 
-  DictionaryScreenPresenter get _watch =>
-      context.watch<DictionaryScreenPresenter>();
-
-  DictionaryScreenPresenter get _read =>
-      context.read<DictionaryScreenPresenter>();
+  WordsScreenPresenter get _watch => context.watch<WordsScreenPresenter>();
+  WordsScreenPresenter get _read => context.read<WordsScreenPresenter>();
 
   FlutterTts _tts;
 
@@ -51,13 +48,13 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   void initState() {
     super.initState();
     _initTts();
-    _controller.addListener(() async => await _scrollListener());
+    _controller.addListener(_scrollListener);
   }
 
   Future<void> _scrollListener() async {
     final position = _controller.position;
 
-    if (position.pixels >= position.maxScrollExtent - 200) {
+    if (position.pixels == position.maxScrollExtent * 0.8) {
       await _read.uploadNewWords();
     }
   }
@@ -100,8 +97,11 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   }
 
   Widget _buildBody() {
-    final words = _watch.words;
+    if (_watch.isLoading) {
+      return LoadingWidget();
+    }
 
+    final words = _watch.words;
     return TtsProvider(
       tts: _tts,
       child: CustomScrollView(
@@ -118,10 +118,10 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
               childCount: words.length,
             ),
           ),
-          if (_watch.isLoading)
+          if (_watch.isNewWordsLoading)
             SliverToBoxAdapter(
               child: SizedBox(
-                height: 48.0,
+                height: 96.0,
                 child: LoadingWidget(),
               ),
             ),
@@ -147,6 +147,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   @override
   void dispose() {
     _tts.stop();
+    _controller.dispose();
     super.dispose();
   }
 }
