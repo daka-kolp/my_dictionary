@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/main.dart';
+import 'package:mydictionaryapp/src/data/repositories/mocks/mock_user_repository.dart';
+import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 
 void main() {
@@ -23,8 +25,9 @@ void main() {
   GetIt.I
     ..registerSingleton<ThemeData>(theme)
     ..registerSingleton<GlobalConfig>(
-      GlobalConfig(environment: Environment.dev),
-    );
+      GlobalConfig(environment: Environment.dev)
+    )
+    ..registerSingleton<UserRepository>(MockUserRepository());
 
   runMyDictionaryApp();
 }

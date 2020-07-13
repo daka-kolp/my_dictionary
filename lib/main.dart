@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/ui/screens/dictionaries_screen/dictionaries_screen.dart';
 import 'package:mydictionaryapp/src/ui/widgets/environment_banner.dart';
 
 //TODO: remove the imports
-import 'package:mydictionaryapp/src/data/repositories/mocks/mock_user_repository.dart';
 import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 
 void runMyDictionaryApp() {
-  GetIt.I.registerSingleton<UserRepository>(MockUserRepository());
-
   runApp(MyDictionaryApp());
 }
 

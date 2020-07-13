@@ -21,7 +21,7 @@ part 'widgets/_title_tile.dart';
 part 'widgets/_padding_wrapper.dart';
 
 class NewWordScreen extends StatefulWidget {
-  static PageRoute<NewWordScreen> buildPageRoute(Dictionary dictionary) {
+  static PageRoute<Word> buildPageRoute(Dictionary dictionary) {
     if (Platform.isIOS) {
       return CupertinoPageRoute(builder: _builder(dictionary));
     }
@@ -172,7 +172,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
 
     try {
       await _read.addWordToDictionary(newWord);
-      Navigator.pop(context);
+      Navigator.pop<Word>(context, newWord);
     } on WordAlreadyExistException {
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(content: Text(wordAlreadyExistException)),
