@@ -7,7 +7,9 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (Platform.isIOS) {
-      return CupertinoActivityIndicator();
+      return Center(
+        child: CupertinoActivityIndicator(),
+      );
     }
 
     return Center(
