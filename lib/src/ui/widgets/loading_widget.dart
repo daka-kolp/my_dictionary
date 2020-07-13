@@ -6,14 +6,10 @@ import 'package:flutter/material.dart';
 class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS) {
-      return Center(
-        child: CupertinoActivityIndicator(),
-      );
-    }
-
     return Center(
-      child: CircularProgressIndicator(),
+      child: Platform.isIOS
+          ? CupertinoActivityIndicator()
+          : CircularProgressIndicator(),
     );
   }
 }
