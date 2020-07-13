@@ -11,12 +11,13 @@ import 'package:mydictionaryapp/src/ui/widgets/loading_widget.dart';
 import 'package:mydictionaryapp/src/ui/screens/words_screen/words_screen_presenter.dart';
 import 'package:mydictionaryapp/src/ui/screens/words_screen/widgets/tts_provider.dart';
 import 'package:mydictionaryapp/src/ui/screens/words_screen/widgets/word_tile/word_tile.dart';
+import 'package:mydictionaryapp/src/utils/dimens.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 
 class WordsScreen extends StatefulWidget {
-  static PageRoute<WordsScreen> buildPageRoute(Dictionary dictionary) {
+  static PageRoute<void> buildPageRoute(Dictionary dictionary) {
     if (Platform.isIOS) {
       return CupertinoPageRoute(builder: _builder(dictionary));
     }
@@ -121,7 +122,7 @@ class _WordsScreenState extends State<WordsScreen> {
           if (_watch.isNewWordsLoading)
             SliverToBoxAdapter(
               child: SizedBox(
-                height: 96.0,
+                height: loadingWidgetHeight,
                 child: LoadingWidget(),
               ),
             ),
@@ -138,10 +139,13 @@ class _WordsScreenState extends State<WordsScreen> {
   }
 
   Future<void> _onAddNewWordPressed() async {
-    await Navigator.of(context).push(
+    final newWord = await Navigator.of(context).push(
       NewWordScreen.buildPageRoute(_read.dictionary),
     );
-    print(_watch.words);
+
+    if(newWord != null) {
+      _read.insertNewWord(newWord);
+    }
   }
 
   @override

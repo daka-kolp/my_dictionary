@@ -5,6 +5,7 @@ import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
+import 'package:mydictionaryapp/src/utils/dimens.dart';
 
 class WordsScreenPresenter extends ChangeNotifier {
   final BuildContext context;
@@ -75,6 +76,11 @@ class WordsScreenPresenter extends ChangeNotifier {
     }
   }
 
+  void insertNewWord(Word newWord) {
+    words.insert(0, newWord);
+    notifyListeners();
+  }
+
   bool get _isScrollControllerNotActive =>
-      48.0 * _words.length < MediaQuery.of(context).size.height;
+      wordTileHeight * _words.length < MediaQuery.of(context).size.height;
 }

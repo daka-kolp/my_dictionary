@@ -8,6 +8,7 @@ import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/ui/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
 import 'package:mydictionaryapp/src/ui/screens/words_screen/words_screen.dart';
 import 'package:mydictionaryapp/src/ui/widgets/loading_widget.dart';
+import 'package:mydictionaryapp/src/utils/dimens.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/utils/localization/localization.dart';
@@ -15,7 +16,7 @@ import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 part 'widgets/_dictionary_tile.dart';
 
 class DictionariesScreen extends StatefulWidget {
-  static PageRoute<DictionariesScreen> buildPageRoute() {
+  static PageRoute<void> buildPageRoute() {
     if (Platform.isIOS) {
       return CupertinoPageRoute(builder: _builder);
     }
@@ -106,7 +107,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
         if (_watch.isNewDictionariesLoading)
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 96.0,
+              height: loadingWidgetHeight,
               child: LoadingWidget(),
             ),
           ),
