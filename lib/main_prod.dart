@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/main.dart';
+import 'package:mydictionaryapp/src/data/repositories/firebase/firebase_user_repository.dart';
+import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 
 void main() {
@@ -24,7 +26,8 @@ void main() {
     ..registerSingleton<ThemeData>(theme)
     ..registerSingleton<GlobalConfig>(
       GlobalConfig(environment: Environment.prod),
-    );
+    )
+    ..registerSingleton<UserRepository>(FirebaseUserRepository());
 
   runMyDictionaryApp();
 }
