@@ -18,7 +18,7 @@ class MockDictionaryRepository extends DictionaryRepository {
     'uk-UA_ru-RU': _wordsUa,
   };
 
-  List<Word> get _words => _dictionaries[_dictionary.id];
+  List<Word> get _words => _dictionaries[_dictionary.id].reversed.toList();
 
   @override
   Future<List<Word>> getWords(int offset) async {
