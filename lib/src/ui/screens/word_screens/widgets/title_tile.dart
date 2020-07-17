@@ -1,10 +1,10 @@
-part of '../new_word_screen.dart';
+import 'package:flutter/material.dart';
 
-class _TitleTile extends StatelessWidget {
+class TitleTile extends StatelessWidget {
   final String title;
   final bool isRequired;
 
-  const _TitleTile({
+  const TitleTile({
     Key key,
     @required this.title,
     bool isRequired,

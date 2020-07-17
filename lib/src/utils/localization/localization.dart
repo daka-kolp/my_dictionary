@@ -14,3 +14,4 @@ final writeTranslation = 'Напишите предполагаемый пере
 final writeAssociationOrHint = 'Напишите ассоциацию или подсказку';
 final wordAlreadyExistException = 'Это слово уже существует в словаре';
 final userDictionaries = 'User\'s dictionaries';
+final remove = 'Удалить';

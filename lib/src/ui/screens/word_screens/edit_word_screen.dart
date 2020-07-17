@@ -1,47 +1,43 @@
 import 'dart:io';
 
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/ui/screens/new_word_screen/widgets/translations_list_form_field.dart';
-import 'package:mydictionaryapp/src/ui/screens/new_word_screen/new_word_screen_presenter.dart';
 import 'package:mydictionaryapp/src/ui/widgets/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/ui/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/ui/widgets/without_error_text_form_field.dart';
+import 'package:mydictionaryapp/src/ui/screens/word_screens/edit_word_screen_presenter.dart';
+import 'package:mydictionaryapp/src/ui/screens/word_screens/widgets/padding_wrapper.dart';
+import 'package:mydictionaryapp/src/ui/screens/word_screens/widgets/title_tile.dart';
+import 'package:mydictionaryapp/src/ui/screens/word_screens/widgets/translations_list_form_field.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 
-part 'widgets/_title_tile.dart';
-part 'widgets/_padding_wrapper.dart';
-
-class NewWordScreen extends StatefulWidget {
-  static PageRoute<Word> buildPageRoute(Dictionary dictionary) {
+class EditWordScreen extends StatefulWidget {
+  static PageRoute buildPageRoute(Dictionary dictionary, Word word) {
     if (Platform.isIOS) {
-      return CupertinoPageRoute(builder: _builder(dictionary));
+      return CupertinoPageRoute(builder: _builder(dictionary, word));
     }
-    return MaterialPageRoute(builder: _builder(dictionary));
+    return MaterialPageRoute(builder: _builder(dictionary, word));
   }
 
-  static WidgetBuilder _builder(Dictionary dictionary) {
+  static WidgetBuilder _builder(Dictionary dictionary, Word word) {
     return (context) => ChangeNotifierProvider(
-          create: (context) => NewWordScreenPresenter(dictionary),
-          child: NewWordScreen(),
+          create: (context) => EditWordScreenPresenter(dictionary, word),
+          child: EditWordScreen(),
         );
   }
 
   @override
-  _NewWordScreenState createState() => _NewWordScreenState();
+  _EditWordScreenState createState() => _EditWordScreenState();
 }
 
-class _NewWordScreenState extends State<NewWordScreen> {
-  final _uuid = Uuid();
-
+class _EditWordScreenState extends State<EditWordScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formStateKey = GlobalKey<FormState>();
   final _wordStateKey = GlobalKey<FormFieldState<String>>();
@@ -50,8 +46,8 @@ class _NewWordScreenState extends State<NewWordScreen> {
 
   bool _isFromValid = false;
 
-  NewWordScreenPresenter get _watch => context.watch<NewWordScreenPresenter>();
-  NewWordScreenPresenter get _read => context.read<NewWordScreenPresenter>();
+  EditWordScreenPresenter get _watch => context.watch<EditWordScreenPresenter>();
+  EditWordScreenPresenter get _read => context.read<EditWordScreenPresenter>();
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +62,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
             key: _scaffoldKey,
             appBar: _buildAppBar(),
             body: _buildBody(),
+            bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         ),
       ),
@@ -75,13 +72,11 @@ class _NewWordScreenState extends State<NewWordScreen> {
   void _resetFocusNode() => FocusScope.of(context).requestFocus(FocusNode());
 
   void _onFormChange() {
-    setState(() {
-      _isFromValid = _formStateKey.currentState.validate();
-    });
+    setState(() => _isFromValid = _formStateKey.currentState.validate());
   }
 
   PreferredSizeWidget _buildAppBar() {
-    final title = Text(addNewWord);
+    final title = Text(_watch.word.word);
 
     if (Platform.isIOS) {
       return CupertinoNavigationBar(
@@ -89,7 +84,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           child: Text(ok),
-          onPressed: _isFromValid ? _onAdd : null,
+          onPressed: _isFromValid ? _onEdit : null,
         ),
       );
     }
@@ -100,29 +95,20 @@ class _NewWordScreenState extends State<NewWordScreen> {
           icon: Icon(Icons.check),
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           tooltip: ok,
-          onPressed: _isFromValid ? _onAdd : null,
+          onPressed: _isFromValid ? _onEdit : null,
         ),
       ],
     );
   }
 
-  Future<void> _onAdd() async {
-    final newWord = Word(
-      id: _uuid.v4(),
+  Future<void> _onEdit() async {
+    final newWord = _read.word.copyWith(
       word: _wordStateKey.currentState.value,
       translations: _listStateKey.currentState.value,
       hint: _hintStateKey.currentState.value,
-      addingTime: DateTime.now(),
     );
-
-    try {
-      await _read.addWordToDictionary(newWord);
-      Navigator.pop<Word>(context, newWord);
-    } on WordAlreadyExistException {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text(wordAlreadyExistException)),
-      );
-    }
+    await _read.editWord(newWord);
+    Navigator.pop<Word>(context, newWord);
   }
 
   Widget _buildBody() {
@@ -132,11 +118,11 @@ class _NewWordScreenState extends State<NewWordScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _TitleTile(title: enterWord, isRequired: true),
+            TitleTile(title: enterWord, isRequired: true),
             _buildWordFormField(),
-            _TitleTile(title: addTranslation, isRequired: true),
+            TitleTile(title: addTranslation, isRequired: true),
             _buildTranslationsListFormField(),
-            _TitleTile(title: addHint),
+            TitleTile(title: addHint),
             _buildHintFormField(),
           ],
         ),
@@ -145,9 +131,10 @@ class _NewWordScreenState extends State<NewWordScreen> {
   }
 
   Widget _buildWordFormField() {
-    return _PaddingWrapper(
+    return PaddingWrapper(
       child: WithoutErrorTextFormField(
         key: _wordStateKey,
+        initialValue: _watch.word.word,
         validator: _validateTextFormField,
       ),
     );
@@ -159,17 +146,19 @@ class _NewWordScreenState extends State<NewWordScreen> {
   }
 
   Widget _buildTranslationsListFormField() {
-    return _PaddingWrapper(
+    return PaddingWrapper(
       child: TranslationListFormField(
         key: _listStateKey,
+        initialList: _watch.word.translations,
       ),
     );
   }
 
   Widget _buildHintFormField() {
-    return _PaddingWrapper(
+    return PaddingWrapper(
       child: TextFormField(
         key: _hintStateKey,
+        initialValue: _watch.word.hint,
         keyboardType: TextInputType.multiline,
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
@@ -178,5 +167,30 @@ class _NewWordScreenState extends State<NewWordScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.all(16.0),
+        height: 48.0,
+        width: double.infinity,
+        child: RaisedButton(
+          child: Text(remove),
+          onPressed: _onRemove,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onRemove() async {
+    try {
+      await _read.removeWord();
+      Navigator.pop<String>(context, _read.word.id);
+    } on WordAlreadyExistException {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(content: Text(wordAlreadyExistException)),
+      );
+    }
   }
 }

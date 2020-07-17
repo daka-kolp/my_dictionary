@@ -11,16 +11,18 @@ part '_translation_list_tile.dart';
 class TranslationListFormField extends FormField<List<Translation>> {
   TranslationListFormField({
     Key key,
+    List<Translation> initialList = const [],
     FormFieldSetter<List<Translation>> onSaved,
   }) : super(
           key: key,
-          initialValue: [],
+          initialValue: initialList,
           validator: (list) {
             if (list.isEmpty) return '';
             return null;
           },
           builder: (field) {
             return _TranslationList(
+              initialList: initialList,
               onChanged: field.didChange,
             );
           },
@@ -28,10 +30,12 @@ class TranslationListFormField extends FormField<List<Translation>> {
 }
 
 class _TranslationList extends StatefulWidget {
+  final List<Translation> initialList;
   final ValueChanged<List<Translation>> onChanged;
 
   const _TranslationList({
     Key key,
+    @required this.initialList,
     @required this.onChanged,
   })  : assert(onChanged != null),
         super(key: key);
@@ -44,12 +48,13 @@ class _TranslationListState extends State<_TranslationList> {
   final _uuid = Uuid();
   final _translationController = TextEditingController();
 
-  List<Translation> _translationsList = [];
+  List<Translation> _translationsList;
   bool _textNotEmpty = false;
 
   @override
   void initState() {
     super.initState();
+    _translationsList = widget.initialList.toList();
     _translationController.addListener(_controllerListener);
   }
 

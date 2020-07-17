@@ -6,8 +6,10 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
-import 'package:mydictionaryapp/src/ui/screens/new_word_screen/new_word_screen.dart';
+import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/ui/widgets/loading_widget.dart';
+import 'package:mydictionaryapp/src/ui/screens/word_screens/edit_word_screen.dart';
+import 'package:mydictionaryapp/src/ui/screens/word_screens/new_word_screen.dart';
 import 'package:mydictionaryapp/src/ui/screens/words_screen/words_screen_presenter.dart';
 import 'package:mydictionaryapp/src/ui/screens/words_screen/widgets/tts_provider.dart';
 import 'package:mydictionaryapp/src/ui/screens/words_screen/widgets/word_tile/word_tile.dart';
@@ -114,6 +116,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 return WordTile(
                   isEven: (index + 1).isEven,
                   word: words[index],
+                  onEdit: () => _onEditWordPressed(words[index]),
                 );
               },
               childCount: words.length,
@@ -131,6 +134,20 @@ class _WordsScreenState extends State<WordsScreen> {
     );
   }
 
+  Future<void> _onEditWordPressed(Word word) async {
+    final returnedValue = await Navigator.of(context).push(
+      EditWordScreen.buildPageRoute(_read.dictionary, word),
+    );
+
+    if (returnedValue != null) {
+      if (returnedValue.runtimeType == String) {
+        _read.removeWord(returnedValue);
+      } else {
+        _read.updateWord(returnedValue);
+      }
+    }
+  }
+
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       child: Icon(Icons.add),
@@ -143,7 +160,7 @@ class _WordsScreenState extends State<WordsScreen> {
       NewWordScreen.buildPageRoute(_read.dictionary),
     );
 
-    if(newWord != null) {
+    if (newWord != null) {
       _read.insertNewWord(newWord);
     }
   }
