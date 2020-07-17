@@ -33,16 +33,20 @@ class WordsScreenPresenter extends ChangeNotifier {
 
   Future<void> _init() async {
     try {
-      _words = await _dictionaryRepository.getWords(_offset);
-      if (_isScrollControllerNotActive) {
-        await uploadNewWords();
+      try {
+        _words = await _dictionaryRepository.getWords(_offset);
+        if (_isScrollControllerNotActive) {
+          await uploadNewWords();
+        }
+      } catch (e) {
+        print('WordsScreenPresenter: _init() => inner "try" : $e');
+        rethrow;
+      } finally {
+        _isNewWordsLoading = false;
+        notifyListeners();
       }
     } catch (e) {
-      print('DictionaryScreenPresenter: _init() => $e');
-      rethrow;
-    } finally {
-      _isNewWordsLoading = false;
-      notifyListeners();
+      print('WordsScreenPresenter: outer "try" => $e');
     }
   }
 

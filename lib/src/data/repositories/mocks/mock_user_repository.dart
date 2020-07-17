@@ -8,15 +8,6 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repositor
 import 'package:mydictionaryapp/src/global_config.dart';
 
 class MockUserRepository extends UserRepository {
-  MockUserRepository() {
-    _dictionaries.forEach((dictionary) {
-      GetIt.I.registerSingleton<DictionaryRepository>(
-        MockDictionaryRepository(dictionary),
-        instanceName: dictionary.id,
-      );
-    });
-  }
-
   final _dictionaries = [
     Dictionary(
       id: 'en-GB_ru-RU',
@@ -41,10 +32,19 @@ class MockUserRepository extends UserRepository {
 
     final endOffset = lastIndex > length ? length : lastIndex;
 
-    if(offset > endOffset) {
+    if (offset > endOffset) {
       throw RangeError('offset > endOffset is ${offset > endOffset}');
     }
-    return _dictionaries.sublist(offset, endOffset);
+    final dictionary = _dictionaries.sublist(offset, endOffset);
+
+    dictionary.forEach((dictionary) {
+      GetIt.I.registerSingleton<DictionaryRepository>(
+        MockDictionaryRepository(dictionary),
+        instanceName: dictionary.id,
+      );
+    });
+
+    return dictionary;
   }
 
   @override
