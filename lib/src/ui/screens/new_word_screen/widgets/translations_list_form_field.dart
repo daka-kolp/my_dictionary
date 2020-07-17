@@ -72,6 +72,7 @@ class _TranslationListState extends State<_TranslationList> {
   Widget _buildNewTranslationField() {
     return TextField(
       controller: _translationController,
+      onSubmitted: _textNotEmpty ? (value) => _onAdd() : null,
       decoration: InputDecoration(
         hintText: writeTranslation,
         suffixIcon: IconButton(

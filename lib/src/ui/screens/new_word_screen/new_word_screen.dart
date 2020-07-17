@@ -66,7 +66,6 @@ class _NewWordScreenState extends State<NewWordScreen> {
             key: _scaffoldKey,
             appBar: _buildAppBar(),
             body: _buildBody(),
-            bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         ),
       ),
@@ -87,9 +86,43 @@ class _NewWordScreenState extends State<NewWordScreen> {
     if (Platform.isIOS) {
       return CupertinoNavigationBar(
         middle: title,
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Text(ok),
+          onPressed: _isFromValid ? _onAdd : null,
+        ),
       );
     }
-    return AppBar(title: title);
+    return AppBar(
+      title: title,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.check),
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          tooltip: ok,
+          onPressed: _isFromValid ? _onAdd : null,
+        ),
+      ],
+    );
+  }
+
+  Future<void> _onAdd() async {
+    final newWord = Word(
+      id: _uuid.v4(),
+      word: _wordStateKey.currentState.value,
+      translations: _listStateKey.currentState.value,
+      hint: _hintStateKey.currentState.value,
+      addingTime: DateTime.now(),
+    );
+
+    try {
+      await _read.addWordToDictionary(newWord);
+      Navigator.pop<Word>(context, newWord);
+    } on WordAlreadyExistException {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(content: Text(wordAlreadyExistException)),
+      );
+    }
   }
 
   Widget _buildBody() {
@@ -145,38 +178,5 @@ class _NewWordScreenState extends State<NewWordScreen> {
         ),
       ),
     );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return SafeArea(
-      child: Container(
-        margin: const EdgeInsets.all(16.0),
-        height: 48.0,
-        width: double.infinity,
-        child: RaisedButton(
-          child: Text(add),
-          onPressed: _isFromValid ?? false ? _onAdd : null,
-        ),
-      ),
-    );
-  }
-
-  Future<void> _onAdd() async {
-    final newWord = Word(
-      id: _uuid.v4(),
-      word: _wordStateKey.currentState.value,
-      translations: _listStateKey.currentState.value,
-      hint: _hintStateKey.currentState.value,
-      addingTime: DateTime.now(),
-    );
-
-    try {
-      await _read.addWordToDictionary(newWord);
-      Navigator.pop<Word>(context, newWord);
-    } on WordAlreadyExistException {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text(wordAlreadyExistException)),
-      );
-    }
   }
 }
