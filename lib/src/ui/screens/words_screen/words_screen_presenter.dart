@@ -85,6 +85,21 @@ class WordsScreenPresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateWord(Word editedWord) {
+    int wordIndex = _words.indexWhere((w) => w.id == editedWord.id);
+    _words
+      ..removeAt(wordIndex)
+      ..insert(wordIndex, editedWord);
+    notifyListeners();
+  }
+
+  Future<void> removeWord(String removedWordId) async {
+    Word word = _words.firstWhere((w) => w.id == removedWordId);
+    print(word.word);
+    _words.remove(word);
+    notifyListeners();
+  }
+
   bool get _isScrollControllerNotActive =>
       wordTileHeight * _words.length < MediaQuery.of(context).size.height;
 }

@@ -1,9 +1,9 @@
-part of '../new_word_screen.dart';
+import 'package:flutter/material.dart';
 
-class _PaddingWrapper extends StatelessWidget {
+class PaddingWrapper extends StatelessWidget {
   final Widget child;
 
-  const _PaddingWrapper({
+  const PaddingWrapper({
     Key key,
     @required this.child,
   })  : assert(child != null),

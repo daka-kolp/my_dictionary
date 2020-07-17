@@ -16,10 +16,12 @@ part '_word_widget.dart';
 class WordTile extends StatelessWidget {
   final Word word;
   final bool isEven;
+  final VoidCallback onEdit;
 
   const WordTile({
     Key key,
     @required this.word,
+    @required this.onEdit,
     bool isEven,
   })  : this.isEven = isEven ?? false,
         assert(word != null),
@@ -54,11 +56,7 @@ class WordTile extends StatelessWidget {
     return IconButton(
       tooltip: edit,
       icon: Icon(Icons.edit),
-      onPressed: _onEdit,
+      onPressed: onEdit,
     );
-  }
-
-  void _onEdit() {
-    //TODO: edit word, delete word, add or delete translations, add or delete tags
   }
 }
