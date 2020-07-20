@@ -58,14 +58,10 @@ class _NewWordScreenState extends State<NewWordScreen> {
       isLoading: _watch.isLoading,
       child: GestureDetector(
         onTap: _resetFocusNode,
-        child: Form(
-          key: _formStateKey,
-          onChanged: _onFormChange,
-          child: Scaffold(
-            key: _scaffoldKey,
-            appBar: _buildAppBar(),
-            body: _buildBody(),
-          ),
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: _buildAppBar(),
+          body: _buildBody(),
         ),
       ),
     );
@@ -73,74 +69,45 @@ class _NewWordScreenState extends State<NewWordScreen> {
 
   void _resetFocusNode() => FocusScope.of(context).requestFocus(FocusNode());
 
-  void _onFormChange() {
-    setState(() {
-      _isFromValid = _formStateKey.currentState.validate();
-    });
-  }
-
   PreferredSizeWidget _buildAppBar() {
     final title = Text(addNewWord);
 
     if (Platform.isIOS) {
       return CupertinoNavigationBar(
         middle: title,
-        trailing: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: Text(ok),
-          onPressed: _isFromValid ? _onAdd : null,
-        ),
       );
     }
     return AppBar(
       title: title,
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.check),
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          tooltip: ok,
-          onPressed: _isFromValid ? _onAdd : null,
-        ),
-      ],
     );
   }
-
-  Future<void> _onAdd() async {
-    final newWord = Word(
-      id: _uuid.v4(),
-      word: _wordStateKey.currentState.value,
-      translations: _listStateKey.currentState.value,
-      hint: _hintStateKey.currentState.value,
-      addingTime: DateTime.now(),
-    );
-
-    try {
-      await _read.addWordToDictionary(newWord);
-      Navigator.pop<Word>(context, newWord);
-    } on WordAlreadyExistException {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text(wordAlreadyExistException)),
-      );
-    }
-  }
-
+  
   Widget _buildBody() {
     return ScrollConfiguration(
       behavior: NoOverScrollBehavior(),
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TitleTile(title: enterWord, isRequired: true),
-            _buildWordFormField(),
-            TitleTile(title: addTranslation, isRequired: true),
-            _buildTranslationsListFormField(),
-            TitleTile(title: addHint),
-            _buildHintFormField(),
-          ],
+        child: Form(
+          key: _formStateKey,
+          onChanged: _onFormChange,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TitleTile(title: enterWord, isRequired: true),
+              _buildWordFormField(),
+              TitleTile(title: addTranslation, isRequired: true),
+              _buildTranslationsListFormField(),
+              TitleTile(title: addHint),
+              _buildHintFormField(),
+              _buildAddWordButton(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _onFormChange() {
+    setState(() => _isFromValid = _formStateKey.currentState.validate());
   }
 
   Widget _buildWordFormField() {
@@ -177,5 +144,38 @@ class _NewWordScreenState extends State<NewWordScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildAddWordButton() {
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.all(16.0),
+        height: 48.0,
+        width: double.infinity,
+        child: RaisedButton(
+          child: Text(add),
+          onPressed: _isFromValid ? _onAdd : null,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onAdd() async {
+    final newWord = Word(
+      id: _uuid.v4(),
+      word: _wordStateKey.currentState.value,
+      translations: _listStateKey.currentState.value,
+      hint: _hintStateKey.currentState.value,
+      addingTime: DateTime.now(),
+    );
+
+    try {
+      await _read.addWordToDictionary(newWord);
+      Navigator.pop<Word>(context, newWord);
+    } on WordAlreadyExistException {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(content: Text(wordAlreadyExistException)),
+      );
+    }
   }
 }

@@ -1,4 +1,6 @@
 abstract class AuthRepository {
+  Future<bool> get isLoggedIn;
+
   Future<void> loginWith(LoginPayload loginPayload);
 
   Future<void> registerWith(RegisterPayload registerPayload);

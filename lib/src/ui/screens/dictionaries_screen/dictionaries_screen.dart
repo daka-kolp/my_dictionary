@@ -16,7 +16,7 @@ import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 part 'widgets/_dictionary_tile.dart';
 
 class DictionariesScreen extends StatefulWidget {
-  static PageRoute<void> buildPageRoute() {
+  static PageRoute buildPageRoute() {
     if (Platform.isIOS) {
       return CupertinoPageRoute(builder: _builder);
     }
