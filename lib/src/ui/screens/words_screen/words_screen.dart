@@ -19,7 +19,7 @@ import 'package:mydictionaryapp/src/utils/dimens.dart';
 import 'package:mydictionaryapp/src/utils/localization/localization.dart';
 
 class WordsScreen extends StatefulWidget {
-  static PageRoute<void> buildPageRoute(Dictionary dictionary) {
+  static PageRoute buildPageRoute(Dictionary dictionary) {
     if (Platform.isIOS) {
       return CupertinoPageRoute(builder: _builder(dictionary));
     }

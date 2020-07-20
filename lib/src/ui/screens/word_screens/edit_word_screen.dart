@@ -55,25 +55,16 @@ class _EditWordScreenState extends State<EditWordScreen> {
       isLoading: _watch.isLoading,
       child: GestureDetector(
         onTap: _resetFocusNode,
-        child: Form(
-          key: _formStateKey,
-          onChanged: _onFormChange,
-          child: Scaffold(
-            key: _scaffoldKey,
-            appBar: _buildAppBar(),
-            body: _buildBody(),
-            bottomNavigationBar: _buildBottomNavigationBar(),
-          ),
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: _buildAppBar(),
+          body: _buildBody(),
         ),
       ),
     );
   }
 
   void _resetFocusNode() => FocusScope.of(context).requestFocus(FocusNode());
-
-  void _onFormChange() {
-    setState(() => _isFromValid = _formStateKey.currentState.validate());
-  }
 
   PreferredSizeWidget _buildAppBar() {
     final title = Text(_watch.word.word);
@@ -83,51 +74,63 @@ class _EditWordScreenState extends State<EditWordScreen> {
         middle: title,
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          child: Text(ok),
-          onPressed: _isFromValid ? _onEdit : null,
+          child: Text(remove),
+          onPressed: _onRemove,
         ),
       );
     }
+
     return AppBar(
       title: title,
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.check),
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          tooltip: ok,
-          onPressed: _isFromValid ? _onEdit : null,
+          icon: Icon(Icons.delete),
+          tooltip: remove,
+          onPressed: _onRemove,
         ),
       ],
     );
   }
 
-  Future<void> _onEdit() async {
-    final newWord = _read.word.copyWith(
-      word: _wordStateKey.currentState.value,
-      translations: _listStateKey.currentState.value,
-      hint: _hintStateKey.currentState.value,
-    );
-    await _read.editWord(newWord);
-    Navigator.pop<Word>(context, newWord);
+  Future<void> _onRemove() async {
+    try {
+      await _read.removeWord();
+      Navigator.pop<String>(context, _read.word.id);
+    } on WordAlreadyExistException {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text(wordAlreadyExistException),
+        ),
+      );
+    }
   }
 
   Widget _buildBody() {
     return ScrollConfiguration(
       behavior: NoOverScrollBehavior(),
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TitleTile(title: enterWord, isRequired: true),
-            _buildWordFormField(),
-            TitleTile(title: addTranslation, isRequired: true),
-            _buildTranslationsListFormField(),
-            TitleTile(title: addHint),
-            _buildHintFormField(),
-          ],
+        child: Form(
+          key: _formStateKey,
+          onChanged: _onFormChange,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TitleTile(title: enterWord, isRequired: true),
+              _buildWordFormField(),
+              TitleTile(title: addTranslation, isRequired: true),
+              _buildTranslationsListFormField(),
+              TitleTile(title: addHint),
+              _buildHintFormField(),
+              _buildEditWordButton(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _onFormChange() {
+    setState(() => _isFromValid = _formStateKey.currentState.validate());
   }
 
   Widget _buildWordFormField() {
@@ -169,27 +172,32 @@ class _EditWordScreenState extends State<EditWordScreen> {
     );
   }
 
-  Widget _buildBottomNavigationBar() {
+  Widget _buildEditWordButton() {
     return SafeArea(
       child: Container(
         margin: const EdgeInsets.all(16.0),
         height: 48.0,
         width: double.infinity,
         child: RaisedButton(
-          child: Text(remove),
-          onPressed: _onRemove,
+          child: Text(edit),
+          onPressed: _isFromValid ? _onEdit : null,
         ),
       ),
     );
   }
 
-  Future<void> _onRemove() async {
+  Future<void> _onEdit() async {
     try {
-      await _read.removeWord();
-      Navigator.pop<String>(context, _read.word.id);
-    } on WordAlreadyExistException {
+      final newWord = _read.word.copyWith(
+        word: _wordStateKey.currentState.value,
+        translations: _listStateKey.currentState.value,
+        hint: _hintStateKey.currentState.value,
+      );
+      await _read.editWord(newWord);
+      Navigator.pop<Word>(context, newWord);
+    } on WordNotExistException {
       _scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text(wordAlreadyExistException)),
+        SnackBar(content: Text(wordNotExistException)),
       );
     }
   }
