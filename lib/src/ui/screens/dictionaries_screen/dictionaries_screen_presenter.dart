@@ -5,6 +5,7 @@ import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/utils/dimens.dart';
+import 'package:mydictionaryapp/src/utils/store_interator.dart';
 
 class DictionariesScreenPresenter extends ChangeNotifier {
   final BuildContext context;
@@ -26,7 +27,7 @@ class DictionariesScreenPresenter extends ChangeNotifier {
 
   Future<void> _init() async {
     try {
-      _dictionaries = await _userRepository.getDictionaries(_offset);
+      _dictionaries = await _userRepository.getAndRegisterDictionaries(_offset);
       if (_isScrollControllerNotActive) {
         await uploadNewDictionaries();
       }
@@ -46,7 +47,7 @@ class DictionariesScreenPresenter extends ChangeNotifier {
 
       try {
         _offset += _fetchStep;
-        final newDictionaries = await _userRepository.getDictionaries(_offset);
+        final newDictionaries = await _userRepository.getAndRegisterDictionaries(_offset);
 
         if (newDictionaries.isEmpty) {
           _isNewDictionariesAvailable = false;

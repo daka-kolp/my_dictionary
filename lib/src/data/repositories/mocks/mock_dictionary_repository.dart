@@ -64,13 +64,12 @@ class MockDictionaryRepository extends DictionaryRepository {
   Future<void> removeWord(String id) async {
     await Future.delayed(Duration(seconds: 3));
 
-    Word word;
     try {
-      word = _words.firstWhere((w) => w.id == id);
+      Word word = _words.firstWhere((w) => w.id == id);
+      _words.remove(word);
     } on StateError {
       throw WordNotExistException();
     }
-    _words.remove(word);
   }
 }
 

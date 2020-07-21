@@ -24,7 +24,7 @@ class MockUserRepository extends UserRepository {
   ];
 
   @override
-  Future<List<Dictionary>> getDictionaries(int offset) async {
+  Future<List<Dictionary>> getAndRegisterDictionaries(int offset) async {
     await Future.delayed(Duration(seconds: 3));
 
     final lastIndex = offset + GetIt.I.get<GlobalConfig>().fetchStep;
@@ -38,8 +38,8 @@ class MockUserRepository extends UserRepository {
     final dictionary = _dictionaries.sublist(offset, endOffset);
 
     dictionary.forEach((dictionary) {
-      GetIt.I.registerSingleton<DictionaryRepository>(
-        MockDictionaryRepository(dictionary),
+      GetIt.I.registerFactory(
+        () => MockDictionaryRepository(dictionary),
         instanceName: dictionary.id,
       );
     });
@@ -61,14 +61,21 @@ class MockUserRepository extends UserRepository {
   Future<void> removeDictionary(String id) async {
     await Future.delayed(Duration(seconds: 3));
 
-    Dictionary dictionary;
     try {
-      dictionary = _dictionaries.firstWhere(
+      Dictionary dictionary = _dictionaries.firstWhere(
         (dictionary) => dictionary.id == id,
       );
+      _dictionaries.remove(dictionary);
+      GetIt.I.unregister(instanceName: dictionary.id);
     } on StateError {
       throw DictionaryNotExistException();
     }
-    _dictionaries.remove(dictionary);
+  }
+
+  @override
+  void unregisterDictionaries(List<Dictionary> dictionaries) {
+    dictionaries.forEach((dictionary) {
+      GetIt.I.unregister(instanceName: dictionary.id);
+    });
   }
 }

@@ -16,4 +16,5 @@ final remove = 'Удалить';
 final wordAlreadyExistException = 'Это слово уже существует в словаре';
 final wordNotExistException = 'Это слово не существует в словаре';
 final userDictionaries = 'Словари пользователя';
-
+final enter = 'Войти';
+final userNotExist = 'Такой пользователь не существует, попробуйте зарегистироваться';
