@@ -5,7 +5,6 @@ import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/utils/dimens.dart';
-import 'package:mydictionaryapp/src/utils/store_interator.dart';
 
 class DictionariesScreenPresenter extends ChangeNotifier {
   final BuildContext context;

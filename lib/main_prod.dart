@@ -5,7 +5,6 @@ import 'package:mydictionaryapp/main.dart';
 import 'package:mydictionaryapp/src/data/repositories/local/local_user_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
-import 'package:mydictionaryapp/src/utils/store_interator.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +28,6 @@ void main() {
     ..registerSingleton<ThemeData>(theme)
     ..registerSingleton<GlobalConfig>(
         GlobalConfig(environment: Environment.prod))
-    ..registerSingleton<StoreInteractor>(StoreInteractor())
     ..registerSingleton<UserRepository>(LocalUserRepository());
 
   runMyDictionaryApp();
