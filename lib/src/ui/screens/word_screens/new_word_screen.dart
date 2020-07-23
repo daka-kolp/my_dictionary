@@ -150,7 +150,6 @@ class _NewWordScreenState extends State<NewWordScreen> {
     return SafeArea(
       child: Container(
         margin: const EdgeInsets.all(16.0),
-        height: 48.0,
         width: double.infinity,
         child: RaisedButton(
           child: Text(add),

@@ -26,7 +26,7 @@ class DictionariesScreenPresenter extends ChangeNotifier {
 
   Future<void> _init() async {
     try {
-      _dictionaries = await _userRepository.getDictionaries(_offset);
+      _dictionaries = await _userRepository.getAndRegisterDictionaries(_offset);
       if (_isScrollControllerNotActive) {
         await uploadNewDictionaries();
       }
@@ -46,7 +46,8 @@ class DictionariesScreenPresenter extends ChangeNotifier {
 
       try {
         _offset += _fetchStep;
-        final newDictionaries = await _userRepository.getDictionaries(_offset);
+        final newDictionaries =
+            await _userRepository.getAndRegisterDictionaries(_offset);
 
         if (newDictionaries.isEmpty) {
           _isNewDictionariesAvailable = false;
@@ -67,6 +68,12 @@ class DictionariesScreenPresenter extends ChangeNotifier {
         notifyListeners();
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _userRepository.unregisterDictionaries(_dictionaries);
+    super.dispose();
   }
 
   bool get _isScrollControllerNotActive =>

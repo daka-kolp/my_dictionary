@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mydictionaryapp/src/ui/widgets/loading_widget.dart';
+
+import 'package:mydictionaryapp/src/ui/widgets/loading_indicator.dart';
 
 class LoadingLayout extends StatelessWidget {
   final Widget child;
@@ -27,7 +28,7 @@ class LoadingLayout extends StatelessWidget {
         SizedBox.expand(
           child: Container(
             color: Colors.black12,
-            child: LoadingWidget(),
+            child: LoadingIndicator(),
           ),
         ),
       );

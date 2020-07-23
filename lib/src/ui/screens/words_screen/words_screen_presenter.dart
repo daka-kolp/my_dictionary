@@ -46,7 +46,7 @@ class WordsScreenPresenter extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print('WordsScreenPresenter: outer "try" => $e');
+      print('WordsScreenPresenter: _init() => outer "try" : $e');
     }
   }
 
@@ -71,7 +71,7 @@ class WordsScreenPresenter extends ChangeNotifier {
         print(e.message);
         _isNewWordsAvailable = false;
       } catch (e) {
-        print('DictionaryScreenPresenter: uploadNewWords() => $e');
+        print('WordsScreenPresenter: uploadNewWords() => $e');
         rethrow;
       } finally {
         _isNewWordsLoading = false;

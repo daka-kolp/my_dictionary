@@ -18,11 +18,10 @@ void main() {
     cursorColor: Colors.blue,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     buttonTheme: ButtonThemeData(
-      buttonColor: Colors.yellowAccent[100],
+      buttonColor: Colors.yellowAccent[700],
+      padding: EdgeInsets.all(16.0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(8.0),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(16.0)),
       ),
     ),
   );
@@ -30,7 +29,11 @@ void main() {
   GetIt.I
     ..registerSingleton<ThemeData>(theme)
     ..registerSingleton<GlobalConfig>(
-        GlobalConfig(environment: Environment.prod))
+      GlobalConfig(
+        environment: Environment.prod,
+        mainImagePath: 'assets/images/icon_prod.png',
+      ),
+    )
     ..registerSingleton<StoreInteractor>(StoreInteractor())
     ..registerSingleton<AuthRepository>(FirebaseAuthRepository())
     ..registerSingleton<UserRepository>(FirebaseUserRepository());

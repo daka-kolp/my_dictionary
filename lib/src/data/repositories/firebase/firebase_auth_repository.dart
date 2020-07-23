@@ -3,7 +3,7 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repositor
 class FirebaseAuthRepository extends AuthRepository {
   @override
   // TODO: implement isLoggedIn
-  Future<bool> get isLoggedIn async => throw UnimplementedError();
+  Future<bool> get isLoggedIn async => false;
 
   @override
   Future<void> loginWith(LoginPayload loginPayload) {

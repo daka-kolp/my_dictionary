@@ -19,10 +19,9 @@ void main() {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     buttonTheme: ButtonThemeData(
       buttonColor: Colors.redAccent[100],
+      padding: EdgeInsets.all(16.0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(8.0),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(16.0)),
       ),
     ),
   );
@@ -30,7 +29,11 @@ void main() {
   GetIt.I
     ..registerSingleton<ThemeData>(theme)
     ..registerSingleton<GlobalConfig>(
-        GlobalConfig(environment: Environment.dev))
+      GlobalConfig(
+        environment: Environment.dev,
+        mainImagePath: 'assets/images/icon_dev.png',
+      ),
+    )
     ..registerSingleton<StoreInteractor>(StoreInteractor())
     ..registerSingleton<AuthRepository>(MockAuthRepository())
     ..registerSingleton<UserRepository>(MockUserRepository());

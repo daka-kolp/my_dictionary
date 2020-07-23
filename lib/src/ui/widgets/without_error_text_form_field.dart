@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 class WithoutErrorTextFormField extends FormField<String> {
   WithoutErrorTextFormField({
@@ -83,7 +82,7 @@ class WithoutErrorTextFormField extends FormField<String> {
           validator: validator,
           autovalidate: autovalidate,
           enabled: enabled,
-          builder: (FormFieldState<String> field) {
+          builder: (field) {
             final _WithoutErrorTextFormFieldState state =
                 field as _WithoutErrorTextFormFieldState;
             void onChangedHandler(String value) {
@@ -95,6 +94,7 @@ class WithoutErrorTextFormField extends FormField<String> {
 
             return TextField(
               controller: state._effectiveController,
+              decoration: decoration,
               focusNode: focusNode,
               keyboardType: keyboardType,
               textInputAction: textInputAction,

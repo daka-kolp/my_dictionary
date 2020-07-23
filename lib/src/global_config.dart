@@ -8,9 +8,12 @@ enum Environment {
 
 class GlobalConfig {
   final Environment environment;
+  final String mainImagePath;
   final int fetchStep = 20;
 
   GlobalConfig({
     @required this.environment,
-  })  : assert(environment != null);
+    @required this.mainImagePath,
+  })  : assert(environment != null),
+        assert(mainImagePath != null);
 }

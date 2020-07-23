@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/ui/widgets/loading_widget.dart';
+import 'package:mydictionaryapp/src/ui/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/ui/screens/word_screens/edit_word_screen.dart';
 import 'package:mydictionaryapp/src/ui/screens/word_screens/new_word_screen.dart';
 import 'package:mydictionaryapp/src/ui/screens/words_screen/words_screen_presenter.dart';
@@ -101,7 +101,7 @@ class _WordsScreenState extends State<WordsScreen> {
 
   Widget _buildBody() {
     if (_watch.isLoading) {
-      return LoadingWidget();
+      return LoadingIndicator();
     }
 
     final words = _watch.words;
@@ -126,7 +126,7 @@ class _WordsScreenState extends State<WordsScreen> {
             SliverToBoxAdapter(
               child: SizedBox(
                 height: loadingWidgetHeight,
-                child: LoadingWidget(),
+                child: LoadingIndicator(),
               ),
             ),
         ],

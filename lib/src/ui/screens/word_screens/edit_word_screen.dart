@@ -115,11 +115,11 @@ class _EditWordScreenState extends State<EditWordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TitleTile(title: enterWord, isRequired: true),
+              TitleTile(title: editWord, isRequired: true),
               _buildWordFormField(),
-              TitleTile(title: addTranslation, isRequired: true),
+              TitleTile(title: editTranslation, isRequired: true),
               _buildTranslationsListFormField(),
-              TitleTile(title: addHint),
+              TitleTile(title: editHint),
               _buildHintFormField(),
               _buildEditWordButton(),
             ],
@@ -176,7 +176,6 @@ class _EditWordScreenState extends State<EditWordScreen> {
     return SafeArea(
       child: Container(
         margin: const EdgeInsets.all(16.0),
-        height: 48.0,
         width: double.infinity,
         child: RaisedButton(
           child: Text(edit),

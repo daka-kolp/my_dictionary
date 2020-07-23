@@ -22,7 +22,7 @@ class MockDictionaryRepository extends DictionaryRepository {
 
   @override
   Future<List<Word>> getWords(int offset) async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
 
     final lastIndex = offset + GetIt.I.get<GlobalConfig>().fetchStep;
     final length = _words.length;
@@ -37,7 +37,7 @@ class MockDictionaryRepository extends DictionaryRepository {
 
   @override
   Future<void> addNewWord(Word newWord) async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
 
     if (_words.contains(newWord)) {
       throw WordAlreadyExistException();
@@ -47,7 +47,7 @@ class MockDictionaryRepository extends DictionaryRepository {
 
   @override
   Future<void> editWord(Word word) async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
 
     int wordIndex = _words.indexWhere(
       (w) => w.id == word.id,
@@ -62,15 +62,14 @@ class MockDictionaryRepository extends DictionaryRepository {
 
   @override
   Future<void> removeWord(String id) async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
 
-    Word word;
     try {
-      word = _words.firstWhere((w) => w.id == id);
+      Word word = _words.firstWhere((w) => w.id == id);
+      _words.remove(word);
     } on StateError {
       throw WordNotExistException();
     }
-    _words.remove(word);
   }
 }
 

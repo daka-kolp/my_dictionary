@@ -16,9 +16,9 @@ class MockAuthRepository extends AuthRepository {
 
   @override
   Future<bool> get isLoggedIn async {
-    final token = await _storeInteractor.getToken();
-    return true;
+//    final token = await _storeInteractor.getToken();
 //    return token != null;
+    return false;
   }
 
   @override
@@ -54,7 +54,7 @@ class MockAuthRepository extends AuthRepository {
       }
       rethrow;
     } catch (e) {
-      print('MockAuthRepository, _login: $e');
+      print('MockAuthRepository: _login => $e');
       rethrow;
     }
   }
@@ -74,7 +74,7 @@ class MockAuthRepository extends AuthRepository {
       }
       rethrow;
     } catch (e) {
-      print('MockAuthRepository, _register: $e');
+      print('MockAuthRepository: _register => $e');
       rethrow;
     }
   }

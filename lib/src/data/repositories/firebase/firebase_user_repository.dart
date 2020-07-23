@@ -9,7 +9,7 @@ class FirebaseUserRepository extends UserRepository {
   List<Dictionary> _dictionaries;
 
   @override
-  Future<List<Dictionary>> getDictionaries(int offset) async {
+  Future<List<Dictionary>> getAndRegisterDictionaries(int offset) async {
     _dictionaries = [];
 
     _dictionaries.forEach((dictionary) {
