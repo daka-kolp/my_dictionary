@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mydictionaryapp/src/data/repositories/mocks/mock_dictionary_repository.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
-import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 
