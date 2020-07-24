@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/global_config.dart';
+import 'package:mydictionaryapp/src/ui/screens/auth_screens/login_screen_presenter.dart';
 import 'package:mydictionaryapp/src/ui/screens/dictionaries_screen/dictionaries_screen.dart';
 import 'package:mydictionaryapp/src/ui/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/utils/localization/localization.dart';
@@ -18,8 +20,10 @@ class LoginScreen extends StatefulWidget {
   }
 
   static Widget _builder(BuildContext context) {
-    //TODO: add LoginScreenPresenter
-    return LoginScreen();
+    return ChangeNotifierProvider(
+      create: (context) => LoginScreenPresenter(),
+      child: LoginScreen(),
+    );
   }
 
   @override
@@ -27,8 +31,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  ThemeData get _theme => Theme.of(context);
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  ThemeData get _theme => Theme.of(context);
   BoxDecoration get _decoration => BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -40,11 +45,15 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
 
+  LoginScreenPresenter get _watch => context.watch<LoginScreenPresenter>();
+  LoginScreenPresenter get _read => context.read<LoginScreenPresenter>();
+
   @override
   Widget build(BuildContext context) {
     return LoadingLayout(
-      isLoading: false,
+      isLoading: _watch.isLoading,
       child: Scaffold(
+        key: _scaffoldKey,
         body: Container(
           alignment: Alignment.center,
           decoration: _decoration,
@@ -68,11 +77,35 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
-    //TODO: login
-    Navigator.of(context).push(DictionariesScreen.buildPageRoute());
+    try {
+      await _read.login();
+      await _routeToDictionariesScreen();
+    } catch (e) {
+      //TODO: handle errors
+      _showErrorMessage('LoginScreen: _login() => $e');
+    }
   }
 
   Future<void> _register() async {
-    //TODO: registration
+    try {
+      await _read.register();
+      await _routeToDictionariesScreen();
+    } catch (e) {
+      //TODO: handle errors
+      _showErrorMessage('LoginScreen: _register() => $e');
+    }
+  }
+
+  Future<void> _routeToDictionariesScreen() async {
+    await Navigator.of(context).pushAndRemoveUntil(
+      DictionariesScreen.buildPageRoute(),
+      (route) => false,
+    );
+  }
+
+  void _showErrorMessage(String message) {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 }

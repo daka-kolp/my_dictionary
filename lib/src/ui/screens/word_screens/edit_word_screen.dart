@@ -97,11 +97,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
       await _read.removeWord();
       Navigator.pop<String>(context, _read.word.id);
     } on WordAlreadyExistException {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          content: Text(wordAlreadyExistException),
-        ),
-      );
+      _showErrorMessage(wordAlreadyExistException);
     }
   }
 
@@ -195,9 +191,13 @@ class _EditWordScreenState extends State<EditWordScreen> {
       await _read.editWord(newWord);
       Navigator.pop<Word>(context, newWord);
     } on WordNotExistException {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text(wordNotExistException)),
-      );
+      _showErrorMessage(wordNotExistException);
     }
+  }
+
+  void _showErrorMessage(String message) {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 }

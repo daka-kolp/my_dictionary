@@ -16,27 +16,28 @@ class MockAuthRepository extends AuthRepository {
 
   @override
   Future<bool> get isLoggedIn async {
-//    final token = await _storeInteractor.getToken();
-//    return token != null;
-    return false;
+    final token = await _storeInteractor.getToken();
+    return token != null;
   }
 
   @override
   Future<void> loginWith(LoginPayload loginPayload) async {
-    if (loginPayload is MockLoginPayload) {
-      await _login(loginPayload);
-    } else {
-      throw AssertionError();
-    }
+    await _login(MockLoginPayload('test@test.com'));
+//    if (loginPayload is MockLoginPayload) {
+//      await _login(loginPayload);
+//    } else {
+//      throw AssertionError();
+//    }
   }
 
   @override
   Future<void> registerWith(RegisterPayload registerPayload) async {
-    if (registerPayload is MockRegisterPayload) {
-      await _register(registerPayload);
-    } else {
-      throw AssertionError();
-    }
+    await _register(MockRegisterPayload('test', 'test@test.com'));
+//    if (registerPayload is MockRegisterPayload) {
+//      await _register(registerPayload);
+//    } else {
+//      throw AssertionError();
+//    }
   }
 
   Future<void> _login(MockLoginPayload loginPayload) async {
