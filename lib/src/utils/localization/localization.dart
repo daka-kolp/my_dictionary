@@ -29,3 +29,4 @@ final registration = 'Регистрация';
 final name = 'Имя';
 final email = 'Почта';
 final createAccount = 'Создать аккаунт';
+final listEmptyInfo = 'Список пуст. Используйте «+», чтобы добавить новый элемент';

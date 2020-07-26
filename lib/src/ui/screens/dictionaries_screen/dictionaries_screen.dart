@@ -87,6 +87,14 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
       return LoadingIndicator();
     }
 
+    if (_watch.dictionaries.isEmpty) {
+      return Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Text(listEmptyInfo, textAlign: TextAlign.center,),
+      );
+    }
+
     final dictionaries = _watch.dictionaries;
     return CustomScrollView(
       controller: _controller,

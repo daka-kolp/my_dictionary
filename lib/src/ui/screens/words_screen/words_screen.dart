@@ -104,6 +104,14 @@ class _WordsScreenState extends State<WordsScreen> {
       return LoadingIndicator();
     }
 
+    if (_watch.words.isEmpty) {
+      return Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Text(listEmptyInfo, textAlign: TextAlign.center,),
+      );
+    }
+
     final words = _watch.words;
     return TtsProvider(
       tts: _tts,
