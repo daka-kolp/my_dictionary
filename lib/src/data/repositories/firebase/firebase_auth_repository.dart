@@ -16,4 +16,10 @@ class FirebaseAuthRepository extends AuthRepository {
     // TODO: implement registerWith
     throw UnimplementedError();
   }
+
+  @override
+  Future<bool> logOut() {
+    // TODO: implement logOut
+    throw UnimplementedError();
+  }
 }

@@ -39,3 +39,10 @@ class WordNotExistException implements Exception {
     return 'The word is not exist';
   }
 }
+
+class LogOutException implements Exception {
+  @override
+  String toString() {
+    return 'The user can not logout';
+  }
+}

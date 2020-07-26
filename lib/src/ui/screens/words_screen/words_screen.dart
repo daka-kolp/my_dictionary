@@ -108,7 +108,7 @@ class _WordsScreenState extends State<WordsScreen> {
       return Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Text(listEmptyInfo, textAlign: TextAlign.center,),
+        child: Text(listEmptyInfo, textAlign: TextAlign.center),
       );
     }
 

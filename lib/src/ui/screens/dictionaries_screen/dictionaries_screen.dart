@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
+import 'package:mydictionaryapp/src/ui/screens/auth_screens/login_screen.dart';
 import 'package:mydictionaryapp/src/ui/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
 import 'package:mydictionaryapp/src/ui/screens/words_screen/words_screen.dart';
 import 'package:mydictionaryapp/src/ui/widgets/loading_indicator.dart';
@@ -35,6 +37,7 @@ class DictionariesScreen extends StatefulWidget {
 }
 
 class _DictionariesScreenState extends State<DictionariesScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = ScrollController();
 
   bool get _isIOS => Platform.isIOS;
@@ -60,9 +63,11 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: _buildAppBar(),
       body: _buildBody(),
       floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -71,6 +76,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
 
     if (_isIOS) {
       return CupertinoNavigationBar(
+        previousPageTitle: '',
         middle: title,
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
@@ -91,7 +97,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
       return Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Text(listEmptyInfo, textAlign: TextAlign.center,),
+        child: Text(listEmptyInfo, textAlign: TextAlign.center),
       );
     }
 
@@ -136,6 +142,56 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
 
   Future<void> _onAddNewDictionaryPressed() async {
     //TODO: add new dictionary
+  }
+
+  Widget _buildBottomNavigationBar() {
+    if (_isIOS) {
+      return SafeArea(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Color(0x4D000000),
+                width: 0.0, // One physical pixel.
+                style: BorderStyle.solid,
+              ),
+            ),
+          ),
+          child: CupertinoButton(
+            child: Text(changeUser),
+            onPressed: _onExit,
+          ),
+        ),
+      );
+    }
+
+    return SafeArea(
+      child: Material(
+        elevation: 8.0,
+        child: InkWell(
+          child: Container(
+            height: 48.0,
+            alignment: Alignment.center,
+            child: Text(changeUser),
+          ),
+          onTap: _onExit,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onExit() async {
+    try {
+      await _read.changeUser();
+      await Navigator.of(context).pushAndRemoveUntil(
+        LoginScreen.buildPageRoute(),
+        (route) => false,
+      );
+    } on LogOutException {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(content: Text(logOutException)),
+      );
+    }
   }
 
   @override

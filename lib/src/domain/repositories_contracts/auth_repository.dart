@@ -4,6 +4,8 @@ abstract class AuthRepository {
   Future<void> loginWith(LoginPayload loginPayload);
 
   Future<void> registerWith(RegisterPayload registerPayload);
+
+  Future<bool> logOut();
 }
 
 abstract class LoginPayload {
