@@ -74,7 +74,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
         middle: title,
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          child: Text(add),
+          child: Icon(CupertinoIcons.add_circled_solid),
           onPressed: _onAddNewDictionaryPressed,
         ),
       );

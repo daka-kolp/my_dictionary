@@ -74,8 +74,8 @@ class _EditWordScreenState extends State<EditWordScreen> {
         middle: title,
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          child: Text(remove),
-          onPressed: _onRemove,
+          child: Icon(CupertinoIcons.delete_simple),
+          onPressed: _showDialogOnRemoveWord,
         ),
       );
     }
@@ -86,6 +86,49 @@ class _EditWordScreenState extends State<EditWordScreen> {
         IconButton(
           icon: Icon(Icons.delete),
           tooltip: remove,
+          onPressed: _showDialogOnRemoveWord,
+        ),
+      ],
+    );
+  }
+
+  Future<void> _showDialogOnRemoveWord() async {
+    await showDialog(
+      context: context,
+      builder: _buildDialogOnRemoveWord,
+    );
+  }
+
+  Widget _buildDialogOnRemoveWord(BuildContext context) {
+    final contentText = Text(removeWordQuestion);
+    final okText = Text(ok);
+    final cancelText = Text(cancel);
+
+    if (Platform.isIOS) {
+      return CupertinoAlertDialog(
+        content: contentText,
+        actions: <Widget>[
+          CupertinoDialogAction(
+            child: cancelText,
+            onPressed: Navigator.of(context).pop,
+          ),
+          CupertinoDialogAction(
+            child: okText,
+            onPressed: _onRemove,
+          )
+        ],
+      );
+    }
+
+    return AlertDialog(
+      content: contentText,
+      actions: <Widget>[
+        FlatButton(
+          child: cancelText,
+          onPressed: Navigator.of(context).pop,
+        ),
+        FlatButton(
+          child: okText,
           onPressed: _onRemove,
         ),
       ],
@@ -94,9 +137,10 @@ class _EditWordScreenState extends State<EditWordScreen> {
 
   Future<void> _onRemove() async {
     try {
+      Navigator.of(context).pop();
       await _read.removeWord();
-      Navigator.pop<String>(context, _read.word.id);
-    } on WordAlreadyExistException {
+      Navigator.of(context).pop<String>(_read.word.id);
+    } on WordNotExistException {
       _showErrorMessage(wordAlreadyExistException);
     }
   }

@@ -91,7 +91,7 @@ class _WordsScreenState extends State<WordsScreen> {
         middle: title,
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          child: Text(add),
+          child: Icon(CupertinoIcons.add_circled_solid),
           onPressed: _onAddNewWordPressed,
         ),
       );
