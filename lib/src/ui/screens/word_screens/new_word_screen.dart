@@ -70,7 +70,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
   void _resetFocusNode() => FocusScope.of(context).requestFocus(FocusNode());
 
   PreferredSizeWidget _buildAppBar() {
-    final title = Text(addNewWord);
+    final title = Text(newWord);
 
     if (Platform.isIOS) {
       return CupertinoNavigationBar(

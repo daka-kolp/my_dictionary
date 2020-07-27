@@ -8,6 +8,7 @@ import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/ui/screens/auth_screens/login_screen.dart';
 import 'package:mydictionaryapp/src/ui/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
+import 'package:mydictionaryapp/src/ui/screens/dictionary_screens/new_dictionary_screen.dart';
 import 'package:mydictionaryapp/src/ui/screens/words_screen/words_screen.dart';
 import 'package:mydictionaryapp/src/ui/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/utils/dimens.dart';
@@ -141,26 +142,20 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   Future<void> _onAddNewDictionaryPressed() async {
-    //TODO: add new dictionary
+    final newDictionary = await Navigator.of(context).push(
+      NewDictionaryScreen.buildPageRoute(),
+    );
+    if (newDictionary != null) {
+      //TODO: insert new dictionary
+    }
   }
 
   Widget _buildBottomNavigationBar() {
     if (_isIOS) {
       return SafeArea(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Color(0x4D000000),
-                width: 0.0, // One physical pixel.
-                style: BorderStyle.solid,
-              ),
-            ),
-          ),
-          child: CupertinoButton(
-            child: Text(changeUser),
-            onPressed: _onExit,
-          ),
+        child: CupertinoButton(
+          child: Text(changeUser),
+          onPressed: _onExit,
         ),
       );
     }
