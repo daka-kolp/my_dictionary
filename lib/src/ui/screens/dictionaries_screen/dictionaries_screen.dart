@@ -113,7 +113,8 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
               return _DictionaryTile(
                 isEven: (index + 1).isEven,
                 dictionary: dictionary,
-                onPressed: () async => await _onItemPressed(dictionary),
+                onPressed: _onItemPressed,
+                onEdit: _onItemEdit,
               );
             },
             childCount: dictionaries.length,
@@ -134,6 +135,10 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
     await Navigator.of(context).push(WordsScreen.buildPageRoute(dictionary));
   }
 
+  Future<void> _onItemEdit(Dictionary dictionary) async {
+    //TODO: edit dictionary
+  }
+
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       child: Icon(Icons.add),
@@ -151,10 +156,12 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   Widget _buildBottomNavigationBar() {
+    final title = Text(changeUser);
+
     if (_isIOS) {
       return SafeArea(
         child: CupertinoButton(
-          child: Text(changeUser),
+          child: title,
           onPressed: _onExit,
         ),
       );
@@ -167,7 +174,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
           child: Container(
             height: 48.0,
             alignment: Alignment.center,
-            child: Text(changeUser),
+            child: title,
           ),
           onTap: _onExit,
         ),

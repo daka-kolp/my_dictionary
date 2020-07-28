@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:mydictionaryapp/src/ui/screens/word_screens/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/ui/widgets/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/ui/widgets/loading_layout.dart';
 
@@ -26,6 +27,9 @@ class NewDictionaryScreen extends StatefulWidget {
 }
 
 class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
+  final _formStateKey = GlobalKey<FormState>();
+
+  bool _isFromValid = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +64,44 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
     return ScrollConfiguration(
       behavior: NoOverScrollBehavior(),
       child: SingleChildScrollView(
-        child: Container(),
+        child: Form(
+          key: _formStateKey,
+          onChanged: _onFormChange,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TitleTile(title: addOriginalLanguage),
+              Container(height: 48.0),
+              TitleTile(title: addTranslationLanguage),
+              Container(height: 48.0),
+              TitleTile(title: enterDictionaryName),
+              Container(height: 48.0),
+              _buildAddDictionaryButton(),
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  void _onFormChange() {
+    setState(() => _isFromValid = _formStateKey.currentState.validate());
+  }
+
+  Widget _buildAddDictionaryButton() {
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.all(16.0),
+        width: double.infinity,
+        child: RaisedButton(
+          child: Text(add),
+          onPressed: _isFromValid ? _onAdd : null,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onAdd() async {
+    //TODO: add new dictionary
   }
 }

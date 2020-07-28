@@ -33,3 +33,6 @@ final listEmptyInfo = 'Список пуст. Используйте «+», чт
 final changeUser = 'Сменить пользователя';
 final logOutException = 'Проблемы связанные со сменой пользователя. Попробуйте перезагрузить приложение';
 final newDictionary = 'Новый словарь';
+final addOriginalLanguage = 'Выберите язык словаря';
+final addTranslationLanguage = 'Выберите язык перевода (по умолчанию будет использоваться язык локазизации Вашего устройства)';
+final enterDictionaryName = 'Введите название словаря (генерируется автоматически)';
