@@ -147,9 +147,11 @@ packages:
   flutter_tts:
     dependency: "direct main"
     description:
-      name: flutter_tts
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: get-languages-to-map
+      resolved-ref: be53577a61a65a529899f10485745a2210a2b222
+      url: "git://github.com/daka-kolp/flutter_tts"
+    source: git
     version: "1.2.6"
   flutter_web_plugins:
     dependency: transitive
