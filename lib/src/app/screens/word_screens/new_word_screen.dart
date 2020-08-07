@@ -1,38 +1,29 @@
 import 'dart:io';
 
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/ui/screens/word_screens/widgets/padding_wrapper.dart';
-import 'package:mydictionaryapp/src/ui/screens/word_screens/widgets/title_tile.dart';
-import 'package:mydictionaryapp/src/ui/screens/word_screens/widgets/translations_list_form_field.dart';
-import 'package:mydictionaryapp/src/ui/screens/word_screens/new_word_screen_presenter.dart';
-import 'package:mydictionaryapp/src/ui/widgets/no_scroll_behavior.dart';
-import 'package:mydictionaryapp/src/ui/widgets/loading_layout.dart';
-import 'package:mydictionaryapp/src/ui/widgets/without_error_text_form_field.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/translations_list_form_field.dart';
+import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
+import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/utils/localization/localization.dart';
+import 'package:mydictionaryapp/src/app/localization/localization.dart';
 
 class NewWordScreen extends StatefulWidget {
-  static PageRoute buildPageRoute(Dictionary dictionary) {
+  static PageRoute buildPageRoute() {
     if (Platform.isIOS) {
-      return CupertinoPageRoute(builder: _builder(dictionary));
+      return CupertinoPageRoute(builder: _builder);
     }
-    return MaterialPageRoute(builder: _builder(dictionary));
+    return MaterialPageRoute(builder: _builder);
   }
 
-  static WidgetBuilder _builder(Dictionary dictionary) {
-    return (context) => ChangeNotifierProvider(
-          create: (context) => NewWordScreenPresenter(dictionary),
-          child: NewWordScreen(),
-        );
-  }
+  static Widget _builder (context) => NewWordScreen();
 
   @override
   _NewWordScreenState createState() => _NewWordScreenState();
@@ -49,20 +40,14 @@ class _NewWordScreenState extends State<NewWordScreen> {
 
   bool _isFromValid = false;
 
-  NewWordScreenPresenter get _watch => context.watch<NewWordScreenPresenter>();
-  NewWordScreenPresenter get _read => context.read<NewWordScreenPresenter>();
-
   @override
   Widget build(BuildContext context) {
-    return LoadingLayout(
-      isLoading: _watch.isLoading,
-      child: GestureDetector(
-        onTap: _resetFocusNode,
-        child: Scaffold(
-          key: _scaffoldKey,
-          appBar: _buildAppBar(),
-          body: _buildBody(),
-        ),
+    return GestureDetector(
+      onTap: _resetFocusNode,
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: _buildAppBar(),
+        body: _buildBody(),
       ),
     );
   }
@@ -169,7 +154,6 @@ class _NewWordScreenState extends State<NewWordScreen> {
     );
 
     try {
-      await _read.addWordToDictionary(newWord);
       Navigator.pop<Word>(context, newWord);
     } on WordAlreadyExistException {
       _scaffoldKey.currentState.showSnackBar(

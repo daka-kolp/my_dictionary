@@ -2,9 +2,9 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:mydictionaryapp/src/data/utils/store_interator.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
-import 'package:mydictionaryapp/src/utils/store_interator.dart';
 
 class MockAuthRepository extends AuthRepository {
   final Uuid _uuid;

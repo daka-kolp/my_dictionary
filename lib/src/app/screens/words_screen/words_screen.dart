@@ -7,16 +7,16 @@ import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/ui/widgets/loading_indicator.dart';
-import 'package:mydictionaryapp/src/ui/screens/word_screens/edit_word_screen.dart';
-import 'package:mydictionaryapp/src/ui/screens/word_screens/new_word_screen.dart';
-import 'package:mydictionaryapp/src/ui/screens/words_screen/words_screen_presenter.dart';
-import 'package:mydictionaryapp/src/ui/screens/words_screen/widgets/tts_provider.dart';
-import 'package:mydictionaryapp/src/ui/screens/words_screen/widgets/word_tile/word_tile.dart';
-import 'package:mydictionaryapp/src/utils/dimens.dart';
+import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/edit_word_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/new_word_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen_presenter.dart';
+import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provider.dart';
+import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/word_tile/word_tile.dart';
+import 'package:mydictionaryapp/src/app/utils/dimens.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/utils/localization/localization.dart';
+import 'package:mydictionaryapp/src/app/localization/localization.dart';
 
 class WordsScreen extends StatefulWidget {
   static PageRoute buildPageRoute(Dictionary dictionary) {
@@ -144,13 +144,13 @@ class _WordsScreenState extends State<WordsScreen> {
 
   Future<void> _onEditWordPressed(Word word) async {
     final returnedValue = await Navigator.of(context).push(
-      EditWordScreen.buildPageRoute(_read.dictionary, word),
+      EditWordScreen.buildPageRoute(word),
     );
 
     if (returnedValue != null) {
       if (returnedValue.runtimeType == String) {
         _read.removeWord(returnedValue);
-      } else {
+      } else if (returnedValue.runtimeType == Word) {
         _read.updateWord(returnedValue);
       }
     }
@@ -164,12 +164,12 @@ class _WordsScreenState extends State<WordsScreen> {
   }
 
   Future<void> _onAddNewWordPressed() async {
-    final newWord = await Navigator.of(context).push(
-      NewWordScreen.buildPageRoute(_read.dictionary),
+    final returnedValue = await Navigator.of(context).push(
+      NewWordScreen.buildPageRoute(),
     );
 
-    if (newWord != null) {
-      _read.insertNewWord(newWord);
+    if (returnedValue != null && returnedValue.runtimeType == Word) {
+      _read.insertNewWord(returnedValue);
     }
   }
 

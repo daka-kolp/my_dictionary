@@ -7,7 +7,7 @@ import 'package:mydictionaryapp/src/data/repositories/mocks/mock_user_repository
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
-import 'package:mydictionaryapp/src/utils/store_interator.dart';
+import 'package:mydictionaryapp/src/data/utils/store_interator.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

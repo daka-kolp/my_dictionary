@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
-import 'package:mydictionaryapp/src/utils/tts_properties.dart';
+import 'package:mydictionaryapp/src/data/utils/tts_properties.dart';
 
 class Dictionary {
   final String id;

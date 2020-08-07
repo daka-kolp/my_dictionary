@@ -1,36 +1,33 @@
 import 'dart:io';
 
-import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/ui/widgets/no_scroll_behavior.dart';
-import 'package:mydictionaryapp/src/ui/widgets/loading_layout.dart';
-import 'package:mydictionaryapp/src/ui/widgets/without_error_text_form_field.dart';
-import 'package:mydictionaryapp/src/ui/screens/word_screens/edit_word_screen_presenter.dart';
-import 'package:mydictionaryapp/src/ui/screens/word_screens/widgets/padding_wrapper.dart';
-import 'package:mydictionaryapp/src/ui/screens/word_screens/widgets/title_tile.dart';
-import 'package:mydictionaryapp/src/ui/screens/word_screens/widgets/translations_list_form_field.dart';
+import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
+import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/translations_list_form_field.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/utils/localization/localization.dart';
+import 'package:mydictionaryapp/src/app/localization/localization.dart';
 
 class EditWordScreen extends StatefulWidget {
-  static PageRoute buildPageRoute(Dictionary dictionary, Word word) {
+  final Word word;
+
+  const EditWordScreen({Key key, this.word}) : super(key: key);
+
+  static PageRoute buildPageRoute(Word word) {
     if (Platform.isIOS) {
-      return CupertinoPageRoute(builder: _builder(dictionary, word));
+      return CupertinoPageRoute(builder: _builder(word));
     }
-    return MaterialPageRoute(builder: _builder(dictionary, word));
+    return MaterialPageRoute(builder: _builder(word));
   }
 
-  static WidgetBuilder _builder(Dictionary dictionary, Word word) {
-    return (context) => ChangeNotifierProvider(
-          create: (context) => EditWordScreenPresenter(dictionary, word),
-          child: EditWordScreen(),
-        );
+  static WidgetBuilder _builder(Word word) {
+    return (context) => EditWordScreen(word: word);
   }
 
   @override
@@ -46,20 +43,14 @@ class _EditWordScreenState extends State<EditWordScreen> {
 
   bool _isFromValid = false;
 
-  EditWordScreenPresenter get _watch => context.watch<EditWordScreenPresenter>();
-  EditWordScreenPresenter get _read => context.read<EditWordScreenPresenter>();
-
   @override
   Widget build(BuildContext context) {
-    return LoadingLayout(
-      isLoading: _watch.isLoading,
-      child: GestureDetector(
-        onTap: _resetFocusNode,
-        child: Scaffold(
-          key: _scaffoldKey,
-          appBar: _buildAppBar(),
-          body: _buildBody(),
-        ),
+    return GestureDetector(
+      onTap: _resetFocusNode,
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: _buildAppBar(),
+        body: _buildBody(),
       ),
     );
   }
@@ -67,7 +58,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
   void _resetFocusNode() => FocusScope.of(context).requestFocus(FocusNode());
 
   PreferredSizeWidget _buildAppBar() {
-    final title = Text(_watch.word.word);
+    final title = Text(widget.word.word);
 
     if (Platform.isIOS) {
       return CupertinoNavigationBar(
@@ -137,9 +128,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
 
   Future<void> _onRemove() async {
     try {
-      Navigator.of(context).pop();
-      await _read.removeWord();
-      Navigator.of(context).pop<String>(_read.word.id);
+      Navigator.of(context)..pop()..pop<String>(widget.word.id);
     } on WordNotExistException {
       _showErrorMessage(wordAlreadyExistException);
     }
@@ -177,7 +166,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
     return PaddingWrapper(
       child: WithoutErrorTextFormField(
         key: _wordStateKey,
-        initialValue: _watch.word.word,
+        initialValue: widget.word.word,
         validator: _validateTextFormField,
       ),
     );
@@ -192,7 +181,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
     return PaddingWrapper(
       child: TranslationListFormField(
         key: _listStateKey,
-        initialList: _watch.word.translations,
+        initialList: widget.word.translations,
       ),
     );
   }
@@ -201,7 +190,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
     return PaddingWrapper(
       child: TextFormField(
         key: _hintStateKey,
-        initialValue: _watch.word.hint,
+        initialValue: widget.word.hint,
         keyboardType: TextInputType.multiline,
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
@@ -227,13 +216,12 @@ class _EditWordScreenState extends State<EditWordScreen> {
 
   Future<void> _onEdit() async {
     try {
-      final newWord = _read.word.copyWith(
+      final editedWord = widget.word.copyWith(
         word: _wordStateKey.currentState.value,
         translations: _listStateKey.currentState.value,
         hint: _hintStateKey.currentState.value,
       );
-      await _read.editWord(newWord);
-      Navigator.pop<Word>(context, newWord);
+      Navigator.pop<Word>(context, editedWord);
     } on WordNotExistException {
       _showErrorMessage(wordNotExistException);
     }

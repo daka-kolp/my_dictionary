@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 
 class LoginScreenPresenter extends ChangeNotifier {

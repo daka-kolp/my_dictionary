@@ -6,10 +6,12 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/global_config.dart';
-import 'package:mydictionaryapp/src/ui/screens/auth_screens/login_screen_presenter.dart';
-import 'package:mydictionaryapp/src/ui/screens/dictionaries_screen/dictionaries_screen.dart';
-import 'package:mydictionaryapp/src/ui/widgets/loading_layout.dart';
-import 'package:mydictionaryapp/src/utils/localization/localization.dart';
+import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen_presenter.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
+import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
+
+//TODO: remove the import
+import 'package:mydictionaryapp/src/app/localization/localization.dart';
 
 class LoginScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {
