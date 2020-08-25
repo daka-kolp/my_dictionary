@@ -8,7 +8,7 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repositor
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/app/utils/dimens.dart';
 
-class DictionariesScreenPresenter extends ChangeNotifier {
+class DictionariesScreenPresenter with ChangeNotifier {
   final BuildContext context;
   final _userRepository = GetIt.I<UserRepository>();
   final _authRepository = GetIt.I<AuthRepository>();
@@ -83,7 +83,7 @@ class DictionariesScreenPresenter extends ChangeNotifier {
         throw LogOutException();
       }
     } catch (e) {
-      print('DictionariesScreenPresenter: changeUser => $e');
+      print('DictionariesScreenPresenter: changeUser() => $e');
     } finally {
       _isLoading = false;
       notifyListeners();

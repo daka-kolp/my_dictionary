@@ -31,7 +31,7 @@ class LoginScreenPresenter extends ChangeNotifier {
     try {
       _authRepository.loginWith(null);
     } catch (e) {
-      print('LoginScreenPresenter: login() => $e');
+      print('LoginScreenPresenter: register() => $e');
     } finally {
       _isLoading = false;
       notifyListeners();

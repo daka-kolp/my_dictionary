@@ -4,7 +4,6 @@ import 'package:uuid/uuid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
@@ -23,7 +22,7 @@ class NewWordScreen extends StatefulWidget {
     return MaterialPageRoute(builder: _builder);
   }
 
-  static Widget _builder (context) => NewWordScreen();
+  static Widget _builder(context) => NewWordScreen();
 
   @override
   _NewWordScreenState createState() => _NewWordScreenState();
@@ -32,7 +31,6 @@ class NewWordScreen extends StatefulWidget {
 class _NewWordScreenState extends State<NewWordScreen> {
   final _uuid = Uuid();
 
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formStateKey = GlobalKey<FormState>();
   final _wordStateKey = GlobalKey<FormFieldState<String>>();
   final _listStateKey = GlobalKey<FormFieldState<List<Translation>>>();
@@ -45,7 +43,6 @@ class _NewWordScreenState extends State<NewWordScreen> {
     return GestureDetector(
       onTap: _resetFocusNode,
       child: Scaffold(
-        key: _scaffoldKey,
         appBar: _buildAppBar(),
         body: _buildBody(),
       ),
@@ -153,12 +150,6 @@ class _NewWordScreenState extends State<NewWordScreen> {
       addingTime: DateTime.now(),
     );
 
-    try {
-      Navigator.pop<Word>(context, newWord);
-    } on WordAlreadyExistException {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text(wordAlreadyExistException)),
-      );
-    }
+    Navigator.pop<Word>(context, newWord);
   }
 }

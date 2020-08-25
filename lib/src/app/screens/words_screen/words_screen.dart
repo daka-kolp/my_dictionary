@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
@@ -38,6 +39,7 @@ class WordsScreen extends StatefulWidget {
 }
 
 class _WordsScreenState extends State<WordsScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = ScrollController();
 
   bool get _isIOS => Platform.isIOS;
@@ -77,6 +79,7 @@ class _WordsScreenState extends State<WordsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: _buildAppBar(),
       body: _buildBody(),
       floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
@@ -148,10 +151,14 @@ class _WordsScreenState extends State<WordsScreen> {
     );
 
     if (returnedValue != null) {
-      if (returnedValue.runtimeType == String) {
-        _read.removeWord(returnedValue);
-      } else if (returnedValue.runtimeType == Word) {
-        _read.updateWord(returnedValue);
+      try {
+        if (returnedValue.runtimeType == String) {
+          await _read.removeWord(returnedValue);
+        } else if (returnedValue.runtimeType == Word) {
+          await _read.updateWord(returnedValue);
+        }
+      } on WordNotExistException {
+        _showErrorMessage(wordAlreadyExistException);
       }
     }
   }
@@ -169,8 +176,18 @@ class _WordsScreenState extends State<WordsScreen> {
     );
 
     if (returnedValue != null && returnedValue.runtimeType == Word) {
-      _read.insertNewWord(returnedValue);
+      try {
+        await _read.addNewWord(returnedValue);
+      } on WordAlreadyExistException {
+        _showErrorMessage(wordAlreadyExistException);
+      }
     }
+  }
+
+  void _showErrorMessage(String message) {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override

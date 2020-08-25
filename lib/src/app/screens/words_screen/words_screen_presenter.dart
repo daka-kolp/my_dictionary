@@ -7,7 +7,7 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_rep
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/app/utils/dimens.dart';
 
-class WordsScreenPresenter extends ChangeNotifier {
+class WordsScreenPresenter with ChangeNotifier {
   final BuildContext context;
   final Dictionary dictionary;
   final DictionaryRepository _dictionaryRepository;
@@ -17,10 +17,11 @@ class WordsScreenPresenter extends ChangeNotifier {
   int _offset = 0;
   bool _isNewWordsAvailable = true;
   bool _isNewWordsLoading = false;
+  bool _isWordListUpdating = false;
 
   List<Word> get words => _words;
   bool get isNewWordsLoading => _isNewWordsLoading;
-  bool get isLoading => _words == null;
+  bool get isLoading => _words == null || _isWordListUpdating;
 
   WordsScreenPresenter(
     this.context,
@@ -80,67 +81,53 @@ class WordsScreenPresenter extends ChangeNotifier {
     }
   }
 
-  Future<void> insertNewWord(Word newWord) async {
-    words.insert(0, newWord);
+  Future<void> addNewWord(Word newWord) async {
+    _isWordListUpdating = true;
     notifyListeners();
+    try {
+      await _dictionaryRepository.addNewWord(newWord);
+      words.insert(0, newWord);
+    } catch (e) {
+      print('NewWordScreenPresenter: addNewWord(newWord) => $e');
+      rethrow;
+    } finally {
+      _isWordListUpdating = false;
+      notifyListeners();
+    }
   }
 
   Future<void> updateWord(Word editedWord) async {
-    int wordIndex = _words.indexWhere((w) => w.id == editedWord.id);
-    _words
-      ..removeAt(wordIndex)
-      ..insert(wordIndex, editedWord);
+    _isWordListUpdating = true;
     notifyListeners();
+    try {
+      await _dictionaryRepository.editWord(editedWord);
+      int wordIndex = _words.indexWhere((w) => w.id == editedWord.id);
+      _words
+        ..removeAt(wordIndex)
+        ..insert(wordIndex, editedWord);
+    } catch (e) {
+      print('EditWordScreenPresenter: editWord(editedWord) => $e');
+      rethrow;
+    } finally {
+      _isWordListUpdating = false;
+      notifyListeners();
+    }
   }
 
   Future<void> removeWord(String removedWordId) async {
-    Word word = _words.firstWhere((w) => w.id == removedWordId);
-    print(word.word);
-    _words.remove(word);
+    _isWordListUpdating = true;
     notifyListeners();
+    try {
+      await _dictionaryRepository.removeWord(removedWordId);
+      _words.removeWhere((w) => w.id == removedWordId);
+    } catch (e) {
+      print('EditWordScreenPresenter: removeWord(removedWordId) => $e');
+      rethrow;
+    } finally {
+      _isWordListUpdating = false;
+      notifyListeners();
+    }
   }
-
-//  Future<void> editWord(Word word) async {
-//    _isLoading = true;
-//    notifyListeners();
-//    try {
-//      await _dictionaryRepository.editWord(word);
-//    } catch (e) {
-//      print('EditWordScreenPresenter: editWord(word) => $e');
-//      rethrow;
-//    } finally {
-//      _isLoading = false;
-//      notifyListeners();
-//    }
-//  }
-//
-//  Future<void> removeWord(String wordId) async {
-//    _isLoading = true;
-//    notifyListeners();
-//    try {
-//      await _dictionaryRepository.removeWord(wordId);
-//    } catch (e) {
-//      print('EditWordScreenPresenter: removeWord() => $e');
-//      rethrow;
-//    } finally {
-//      _isLoading = false;
-//      notifyListeners();
-//    }
-//  }
-//
-//  Future<void> addWordToDictionary(Word word) async {
-//    _isLoading = true;
-//    notifyListeners();
-//    try {
-//      await _dictionaryRepository.addNewWord(word);
-//    } catch (e) {
-//      print('NewWordScreenPresenter: addWordToDictionary(word) => $e');
-//      rethrow;
-//    } finally {
-//      _isLoading = false;
-//      notifyListeners();
-//    }
-//  }
 
   bool get _isScrollControllerNotActive =>
       wordTileHeight * _words.length < MediaQuery.of(context).size.height;
