@@ -23,7 +23,7 @@ class MockUserRepository extends UserRepository {
   ];
 
   @override
-  Future<List<Dictionary>> getAndRegisterDictionaries(int offset) async {
+  Future<List<Dictionary>> getAndRegisterDictionaries([int offset = 0]) async {
     await Future.delayed(Duration(seconds: 1));
 
     final lastIndex = offset + GetIt.I.get<GlobalConfig>().fetchStep;
@@ -34,16 +34,16 @@ class MockUserRepository extends UserRepository {
     if (offset > endOffset) {
       throw RangeError('offset > endOffset is ${offset > endOffset}');
     }
-    final dictionary = _dictionaries.sublist(offset, endOffset);
+    final dictionaries = _dictionaries.sublist(offset, endOffset);
 
-    dictionary.forEach((dictionary) {
+    dictionaries.forEach((dictionary) {
       GetIt.I.registerFactory(
         () => MockDictionaryRepository(dictionary),
         instanceName: dictionary.id,
       );
     });
 
-    return dictionary;
+    return dictionaries;
   }
 
   @override
