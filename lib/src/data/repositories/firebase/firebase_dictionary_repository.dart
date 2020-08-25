@@ -1,7 +1,10 @@
+import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 
 class FirebaseDictionaryRepository extends DictionaryRepository {
+  FirebaseDictionaryRepository(Dictionary dictionary) : super(dictionary);
+
   @override
   Future<void> addNewWord(Word newWord) {
     // TODO: implement addNewWord

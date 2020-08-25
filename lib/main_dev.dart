@@ -9,6 +9,11 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repositor
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/data/utils/store_interator.dart';
 
+//TODO: remove the import
+import 'package:mydictionaryapp/src/data/repositories/mocks/mock_dictionary_repository.dart';
+import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
+import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -26,6 +31,13 @@ void main() {
     ),
   );
 
+  final dictionary = Dictionary(
+    id: 'en-GB_ru-RU',
+    originalLanguage: 'en-GB',
+    translationLanguage: 'ru',
+    title: 'English(GB)',
+  );
+
   GetIt.I
     ..registerSingleton<ThemeData>(theme)
     ..registerSingleton<GlobalConfig>(
@@ -36,7 +48,8 @@ void main() {
     )
     ..registerSingleton<StoreInteractor>(StoreInteractor())
     ..registerSingleton<AuthRepository>(MockAuthRepository())
-    ..registerSingleton<UserRepository>(MockUserRepository());
+    ..registerSingleton<UserRepository>(MockUserRepository())
+    ..registerSingleton<DictionaryRepository>(MockDictionaryRepository(dictionary));
 
   runMyDictionaryApp();
 }

@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'package:mydictionaryapp/src/data/repositories/firebase/firebase_dictionary_repository.dart';
 
+import 'package:mydictionaryapp/src/data/repositories/firebase/firebase_dictionary_repository.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
@@ -14,7 +14,7 @@ class FirebaseUserRepository extends UserRepository {
 
     _dictionaries.forEach((dictionary) {
       GetIt.I.registerSingleton<DictionaryRepository>(
-        FirebaseDictionaryRepository(),
+        FirebaseDictionaryRepository(dictionary),
         instanceName: dictionary.id,
       );
     });

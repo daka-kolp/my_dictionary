@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/environment_banner.dart';
+import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/app/localization/localization.dart';
@@ -36,7 +36,7 @@ class MyDictionaryApp extends StatelessWidget {
 
   Route _onGenerateRoute(RouteSettings settings) {
     if (isLoggedIn) {
-      return DictionariesScreen.buildPageRoute();
+      return WordsScreen.buildPageRoute();
     }
     return LoginScreen.buildPageRoute();
   }

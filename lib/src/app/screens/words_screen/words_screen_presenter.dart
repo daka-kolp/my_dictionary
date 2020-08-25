@@ -2,33 +2,33 @@ import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
+import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/app/utils/dimens.dart';
 
 class WordsScreenPresenter with ChangeNotifier {
   final BuildContext context;
-  final Dictionary dictionary;
   final DictionaryRepository _dictionaryRepository;
+  final _authRepository = GetIt.I<AuthRepository>();
   final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
 
   List<Word> _words;
   int _offset = 0;
   bool _isNewWordsAvailable = true;
   bool _isNewWordsLoading = false;
-  bool _isWordListUpdating = false;
+  bool _isLoading = false;
 
+  Dictionary get dictionary => _dictionaryRepository.dictionary;
   List<Word> get words => _words;
   bool get isNewWordsLoading => _isNewWordsLoading;
-  bool get isLoading => _words == null || _isWordListUpdating;
+  bool get isLoading => _words == null || _isLoading;
 
   WordsScreenPresenter(
     this.context,
-    this.dictionary,
-  ) : _dictionaryRepository = GetIt.I.get<DictionaryRepository>(
-          instanceName: dictionary.id,
-        ) {
+  ) : _dictionaryRepository = GetIt.I.get<DictionaryRepository>() {
     _init();
   }
 
@@ -82,7 +82,7 @@ class WordsScreenPresenter with ChangeNotifier {
   }
 
   Future<void> addNewWord(Word newWord) async {
-    _isWordListUpdating = true;
+    _isLoading = true;
     notifyListeners();
     try {
       await _dictionaryRepository.addNewWord(newWord);
@@ -91,13 +91,13 @@ class WordsScreenPresenter with ChangeNotifier {
       print('NewWordScreenPresenter: addNewWord(newWord) => $e');
       rethrow;
     } finally {
-      _isWordListUpdating = false;
+      _isLoading = false;
       notifyListeners();
     }
   }
 
   Future<void> updateWord(Word editedWord) async {
-    _isWordListUpdating = true;
+    _isLoading = true;
     notifyListeners();
     try {
       await _dictionaryRepository.editWord(editedWord);
@@ -109,13 +109,13 @@ class WordsScreenPresenter with ChangeNotifier {
       print('EditWordScreenPresenter: editWord(editedWord) => $e');
       rethrow;
     } finally {
-      _isWordListUpdating = false;
+      _isLoading = false;
       notifyListeners();
     }
   }
 
   Future<void> removeWord(String removedWordId) async {
-    _isWordListUpdating = true;
+    _isLoading = true;
     notifyListeners();
     try {
       await _dictionaryRepository.removeWord(removedWordId);
@@ -124,7 +124,23 @@ class WordsScreenPresenter with ChangeNotifier {
       print('EditWordScreenPresenter: removeWord(removedWordId) => $e');
       rethrow;
     } finally {
-      _isWordListUpdating = false;
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> changeUser() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      bool isLoggedOut = await _authRepository.logOut();
+      if(!isLoggedOut) {
+        throw LogOutException();
+      }
+    } catch (e) {
+      print('DictionariesScreenPresenter: changeUser() => $e');
+    } finally {
+      _isLoading = false;
       notifyListeners();
     }
   }

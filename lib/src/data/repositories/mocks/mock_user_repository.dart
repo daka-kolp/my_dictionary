@@ -37,8 +37,8 @@ class MockUserRepository extends UserRepository {
     final dictionaries = _dictionaries.sublist(offset, endOffset);
 
     dictionaries.forEach((dictionary) {
-      GetIt.I.registerFactory(
-        () => MockDictionaryRepository(dictionary),
+      GetIt.I.registerSingleton(
+        MockDictionaryRepository(dictionary),
         instanceName: dictionary.id,
       );
     });

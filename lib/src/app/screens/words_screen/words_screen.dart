@@ -3,11 +3,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
-import 'package:mydictionaryapp/src/domain/entities/word.dart';
+import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/edit_word_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/new_word_screen.dart';
@@ -15,23 +13,25 @@ import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen_presen
 import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provider.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/word_tile/word_tile.dart';
 import 'package:mydictionaryapp/src/app/utils/dimens.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
+import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/app/localization/localization.dart';
 
 class WordsScreen extends StatefulWidget {
-  static PageRoute buildPageRoute(Dictionary dictionary) {
+  static PageRoute buildPageRoute() {
     if (Platform.isIOS) {
-      return CupertinoPageRoute(builder: _builder(dictionary));
+      return CupertinoPageRoute(builder: _builder);
     }
-    return MaterialPageRoute(builder: _builder(dictionary));
+    return MaterialPageRoute(builder: _builder);
   }
 
-  static WidgetBuilder _builder(Dictionary dictionary) {
-    return (context) => ChangeNotifierProvider(
-          create: (context) => WordsScreenPresenter(context, dictionary),
-          child: WordsScreen(),
-        );
+  static Widget _builder(context) {
+    return ChangeNotifierProvider(
+      create: (context) => WordsScreenPresenter(context),
+      child: WordsScreen(),
+    );
   }
 
   @override
@@ -83,6 +83,7 @@ class _WordsScreenState extends State<WordsScreen> {
       appBar: _buildAppBar(),
       body: _buildBody(),
       floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -188,6 +189,47 @@ class _WordsScreenState extends State<WordsScreen> {
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(content: Text(message)),
     );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    final title = Text(changeUser);
+
+    if (_isIOS) {
+      return SafeArea(
+        child: CupertinoButton(
+          child: title,
+          onPressed: _onExit,
+        ),
+      );
+    }
+
+    return SafeArea(
+      child: Material(
+        elevation: 8.0,
+        child: InkWell(
+          child: Container(
+            height: 48.0,
+            alignment: Alignment.center,
+            child: title,
+          ),
+          onTap: _onExit,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onExit() async {
+    try {
+      await _read.changeUser();
+      await Navigator.of(context).pushAndRemoveUntil(
+        LoginScreen.buildPageRoute(),
+            (route) => false,
+      );
+    } on LogOutException {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(content: Text(logOutException)),
+      );
+    }
   }
 
   @override

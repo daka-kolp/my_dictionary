@@ -7,18 +7,14 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_rep
 import 'package:mydictionaryapp/src/global_config.dart';
 
 class MockDictionaryRepository extends DictionaryRepository {
-  final Dictionary _dictionary;
-
-  MockDictionaryRepository(
-    Dictionary dictionary,
-  ) : _dictionary = dictionary;
+  MockDictionaryRepository(Dictionary dictionary) : super(dictionary);
 
   final _dictionaries = {
     'en-GB_ru-RU': _wordsEn,
     'uk-UA_ru-RU': _wordsUa,
   };
 
-  List<Word> get _words => _dictionaries[_dictionary.id];
+  List<Word> get _words => _dictionaries[dictionary.id];
 
   @override
   Future<List<Word>> getWords(int offset) async {
