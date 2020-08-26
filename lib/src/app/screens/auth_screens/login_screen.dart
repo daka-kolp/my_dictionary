@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen_presenter.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen.dart';
+
 //import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 
@@ -37,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   ThemeData get _theme => Theme.of(context);
+
   BoxDecoration get _decoration => BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -49,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
   LoginScreenPresenter get _watch => context.watch<LoginScreenPresenter>();
+
   LoginScreenPresenter get _read => context.read<LoginScreenPresenter>();
 
   @override
@@ -63,15 +66,18 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Expanded(
+              Flexible(
                 child: Image.asset(GetIt.I<GlobalConfig>().mainImagePath),
               ),
-              RaisedButton(child: Text(enter), onPressed: _login),
-              SizedBox(height: 16.0),
-              Text(or),
-              SizedBox(height: 16.0),
-              RaisedButton(child: Text(register), onPressed: _register),
-              Expanded(child: SizedBox())
+              Expanded(
+                child: Center(
+                  child: RaisedButton(
+                    child: Text(enterWithGoogle),
+                    onPressed: _loginWithGoogle,
+                  ),
+                ),
+              ),
+              Expanded(child: SizedBox()),
             ],
           ),
         ),
@@ -79,24 +85,14 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _login() async {
-    try {
-      await _read.login();
-      await _routeToDictionariesScreen();
-    } catch (e) {
-      //TODO: handle errors
-      _showErrorMessage('LoginScreen: _login() => $e');
-    }
-  }
-
-  Future<void> _register() async {
-    try {
-      await _read.register();
-      await _routeToDictionariesScreen();
-    } catch (e) {
-      //TODO: handle errors
-      _showErrorMessage('LoginScreen: _register() => $e');
-    }
+  Future<void> _loginWithGoogle() async {
+//    try {
+    await _read.loginWithGoogle();
+    await _routeToDictionariesScreen();
+//    } catch (e) {
+//      //TODO: handle errors
+//      _showErrorMessage('LoginScreen: _loginWithGoogle() => $e');
+//    }
   }
 
   Future<void> _routeToDictionariesScreen() async {

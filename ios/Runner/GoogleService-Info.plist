@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>579379543763-p8jk82h4tcidah9tefibk6222v9ua9it.apps.googleusercontent.com</string>
+	<string>830551986190-uiuilr4u0j5kbhkkqh329gisqkbnduos.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.579379543763-p8jk82h4tcidah9tefibk6222v9ua9it</string>
+	<string>com.googleusercontent.apps.830551986190-uiuilr4u0j5kbhkkqh329gisqkbnduos</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>830551986190-cil941h8c0ldlop8cljn9jpii9c62g5g.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDkYoK_uCPFoOlgXCNSaH-qeO67WdJL0QQ</string>
+	<string>AIzaSyC4LYw2rXv7vOd2koTQ_nPz8J6viMiKMOU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>579379543763</string>
+	<string>830551986190</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.dkolp.mydictionaryapp</string>
 	<key>PROJECT_ID</key>
-	<string>my-dictionary-a9cb5</string>
+	<string>my-dictionary-549a0</string>
 	<key>STORAGE_BUCKET</key>
-	<string>my-dictionary-a9cb5.appspot.com</string>
+	<string>my-dictionary-549a0.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:579379543763:ios:256e7698bc872f942b9e26</string>
+	<string>1:830551986190:ios:4e5f3ef8206c932f8eac5f</string>
 	<key>DATABASE_URL</key>
-	<string>https://my-dictionary-a9cb5.firebaseio.com</string>
+	<string>https://my-dictionary-549a0.firebaseio.com</string>
 </dict>
 </plist>

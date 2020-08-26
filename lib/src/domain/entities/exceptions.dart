@@ -46,3 +46,10 @@ class LogOutException implements Exception {
     return 'The user can not logout';
   }
 }
+
+class GoogleLoginException implements Exception {
+  @override
+  String toString() {
+    return 'Google login exception';
+  }
+}

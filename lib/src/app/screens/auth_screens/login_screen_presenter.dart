@@ -12,26 +12,14 @@ class LoginScreenPresenter extends ChangeNotifier {
 
   LoginScreenPresenter() : _authRepository = GetIt.I<AuthRepository>();
 
-  Future<void> login() async {
+  Future<void> loginWithGoogle() async {
     _isLoading = true;
     notifyListeners();
     try {
-      _authRepository.loginWith(null);
+      await _authRepository.loginWith(GOOGLE);
     } catch (e) {
-      print('LoginScreenPresenter: login() => $e');
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
-
-  Future<void> register() async {
-    _isLoading = true;
-    notifyListeners();
-    try {
-      _authRepository.loginWith(null);
-    } catch (e) {
-      print('LoginScreenPresenter: register() => $e');
+      print('LoginScreenPresenter: loginWithGoogle() => $e');
+      rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();
