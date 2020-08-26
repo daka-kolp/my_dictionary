@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
@@ -178,7 +179,7 @@ class _WordsScreenState extends State<WordsScreen> {
 
     if (returnedValue != null && returnedValue.runtimeType == Word) {
       try {
-        await _read.addNewWord(returnedValue);
+        await _read.insertNewWord(returnedValue);
       } on WordAlreadyExistException {
         _showErrorMessage(wordAlreadyExistException);
       }
@@ -231,6 +232,7 @@ class _WordsScreenState extends State<WordsScreen> {
       );
     }
   }
+
 
   @override
   void dispose() {

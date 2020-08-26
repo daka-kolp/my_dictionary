@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
@@ -34,6 +35,7 @@ class EditWordScreen extends StatefulWidget {
 }
 
 class _EditWordScreenState extends State<EditWordScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formStateKey = GlobalKey<FormState>();
   final _wordStateKey = GlobalKey<FormFieldState<String>>();
   final _listStateKey = GlobalKey<FormFieldState<List<Translation>>>();
@@ -46,6 +48,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
     return GestureDetector(
       onTap: _resetFocusNode,
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: _buildAppBar(),
         body: _buildBody(),
       ),
@@ -124,7 +127,11 @@ class _EditWordScreenState extends State<EditWordScreen> {
   }
 
   Future<void> _onRemove() async {
-    Navigator.of(context)..pop()..pop<String>(widget.word.id);
+    try {
+      Navigator.of(context)..pop()..pop<String>(widget.word.id);
+    } on WordNotExistException {
+      _showErrorMessage(wordAlreadyExistException);
+    }
   }
 
   Widget _buildBody() {
@@ -208,11 +215,21 @@ class _EditWordScreenState extends State<EditWordScreen> {
   }
 
   Future<void> _onEdit() async {
-    final editedWord = widget.word.copyWith(
-      word: _wordStateKey.currentState.value,
-      translations: _listStateKey.currentState.value,
-      hint: _hintStateKey.currentState.value,
+    try {
+      final editedWord = widget.word.copyWith(
+        word: _wordStateKey.currentState.value,
+        translations: _listStateKey.currentState.value,
+        hint: _hintStateKey.currentState.value,
+      );
+      Navigator.pop<Word>(context, editedWord);
+    } on WordNotExistException {
+      _showErrorMessage(wordNotExistException);
+    }
+  }
+
+  void _showErrorMessage(String message) {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(content: Text(message)),
     );
-    Navigator.pop<Word>(context, editedWord);
   }
 }

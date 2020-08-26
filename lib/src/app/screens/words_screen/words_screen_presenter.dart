@@ -81,52 +81,24 @@ class WordsScreenPresenter with ChangeNotifier {
     }
   }
 
-  Future<void> addNewWord(Word newWord) async {
-    _isLoading = true;
+  Future<void> insertNewWord(Word newWord) async {
+    words.insert(0, newWord);
     notifyListeners();
-    try {
-      await _dictionaryRepository.addNewWord(newWord);
-      words.insert(0, newWord);
-    } catch (e) {
-      print('NewWordScreenPresenter: addNewWord(newWord) => $e');
-      rethrow;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
   }
 
   Future<void> updateWord(Word editedWord) async {
-    _isLoading = true;
+    int wordIndex = _words.indexWhere((w) => w.id == editedWord.id);
+    _words
+      ..removeAt(wordIndex)
+      ..insert(wordIndex, editedWord);
     notifyListeners();
-    try {
-      await _dictionaryRepository.editWord(editedWord);
-      int wordIndex = _words.indexWhere((w) => w.id == editedWord.id);
-      _words
-        ..removeAt(wordIndex)
-        ..insert(wordIndex, editedWord);
-    } catch (e) {
-      print('EditWordScreenPresenter: editWord(editedWord) => $e');
-      rethrow;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
   }
 
   Future<void> removeWord(String removedWordId) async {
-    _isLoading = true;
+    Word word = _words.firstWhere((w) => w.id == removedWordId);
+    print(word.word);
+    _words.remove(word);
     notifyListeners();
-    try {
-      await _dictionaryRepository.removeWord(removedWordId);
-      _words.removeWhere((w) => w.id == removedWordId);
-    } catch (e) {
-      print('EditWordScreenPresenter: removeWord(removedWordId) => $e');
-      rethrow;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
   }
 
   Future<void> changeUser() async {
