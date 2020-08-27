@@ -93,4 +93,9 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
       rethrow;
     }
   }
+
+  @override
+  void reset() {
+    _lastDocument = null;
+  }
 }

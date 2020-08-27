@@ -111,4 +111,9 @@ class WordsScreenPresenter with ChangeNotifier {
       notifyListeners();
     }
   }
+  @override
+  void dispose() {
+    _dictionaryRepository.reset();
+    super.dispose();
+  }
 }

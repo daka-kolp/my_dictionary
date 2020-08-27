@@ -29,6 +29,7 @@ final email = 'Почта';
 final createAccount = 'Создать аккаунт';
 final listEmptyInfo = 'Список пуст. Используйте «+», чтобы добавить новый элемент';
 final changeUser = 'Сменить пользователя';
+final askChangeUser = 'Вы хотите сменить пользователя?';
 final logOutException = 'Проблемы связанные со сменой пользователя. Попробуйте перезагрузить приложение';
 final newDictionary = 'Новый словарь';
 final addOriginalLanguage = 'Выберите язык словаря';

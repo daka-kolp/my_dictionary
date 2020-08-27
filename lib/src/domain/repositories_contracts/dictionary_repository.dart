@@ -17,4 +17,6 @@ abstract class DictionaryRepository {
   Future<void> editWord(Word word);
 
   Future<void> removeWord(String id);
+
+  void reset();
 }

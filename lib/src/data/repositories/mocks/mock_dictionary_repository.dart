@@ -67,6 +67,11 @@ class MockDictionaryRepository extends DictionaryRepository {
       throw WordNotExistException();
     }
   }
+
+  @override
+  void reset() {
+    // TODO: implement reset
+  }
 }
 
 final _wordsEn = [

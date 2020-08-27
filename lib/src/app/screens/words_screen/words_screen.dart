@@ -193,9 +193,54 @@ class _WordsScreenState extends State<WordsScreen> {
             alignment: Alignment.center,
             child: title,
           ),
-          onTap: _onExit,
+          onTap: _showDialogOnLogout,
         ),
       ),
+    );
+  }
+
+
+
+  Future<void> _showDialogOnLogout() async {
+    await showDialog(
+      context: context,
+      builder: _buildDialogOnLogout,
+    );
+  }
+
+  Widget _buildDialogOnLogout(BuildContext context) {
+    final contentText = Text(askChangeUser);
+    final okText = Text(ok);
+    final cancelText = Text(cancel);
+
+    if (Platform.isIOS) {
+      return CupertinoAlertDialog(
+        content: contentText,
+        actions: <Widget>[
+          CupertinoDialogAction(
+            child: cancelText,
+            onPressed: Navigator.of(context).pop,
+          ),
+          CupertinoDialogAction(
+            child: okText,
+            onPressed: _onExit,
+          )
+        ],
+      );
+    }
+
+    return AlertDialog(
+      content: contentText,
+      actions: <Widget>[
+        FlatButton(
+          child: cancelText,
+          onPressed: Navigator.of(context).pop,
+        ),
+        FlatButton(
+          child: okText,
+          onPressed: _onExit,
+        ),
+      ],
     );
   }
 
