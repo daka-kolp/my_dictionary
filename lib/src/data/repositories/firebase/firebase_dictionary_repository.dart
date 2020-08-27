@@ -3,6 +3,12 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_rep
 
 class FirebaseDictionaryRepository extends DictionaryRepository {
   @override
+  Future<List<Word>> getWords([int offset = 0]) {
+    // TODO: implement getWords
+    throw UnimplementedError();
+  }
+
+  @override
   Future<void> addNewWord(Word newWord) {
     // TODO: implement addNewWord
     throw UnimplementedError();
@@ -11,12 +17,6 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
   @override
   Future<void> editWord(Word word) {
     // TODO: implement editWord
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Word>> getWords(int offset) {
-    // TODO: implement getWords
     throw UnimplementedError();
   }
 

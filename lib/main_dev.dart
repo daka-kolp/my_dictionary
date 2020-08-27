@@ -19,7 +19,7 @@ void main() {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     buttonTheme: ButtonThemeData(
       buttonColor: Colors.redAccent[100],
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16.0)),
       ),

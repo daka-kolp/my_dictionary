@@ -1,7 +1,7 @@
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
 abstract class DictionaryRepository {
-  Future<List<Word>> getWords(int offset);
+  Future<List<Word>> getWords([int offset = 0]);
 
   Future<void> addNewWord(Word newWord);
 

@@ -1,35 +1,50 @@
 {
   "project_info": {
-    "project_number": "579379543763",
-    "firebase_url": "https://my-dictionary-a9cb5.firebaseio.com",
-    "project_id": "my-dictionary-a9cb5",
-    "storage_bucket": "my-dictionary-a9cb5.appspot.com"
+    "project_number": "830551986190",
+    "firebase_url": "https://my-dictionary-549a0.firebaseio.com",
+    "project_id": "my-dictionary-549a0",
+    "storage_bucket": "my-dictionary-549a0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:579379543763:android:261f0a12c65104a32b9e26",
+        "mobilesdk_app_id": "1:830551986190:android:18b71f6dd8516c0c8eac5f",
         "android_client_info": {
           "package_name": "com.dkolp.mydictionaryapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "579379543763-5qkjknfr4tv9g6pr78n7kpda6lapbuco.apps.googleusercontent.com",
+          "client_id": "830551986190-cil941h8c0ldlop8cljn9jpii9c62g5g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dkolp.mydictionaryapp",
+            "certificate_hash": "96e8593ddf7938cd991a441f113d3c34e848f251"
+          }
+        },
+        {
+          "client_id": "830551986190-cos1grevuphcbc2asfn4sdn6fehndbnn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAGgUIGMsNSpAXNMxvXwhCBTnnOT7jl1fs"
+          "current_key": "AIzaSyBxUr5gRrIXqUcCMm8g4a5dfhlMjG-PXmU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "579379543763-5qkjknfr4tv9g6pr78n7kpda6lapbuco.apps.googleusercontent.com",
+              "client_id": "830551986190-cos1grevuphcbc2asfn4sdn6fehndbnn.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "830551986190-uiuilr4u0j5kbhkkqh329gisqkbnduos.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dkolp.mydictionaryapp"
+              }
             }
           ]
         }
