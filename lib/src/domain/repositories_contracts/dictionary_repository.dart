@@ -10,7 +10,7 @@ abstract class DictionaryRepository {
 
   Dictionary get dictionary => _dictionary;
 
-  Future<List<Word>> getWords(int offset);
+  Future<List<Word>> getWords([int offset]);
 
   Future<void> addNewWord(Word newWord);
 

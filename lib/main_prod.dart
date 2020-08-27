@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mydictionaryapp/main.dart';
 import 'package:mydictionaryapp/src/data/repositories/firebase/firebase_auth_repository.dart';
 import 'package:mydictionaryapp/src/data/repositories/firebase/firebase_user_repository.dart';
+import 'package:mydictionaryapp/src/data/utils/google_service.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
@@ -46,6 +47,7 @@ void main() {
         mainImagePath: 'assets/images/icon_prod.png',
       ),
     )
+    ..registerSingleton<GoogleService>(GoogleService())
     ..registerSingleton<StoreInteractor>(StoreInteractor())
     ..registerSingleton<AuthRepository>(FirebaseAuthRepository())
     ..registerSingleton<UserRepository>(FirebaseUserRepository())

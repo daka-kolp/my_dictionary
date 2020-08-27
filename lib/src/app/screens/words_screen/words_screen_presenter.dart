@@ -7,10 +7,8 @@ import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
-import 'package:mydictionaryapp/src/app/utils/dimens.dart';
 
 class WordsScreenPresenter with ChangeNotifier {
-  final BuildContext context;
   final DictionaryRepository _dictionaryRepository;
   final _authRepository = GetIt.I<AuthRepository>();
   final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
@@ -26,21 +24,23 @@ class WordsScreenPresenter with ChangeNotifier {
   bool get isNewWordsLoading => _isNewWordsLoading;
   bool get isLoading => _words == null || _isLoading;
 
-  WordsScreenPresenter(
-    this.context,
-  ) : _dictionaryRepository = GetIt.I.get<DictionaryRepository>() {
+  WordsScreenPresenter() : _dictionaryRepository = GetIt.I.get<DictionaryRepository>() {
     _init();
   }
 
   Future<void> _init() async {
+    _isNewWordsLoading = true;
+    notifyListeners();
     try {
       try {
         _words = await _dictionaryRepository.getWords(_offset);
-        if (_isScrollControllerNotActive) {
-          await uploadNewWords();
+
+        if (_words.length < _fetchStep) {
+          _isNewWordsAvailable = false;
+          notifyListeners();
         }
       } catch (e) {
-        print('WordsScreenPresenter: _init() => inner "try" : $e');
+        print('WordsScreenPresenter: _init() => inner "try" : ');
         rethrow;
       } finally {
         _isNewWordsLoading = false;
@@ -52,6 +52,7 @@ class WordsScreenPresenter with ChangeNotifier {
   }
 
   Future<void> uploadNewWords() async {
+    if(_isNewWordsLoading) return;
     if (_isNewWordsAvailable) {
       _isNewWordsLoading = true;
       notifyListeners();
@@ -59,18 +60,12 @@ class WordsScreenPresenter with ChangeNotifier {
       try {
         _offset += _fetchStep;
         final newWords = await _dictionaryRepository.getWords(_offset);
-
-        if (newWords.isEmpty) {
+        if (newWords.length < _fetchStep) {
           _isNewWordsAvailable = false;
-        } else {
-          _words += newWords;
+          notifyListeners();
         }
-        if (_isScrollControllerNotActive) {
-          await uploadNewWords();
-        }
-      } on RangeError catch (e) {
-        print(e.message);
-        _isNewWordsAvailable = false;
+       _words += newWords;
+
       } catch (e) {
         print('WordsScreenPresenter: uploadNewWords() => $e');
         rethrow;
@@ -116,7 +111,4 @@ class WordsScreenPresenter with ChangeNotifier {
       notifyListeners();
     }
   }
-
-  bool get _isScrollControllerNotActive =>
-      wordTileHeight * _words.length < MediaQuery.of(context).size.height;
 }

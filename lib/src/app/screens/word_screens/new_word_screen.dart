@@ -1,19 +1,20 @@
 import 'dart:io';
 
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
-import 'package:mydictionaryapp/src/domain/entities/word.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/new_word_screen_presenter.dart';
+import 'package:mydictionaryapp/src/app/localization/localization.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/translations_list_form_field.dart';
+import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
-
-//TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
+import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
 class NewWordScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {
@@ -23,7 +24,12 @@ class NewWordScreen extends StatefulWidget {
     return MaterialPageRoute(builder: _builder);
   }
 
-  static Widget _builder (context) => NewWordScreen();
+  static Widget _builder(context) {
+    return ChangeNotifierProvider(
+      create: (context) => NewWordScreenPresenter(),
+      child: NewWordScreen(),
+    );
+  }
 
   @override
   _NewWordScreenState createState() => _NewWordScreenState();
@@ -40,14 +46,21 @@ class _NewWordScreenState extends State<NewWordScreen> {
 
   bool _isFromValid = false;
 
+  NewWordScreenPresenter get _watch => context.watch<NewWordScreenPresenter>();
+
+  NewWordScreenPresenter get _read => context.read<NewWordScreenPresenter>();
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _resetFocusNode,
-      child: Scaffold(
-        key: _scaffoldKey,
-        appBar: _buildAppBar(),
-        body: _buildBody(),
+    return LoadingLayout(
+      isLoading: _watch.isLoading,
+      child: GestureDetector(
+        onTap: _resetFocusNode,
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: _buildAppBar(),
+          body: _buildBody(),
+        ),
       ),
     );
   }
@@ -66,7 +79,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
       title: title,
     );
   }
-  
+
   Widget _buildBody() {
     return ScrollConfiguration(
       behavior: NoOverScrollBehavior(),
@@ -154,6 +167,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
     );
 
     try {
+      await _read.addWordToDictionary(newWord);
       Navigator.pop<Word>(context, newWord);
     } on WordAlreadyExistException {
       _scaffoldKey.currentState.showSnackBar(

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mydictionaryapp/main.dart';
 import 'package:mydictionaryapp/src/data/repositories/mocks/mock_auth_repository.dart';
 import 'package:mydictionaryapp/src/data/repositories/mocks/mock_user_repository.dart';
+import 'package:mydictionaryapp/src/data/utils/google_service.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';

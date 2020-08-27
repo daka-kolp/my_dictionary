@@ -9,7 +9,11 @@ class LoadingIndicator extends StatelessWidget {
     return Center(
       child: Platform.isIOS
           ? CupertinoActivityIndicator()
-          : CircularProgressIndicator(),
+          : CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                Theme.of(context).primaryColor,
+              ),
+            ),
     );
   }
 }

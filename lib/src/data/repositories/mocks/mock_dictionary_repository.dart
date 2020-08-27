@@ -17,7 +17,7 @@ class MockDictionaryRepository extends DictionaryRepository {
   List<Word> get _words => _dictionaries[dictionary.id];
 
   @override
-  Future<List<Word>> getWords(int offset) async {
+  Future<List<Word>> getWords([int offset = 0]) async {
     await Future.delayed(Duration(seconds: 1));
 
     final lastIndex = offset + GetIt.I.get<GlobalConfig>().fetchStep;

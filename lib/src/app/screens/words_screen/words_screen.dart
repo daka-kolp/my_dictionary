@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
-import 'package:mydictionaryapp/src/app/screens/word_screens/edit_word_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/new_word_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen_presenter.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provider.dart';
@@ -30,7 +28,7 @@ class WordsScreen extends StatefulWidget {
 
   static Widget _builder(context) {
     return ChangeNotifierProvider(
-      create: (context) => WordsScreenPresenter(context),
+      create: (context) => WordsScreenPresenter(),
       child: WordsScreen(),
     );
   }
@@ -60,7 +58,7 @@ class _WordsScreenState extends State<WordsScreen> {
   Future<void> _scrollListener() async {
     final position = _controller.position;
 
-    if (position.pixels == position.maxScrollExtent * 0.8) {
+    if (position.pixels >= position.maxScrollExtent * 0.8) {
       await _read.uploadNewWords();
     }
   }
@@ -129,7 +127,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 return WordTile(
                   isEven: (index + 1).isEven,
                   word: words[index],
-                  onEdit: () => _onEditWordPressed(words[index]),
+                  onEdit: null,
                 );
               },
               childCount: words.length,
@@ -145,24 +143,6 @@ class _WordsScreenState extends State<WordsScreen> {
         ],
       ),
     );
-  }
-
-  Future<void> _onEditWordPressed(Word word) async {
-    final returnedValue = await Navigator.of(context).push(
-      EditWordScreen.buildPageRoute(word),
-    );
-
-    if (returnedValue != null) {
-      try {
-        if (returnedValue.runtimeType == String) {
-          await _read.removeWord(returnedValue);
-        } else if (returnedValue.runtimeType == Word) {
-          await _read.updateWord(returnedValue);
-        }
-      } on WordNotExistException {
-        _showErrorMessage(wordAlreadyExistException);
-      }
-    }
   }
 
   Widget _buildFloatingActionButton() {

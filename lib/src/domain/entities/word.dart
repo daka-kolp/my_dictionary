@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
+
+part 'word.g.dart';
 
 class Word {
   final String id;
@@ -40,6 +43,9 @@ class Word {
 
   @override
   int get hashCode => word.hashCode;
+
+  factory Word.fromJson(Map<String, dynamic> json) => _$WordFromJson(json);
+  Map<String, dynamic> toJson() => _$WordToJson(this);
 }
 
 class Translation {
@@ -51,5 +57,7 @@ class Translation {
     @required this.translation,
   })  : assert(id != null),
         assert(translation != null);
-}
 
+  factory Translation.fromJson(Map<String, dynamic> json) => _$TranslationFromJson(json);
+  Map<String, dynamic> toJson() => _$TranslationToJson(this);
+}
