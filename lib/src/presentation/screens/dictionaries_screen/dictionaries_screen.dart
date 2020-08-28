@@ -6,15 +6,14 @@ import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
-import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_screen.dart';
-import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen.dart';
-import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
-import 'package:mydictionaryapp/src/app/utils/dimens.dart';
+import 'package:mydictionaryapp/src/presentation/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
+import 'package:mydictionaryapp/src/presentation/screens/dictionary_screens/new_dictionary_screen.dart';
+import 'package:mydictionaryapp/src/presentation/screens/words_screen/words_screen.dart';
+import 'package:mydictionaryapp/src/presentation/widgets/loading_indicator.dart';
+import 'package:mydictionaryapp/src/presentation/screens/login_screens/login_screen.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/localization/localization.dart';
 
 part 'widgets/_dictionary_tile.dart';
 
@@ -28,7 +27,7 @@ class DictionariesScreen extends StatefulWidget {
 
   static Widget _builder(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => DictionariesScreenPresenter(context),
+      create: (_) => DictionariesScreenPresenter(),
       child: DictionariesScreen(),
     );
   }
@@ -56,7 +55,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   Future<void> _scrollListener() async {
     final position = _controller.position;
 
-    if (position.pixels == position.maxScrollExtent * 0.8) {
+    if (position.pixels >= position.maxScrollExtent * 0.8) {
       await _read.uploadNewDictionaries();
     }
   }
@@ -123,7 +122,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
         if (_watch.isNewDictionariesLoading)
           SliverToBoxAdapter(
             child: SizedBox(
-              height: loadingWidgetHeight,
+              height: 96.0,
               child: LoadingIndicator(),
             ),
           ),
@@ -162,7 +161,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
       return SafeArea(
         child: CupertinoButton(
           child: title,
-          onPressed: _onExit,
+          onPressed: _showDialogOnLogout,
         ),
       );
     }
@@ -176,15 +175,58 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
             alignment: Alignment.center,
             child: title,
           ),
-          onTap: _onExit,
+          onTap: _showDialogOnLogout,
         ),
       ),
     );
   }
 
+  Future<void> _showDialogOnLogout() async {
+    await showDialog(
+      context: context,
+      builder: _buildDialogOnLogout,
+    );
+  }
+
+  Widget _buildDialogOnLogout(BuildContext context) {
+    final contentText = Text(askChangeUser);
+    final okText = Text(ok);
+    final cancelText = Text(cancel);
+
+    if (Platform.isIOS) {
+      return CupertinoAlertDialog(
+        content: contentText,
+        actions: <Widget>[
+          CupertinoDialogAction(
+            child: cancelText,
+            onPressed: Navigator.of(context).pop,
+          ),
+          CupertinoDialogAction(
+            child: okText,
+            onPressed: _onExit,
+          )
+        ],
+      );
+    }
+
+    return AlertDialog(
+      content: contentText,
+      actions: <Widget>[
+        FlatButton(
+          child: cancelText,
+          onPressed: Navigator.of(context).pop,
+        ),
+        FlatButton(
+          child: okText,
+          onPressed: _onExit,
+        ),
+      ],
+    );
+  }
+
   Future<void> _onExit() async {
     try {
-      await _read.changeUser();
+      _read.changeUser();
       await Navigator.of(context).pushAndRemoveUntil(
         LoginScreen.buildPageRoute(),
         (route) => false,

@@ -21,33 +21,23 @@ class MockAuthRepository extends AuthRepository {
   }
 
   @override
-  Future<void> loginWith(LoginPayload loginPayload) async {
-    //TODO: remove
-    loginPayload = MockLoginPayload('test@test.com');
-    if (loginPayload is MockLoginPayload) {
+  Future<void> loginWith(LoginService service) async {
+    await Future.delayed(Duration(seconds: 1));
+    try {
+      final loginPayload = _MockLoginPayload('test@test.com');
       await _login(loginPayload);
-    } else {
-      throw AssertionError();
-    }
-  }
-
-  @override
-  Future<void> registerWith(RegisterPayload registerPayload) async {
-    //TODO: remove
-    registerPayload = MockRegisterPayload('test', 'test@test.com');
-    if (registerPayload is MockRegisterPayload) {
-      await _register(registerPayload);
-    } else {
-      throw AssertionError();
+    } catch (e) {
+      rethrow;
     }
   }
 
   @override
   Future<bool> logOut() async {
+    await Future.delayed(Duration(seconds: 1));
     return await _storeInteractor.clear();
   }
 
-  Future<void> _login(MockLoginPayload loginPayload) async {
+  Future<void> _login(_MockLoginPayload loginPayload) async {
     try {
       if (loginPayload.email != 'test@test.com') {
         throw PlatformException(
@@ -66,32 +56,10 @@ class MockAuthRepository extends AuthRepository {
       rethrow;
     }
   }
-
-  Future<void> _register(MockRegisterPayload registerPayload) async {
-    try {
-      if (registerPayload.email == 'test@test.com') {
-        throw PlatformException(
-          code: 'ERROR_EMAIL_ALREADY_IN_USE',
-        );
-      }
-
-      await _storeInteractor.setToken(_uuid.v4());
-    } on PlatformException catch (e) {
-      if (e.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
-        throw UserIsAlreadyRegisteredException();
-      }
-      rethrow;
-    } catch (e) {
-      print('MockAuthRepository: _register => $e');
-      rethrow;
-    }
-  }
 }
 
-class MockLoginPayload extends LoginPayload {
-  MockLoginPayload(String email) : super(email);
-}
+class _MockLoginPayload {
+  final String email;
 
-class MockRegisterPayload extends RegisterPayload {
-  MockRegisterPayload(String name, String email) : super(name, email);
+  _MockLoginPayload(this.email);
 }

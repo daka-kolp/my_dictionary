@@ -6,14 +6,8 @@ class FirebaseAuthRepository extends AuthRepository {
   Future<bool> get isLoggedIn async => false;
 
   @override
-  Future<void> loginWith(LoginPayload loginPayload) {
+  Future<void> loginWith(LoginService service) {
     // TODO: implement loginWith
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> registerWith(RegisterPayload registerPayload) {
-    // TODO: implement registerWith
     throw UnimplementedError();
   }
 

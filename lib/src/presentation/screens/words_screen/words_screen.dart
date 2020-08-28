@@ -8,16 +8,15 @@ import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
-import 'package:mydictionaryapp/src/app/screens/word_screens/edit_word_screen.dart';
-import 'package:mydictionaryapp/src/app/screens/word_screens/new_word_screen.dart';
-import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provider.dart';
-import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/word_tile/word_tile.dart';
-import 'package:mydictionaryapp/src/app/utils/dimens.dart';
+import 'package:mydictionaryapp/src/presentation/widgets/loading_indicator.dart';
+import 'package:mydictionaryapp/src/presentation/screens/word_screens/edit_word_screen.dart';
+import 'package:mydictionaryapp/src/presentation/screens/word_screens/new_word_screen.dart';
+import 'package:mydictionaryapp/src/presentation/screens/words_screen/words_screen_presenter.dart';
+import 'package:mydictionaryapp/src/presentation/screens/words_screen/widgets/tts_provider.dart';
+import 'package:mydictionaryapp/src/presentation/screens/words_screen/widgets/word_tile/word_tile.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/localization/localization.dart';
 
 class WordsScreen extends StatefulWidget {
   static PageRoute buildPageRoute(Dictionary dictionary) {
@@ -29,7 +28,7 @@ class WordsScreen extends StatefulWidget {
 
   static WidgetBuilder _builder(Dictionary dictionary) {
     return (context) => ChangeNotifierProvider(
-          create: (context) => WordsScreenPresenter(context, dictionary),
+          create: (context) => WordsScreenPresenter(dictionary),
           child: WordsScreen(),
         );
   }
@@ -40,7 +39,7 @@ class WordsScreen extends StatefulWidget {
 
 class _WordsScreenState extends State<WordsScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _controller = ScrollController();
+  final _controller = ScrollController(initialScrollOffset: 100.0);
 
   bool get _isIOS => Platform.isIOS;
 
@@ -59,7 +58,7 @@ class _WordsScreenState extends State<WordsScreen> {
   Future<void> _scrollListener() async {
     final position = _controller.position;
 
-    if (position.pixels == position.maxScrollExtent * 0.8) {
+    if (position.pixels >= position.maxScrollExtent * 0.8) {
       await _read.uploadNewWords();
     }
   }
@@ -120,6 +119,7 @@ class _WordsScreenState extends State<WordsScreen> {
       tts: _tts,
       child: CustomScrollView(
         controller: _controller,
+
         slivers: <Widget>[
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -136,7 +136,7 @@ class _WordsScreenState extends State<WordsScreen> {
           if (_watch.isNewWordsLoading)
             SliverToBoxAdapter(
               child: SizedBox(
-                height: loadingWidgetHeight,
+                height: 96.0,
                 child: LoadingIndicator(),
               ),
             ),

@@ -4,7 +4,6 @@ import 'package:mydictionaryapp/src/data/repositories/mocks/mock_dictionary_repo
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
-import 'package:mydictionaryapp/src/global_config.dart';
 
 class MockUserRepository extends UserRepository {
   final _dictionaries = [
@@ -22,19 +21,23 @@ class MockUserRepository extends UserRepository {
     ),
   ];
 
+  int _firstIndex = 0;
+
   @override
-  Future<List<Dictionary>> getAndRegisterDictionaries([int offset = 0]) async {
+  Future<List<Dictionary>> getAndRegisterDictionaries(int offset) async {
     await Future.delayed(Duration(seconds: 1));
 
-    final lastIndex = offset + GetIt.I.get<GlobalConfig>().fetchStep;
     final length = _dictionaries.length;
+    final firstIndex = _firstIndex;
+    final lastIndex = _firstIndex + offset;
 
-    final endOffset = lastIndex > length ? length : lastIndex;
-
-    if (offset > endOffset) {
-      throw RangeError('offset > endOffset is ${offset > endOffset}');
+    List<Dictionary> dictionaries;
+    if(lastIndex > length) {
+      dictionaries = _dictionaries.getRange(firstIndex, length).toList();
+    } else {
+      _firstIndex = lastIndex;
+      dictionaries = _dictionaries.getRange(firstIndex, lastIndex).toList();
     }
-    final dictionaries = _dictionaries.sublist(offset, endOffset);
 
     dictionaries.forEach((dictionary) {
       GetIt.I.registerFactory(
@@ -69,5 +72,11 @@ class MockUserRepository extends UserRepository {
     } on StateError {
       throw DictionaryNotExistException();
     }
+  }
+
+  @override
+  void unregisterDictionaries(List<Dictionary> dictionaries) {
+    _firstIndex = 0;
+    super.unregisterDictionaries(dictionaries);
   }
 }

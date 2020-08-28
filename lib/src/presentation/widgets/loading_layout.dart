@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
+import 'package:mydictionaryapp/src/presentation/widgets/loading_indicator.dart';
 
 class LoadingLayout extends StatelessWidget {
   final Widget child;

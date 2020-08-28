@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
-import 'package:mydictionaryapp/src/data/utils/tts_properties.dart';
 
 class Dictionary {
   final String id;
@@ -39,4 +40,13 @@ class Dictionary {
         GetIt.I.get<DictionaryRepository>(instanceName: id);
     return await dictionaryRepository.getWords(offset);
   }
+}
+
+class TtsProperties {
+  final String language;
+  final speechRate = Platform.isIOS ? 0.5 : 1.0; //speech speed
+  final volume = 1.0;
+  final pitch = 1.0; //voice tone
+
+  TtsProperties(this.language);
 }

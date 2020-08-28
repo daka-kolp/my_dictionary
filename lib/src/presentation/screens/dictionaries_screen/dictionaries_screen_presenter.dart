@@ -6,16 +6,13 @@ import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
-import 'package:mydictionaryapp/src/app/utils/dimens.dart';
 
 class DictionariesScreenPresenter with ChangeNotifier {
-  final BuildContext context;
   final _userRepository = GetIt.I<UserRepository>();
   final _authRepository = GetIt.I<AuthRepository>();
   final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
 
   List<Dictionary> _dictionaries;
-  int _offset = 0;
   bool _isNewDictionariesAvailable = true;
   bool _isNewDictionariesLoading = false;
   bool _isLoading = false;
@@ -24,15 +21,19 @@ class DictionariesScreenPresenter with ChangeNotifier {
   bool get isNewDictionariesLoading => _isNewDictionariesLoading;
   bool get isLoading => _dictionaries == null || _isLoading;
 
-  DictionariesScreenPresenter(this.context) {
+  DictionariesScreenPresenter() {
     _init();
   }
 
   Future<void> _init() async {
+    _isNewDictionariesLoading = true;
+    notifyListeners();
     try {
-      _dictionaries = await _userRepository.getAndRegisterDictionaries(_offset);
-      if (_isScrollControllerNotActive) {
-        await uploadNewDictionaries();
+      _dictionaries =
+          await _userRepository.getAndRegisterDictionaries(_fetchStep);
+      if (_dictionaries.length < _fetchStep) {
+        _isNewDictionariesAvailable = false;
+        notifyListeners();
       }
     } catch (e) {
       print('DictionariesScreenPresenter: _init() => $e');
@@ -44,26 +45,20 @@ class DictionariesScreenPresenter with ChangeNotifier {
   }
 
   Future<void> uploadNewDictionaries() async {
+    if (_isNewDictionariesLoading) return;
     if (_isNewDictionariesAvailable) {
       _isNewDictionariesLoading = true;
       notifyListeners();
 
       try {
-        _offset += _fetchStep;
         final newDictionaries =
-            await _userRepository.getAndRegisterDictionaries(_offset);
+            await _userRepository.getAndRegisterDictionaries(_fetchStep);
 
-        if (newDictionaries.isEmpty) {
+        if (newDictionaries.length < _fetchStep) {
           _isNewDictionariesAvailable = false;
-        } else {
-          _dictionaries += newDictionaries;
+          notifyListeners();
         }
-        if (_isScrollControllerNotActive) {
-          await uploadNewDictionaries();
-        }
-      } on RangeError catch (e) {
-        print(e.message);
-        _isNewDictionariesAvailable = false;
+        _dictionaries += newDictionaries;
       } catch (e) {
         print('DictionariesScreenPresenter: uploadNewDictionaries() => $e');
         rethrow;
@@ -79,7 +74,7 @@ class DictionariesScreenPresenter with ChangeNotifier {
     notifyListeners();
     try {
       bool isLoggedOut = await _authRepository.logOut();
-      if(!isLoggedOut) {
+      if (!isLoggedOut) {
         throw LogOutException();
       }
     } catch (e) {
@@ -95,8 +90,4 @@ class DictionariesScreenPresenter with ChangeNotifier {
     _userRepository.unregisterDictionaries(_dictionaries);
     super.dispose();
   }
-
-  bool get _isScrollControllerNotActive =>
-      dictionaryTileHeight * _dictionaries.length <
-      MediaQuery.of(context).size.height;
 }

@@ -76,7 +76,7 @@ class _DictionaryWidget extends StatelessWidget {
     return InkWell(
       onTap: () async => await onPressed(dictionary),
       child: Container(
-        height: dictionaryTileHeight,
+        height: 56.0,
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Text(

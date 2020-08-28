@@ -6,12 +6,12 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/global_config.dart';
-import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
-import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
+import 'package:mydictionaryapp/src/presentation/screens/dictionaries_screen/dictionaries_screen.dart';
+import 'package:mydictionaryapp/src/presentation/screens/login_screens/login_screen_presenter.dart';
+import 'package:mydictionaryapp/src/presentation/widgets/loading_layout.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/localization/localization.dart';
 
 class LoginScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {
@@ -65,11 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Expanded(
                 child: Image.asset(GetIt.I<GlobalConfig>().mainImagePath),
               ),
-              RaisedButton(child: Text(enter), onPressed: _login),
-              SizedBox(height: 16.0),
-              Text(or),
-              SizedBox(height: 16.0),
-              RaisedButton(child: Text(register), onPressed: _register),
+              Expanded(child: _buildLoginButtons()),
               Expanded(child: SizedBox())
             ],
           ),
@@ -78,9 +74,35 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _login() async {
+  Widget _buildLoginButtons() {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          RaisedButton(
+            child: Text(enterWithGoogle),
+            onPressed: _loginWithGoogle,
+          ),
+          if (Platform.isIOS)
+            Column(
+              children: [
+                SizedBox(height: 16.0),
+                Text(or),
+                SizedBox(height: 16.0),
+                RaisedButton(
+                  child: Text(enterWithApple),
+                  onPressed: _loginWithApple,
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _loginWithGoogle() async {
     try {
-      await _read.login();
+      await _read.loginWithGoogle();
       await _routeToDictionariesScreen();
     } catch (e) {
       //TODO: handle errors
@@ -88,14 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> _register() async {
-    try {
-      await _read.register();
-      await _routeToDictionariesScreen();
-    } catch (e) {
-      //TODO: handle errors
-      _showErrorMessage('LoginScreen: _register() => $e');
-    }
+  Future<void> _loginWithApple() async {
+    //TODO: implement _loginWithApple
   }
 
   Future<void> _routeToDictionariesScreen() async {
