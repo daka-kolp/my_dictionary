@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/data/utils/store_interator.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
@@ -60,14 +61,24 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
           .document(newWord.id)
           .setData(newWord.toJson());
     } catch (e) {
-      rethrow;
+      throw WordAlreadyExistException();
     }
   }
 
   @override
-  Future<void> editWord(Word word) {
-    // TODO: implement editWord
-    throw UnimplementedError();
+  Future<void> editWord(Word word) async {
+    try {
+      final token = await _storeInteractor.getToken();
+
+      await _fireStore
+          .collection('users')
+          .document(token)
+          .collection('en-GB_ru-RU')
+          .document(word.id)
+          .setData(word.toJson());
+    } catch (e) {
+      throw WordAlreadyExistException();
+    }
   }
 
   @override
@@ -90,7 +101,7 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
             .delete();
       }
     } catch (e) {
-      rethrow;
+      throw WordNotExistException();
     }
   }
 

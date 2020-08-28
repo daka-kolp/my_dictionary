@@ -145,14 +145,12 @@ class _NewWordScreenState extends State<NewWordScreen> {
   }
 
   Widget _buildAddWordButton() {
-    return SafeArea(
-      child: Container(
-        margin: const EdgeInsets.all(16.0),
-        width: double.infinity,
-        child: RaisedButton(
-          child: Text(add),
-          onPressed: _isFromValid ? _onAdd : null,
-        ),
+    return Container(
+      margin: const EdgeInsets.all(16.0),
+      width: double.infinity,
+      child: RaisedButton(
+        child: Text(add),
+        onPressed: _isFromValid ? _onAdd : null,
       ),
     );
   }

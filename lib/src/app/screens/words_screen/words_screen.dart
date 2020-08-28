@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/edit_word_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/new_word_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen_presenter.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provider.dart';
@@ -127,7 +128,7 @@ class _WordsScreenState extends State<WordsScreen> {
                 return WordTile(
                   isEven: (index + 1).isEven,
                   word: words[index],
-                  onEdit: null,
+                  onEdit: () => _onEditWordPressed(words[index]),
                 );
               },
               childCount: words.length,
@@ -172,29 +173,44 @@ class _WordsScreenState extends State<WordsScreen> {
     );
   }
 
+  Future<void> _onEditWordPressed(Word word) async {
+    final returnedValue = await Navigator.of(context).push(
+      EditWordScreen.buildPageRoute(word),
+    );
+
+    if (returnedValue != null) {
+      try {
+        if (returnedValue.runtimeType == String) {
+          await _read.removeWord(returnedValue);
+        } else if (returnedValue.runtimeType == Word) {
+          await _read.updateWord(returnedValue);
+        }
+      } on WordNotExistException {
+        _showErrorMessage(wordAlreadyExistException);
+      }
+    }
+  }
+
+
   Widget _buildBottomNavigationBar() {
     final title = Text(changeUser);
 
     if (_isIOS) {
-      return SafeArea(
-        child: CupertinoButton(
-          child: title,
-          onPressed: _onExit,
-        ),
+      return CupertinoButton(
+        child: title,
+        onPressed: _onExit,
       );
     }
 
-    return SafeArea(
-      child: Material(
-        elevation: 8.0,
-        child: InkWell(
-          child: Container(
-            height: 48.0,
-            alignment: Alignment.center,
-            child: title,
-          ),
-          onTap: _showDialogOnLogout,
+    return Material(
+      elevation: 8.0,
+      child: InkWell(
+        child: Container(
+          height: 48.0,
+          alignment: Alignment.center,
+          child: title,
         ),
+        onTap: _showDialogOnLogout,
       ),
     );
   }
