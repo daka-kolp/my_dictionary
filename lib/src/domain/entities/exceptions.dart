@@ -1,7 +1,7 @@
-class WrongCreditialsException implements Exception {
+class WrongCredentialsException implements Exception {
   @override
   String toString() {
-    return 'Wrong creditials';
+    return 'Wrong credentials';
   }
 }
 

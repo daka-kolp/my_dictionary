@@ -48,7 +48,7 @@ class MockAuthRepository extends AuthRepository {
       await _storeInteractor.setToken(_uuid.v4());
     } on PlatformException catch (e) {
       if (e.code == 'ERROR_USER_NOT_FOUND') {
-        throw WrongCreditialsException();
+        throw WrongCredentialsException();
       }
       rethrow;
     } catch (e) {
