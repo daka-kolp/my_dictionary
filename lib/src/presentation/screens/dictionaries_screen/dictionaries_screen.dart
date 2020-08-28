@@ -10,6 +10,7 @@ import 'package:mydictionaryapp/src/presentation/screens/dictionaries_screen/dic
 import 'package:mydictionaryapp/src/presentation/screens/dictionary_screens/new_dictionary_screen.dart';
 import 'package:mydictionaryapp/src/presentation/screens/words_screen/words_screen.dart';
 import 'package:mydictionaryapp/src/presentation/widgets/loading_indicator.dart';
+import 'package:mydictionaryapp/src/presentation/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/presentation/screens/login_screens/login_screen.dart';
 
 //TODO: remove the import
@@ -62,12 +63,15 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: _buildAppBar(),
-      body: _buildBody(),
-      floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+    return LoadingLayout(
+      isLoading: _watch.isLoading,
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: _buildAppBar(),
+        body: _buildBody(),
+        floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
+        bottomNavigationBar: _buildBottomNavigationBar(),
+      ),
     );
   }
 
@@ -76,7 +80,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
 
     if (_isIOS) {
       return CupertinoNavigationBar(
-        previousPageTitle: '',
+        automaticallyImplyLeading: false,
         middle: title,
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
@@ -85,11 +89,14 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
         ),
       );
     }
-    return AppBar(title: title);
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: title,
+    );
   }
 
   Widget _buildBody() {
-    if (_watch.isLoading) {
+    if (_watch.dictionaries == null) {
       return LoadingIndicator();
     }
 
@@ -226,7 +233,8 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
 
   Future<void> _onExit() async {
     try {
-      _read.changeUser();
+      Navigator.of(context).pop();
+      await _read.changeUser();
       await Navigator.of(context).pushAndRemoveUntil(
         LoginScreen.buildPageRoute(),
         (route) => false,

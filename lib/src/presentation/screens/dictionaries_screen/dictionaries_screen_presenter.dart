@@ -19,7 +19,7 @@ class DictionariesScreenPresenter with ChangeNotifier {
 
   List<Dictionary> get dictionaries => _dictionaries;
   bool get isNewDictionariesLoading => _isNewDictionariesLoading;
-  bool get isLoading => _dictionaries == null || _isLoading;
+  bool get isLoading => _isLoading;
 
   DictionariesScreenPresenter() {
     _init();

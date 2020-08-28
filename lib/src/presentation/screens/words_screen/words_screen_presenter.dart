@@ -18,7 +18,7 @@ class WordsScreenPresenter with ChangeNotifier {
 
   List<Word> get words => _words;
   bool get isNewWordsLoading => _isNewWordsLoading;
-  bool get isLoading => _words == null || _isWordListUpdating;
+  bool get isLoading => _isWordListUpdating;
 
   WordsScreenPresenter(
     this.dictionary,
