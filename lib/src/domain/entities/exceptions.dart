@@ -12,6 +12,13 @@ class UserIsAlreadyRegisteredException implements Exception {
   }
 }
 
+class LogOutException implements Exception {
+  @override
+  String toString() {
+    return 'The user can not logout';
+  }
+}
+
 class DictionaryAlreadyExistException implements Exception {
   @override
   String toString() {
@@ -37,12 +44,5 @@ class WordNotExistException implements Exception {
   @override
   String toString() {
     return 'The word is not exist';
-  }
-}
-
-class LogOutException implements Exception {
-  @override
-  String toString() {
-    return 'The user can not logout';
   }
 }

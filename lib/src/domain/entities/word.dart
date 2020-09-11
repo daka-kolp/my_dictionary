@@ -15,7 +15,7 @@ class Word {
     DateTime addingTime,
   })  : this.translations = translations ?? [],
         this.hint = hint ?? '',
-        this.addingTime = addingTime ?? DateTime(1970),
+        this.addingTime = addingTime ?? DateTime.utc(1970),
         assert(id != null),
         assert(word != null && word.isNotEmpty);
 

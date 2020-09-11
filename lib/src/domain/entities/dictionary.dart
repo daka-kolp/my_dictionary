@@ -18,11 +18,11 @@ class Dictionary {
     @required this.originalLanguage,
     @required this.translationLanguage,
     @required this.title,
-  })  : ttsProperties = TtsProperties(originalLanguage),
-        assert(id != null),
+  })  : assert(id != null),
         assert(originalLanguage != null),
         assert(translationLanguage != null),
-        assert(title != null);
+        assert(title != null),
+        ttsProperties = TtsProperties(originalLanguage);
 
   @override
   bool operator ==(Object other) =>
@@ -48,5 +48,5 @@ class TtsProperties {
   final volume = 1.0;
   final pitch = 1.0; //voice tone
 
-  TtsProperties(this.language);
+  TtsProperties(this.language) : assert(language != null);
 }
