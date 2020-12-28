@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/data/repositories/mocks/mock_dictionary_repository.dart';
@@ -26,57 +27,93 @@ class MockUserRepository extends UserRepository {
   @override
   Future<List<Dictionary>> getAndRegisterDictionaries(int offset) async {
     await Future.delayed(Duration(seconds: 1));
-
     final length = _dictionaries.length;
     final firstIndex = _firstIndex;
     final lastIndex = _firstIndex + offset;
-
-    List<Dictionary> dictionaries;
-    if(lastIndex > length) {
-      dictionaries = _dictionaries.getRange(firstIndex, length).toList();
-    } else {
+    if (lastIndex < length) {
       _firstIndex = lastIndex;
-      dictionaries = _dictionaries.getRange(firstIndex, lastIndex).toList();
     }
-
-    dictionaries.forEach((dictionary) {
-      GetIt.I.registerFactory(
-        () => MockDictionaryRepository(dictionary),
-        instanceName: dictionary.id,
-      );
-    });
-
-    return dictionaries;
+    final dictionaries = await compute(
+      _loadDictionaries,
+      {
+        'dictionaries': _dictionaries,
+        'firstIndex': firstIndex,
+        'lastIndex': lastIndex > length ? length : lastIndex,
+      },
+    );
+    return dictionaries
+      ..forEach((dictionary) {
+        GetIt.I.registerFactory(
+          () => MockDictionaryRepository(dictionary),
+          instanceName: dictionary.id,
+        );
+      });
   }
 
   @override
   Future<void> createNewDictionary(Dictionary dictionary) async {
     await Future.delayed(Duration(seconds: 1));
-
-    if (_dictionaries.contains(dictionary)) {
-      throw DictionaryAlreadyExistException();
+    try {
+      await compute(
+        _addDictionary,
+        {'dictionaries': _dictionaries, 'newDictionary': dictionary},
+      );
+    } on DictionaryAlreadyExistException {
+      rethrow;
     }
-    _dictionaries.add(dictionary);
+    GetIt.I.registerFactory(
+      () => MockDictionaryRepository(dictionary),
+      instanceName: dictionary.id,
+    );
   }
 
   @override
   Future<void> removeDictionary(String id) async {
     await Future.delayed(Duration(seconds: 1));
-
     try {
-      Dictionary dictionary = _dictionaries.firstWhere(
-        (dictionary) => dictionary.id == id,
+      await compute(
+        _removeDictionary,
+        {'dictionaries': _dictionaries, 'dictionaryId': id},
       );
-      _dictionaries.remove(dictionary);
-      GetIt.I.unregister(instanceName: dictionary.id);
-    } on StateError {
-      throw DictionaryNotExistException();
+    } on DictionaryNotExistException {
+      rethrow;
     }
+    GetIt.I.unregister(instanceName: id);
   }
 
   @override
   void unregisterDictionaries(List<Dictionary> dictionaries) {
     _firstIndex = 0;
     super.unregisterDictionaries(dictionaries);
+  }
+}
+
+List<Dictionary> _loadDictionaries(Map<String, dynamic> data) {
+  final dictionaries = data['dictionaries'];
+  final first = data['firstIndex'];
+  final last = data['lastIndex'];
+
+  return dictionaries.getRange(first, last).toList();
+}
+
+void _addDictionary(Map<String, dynamic> data) {
+  final dictionaries = data['dictionaries'];
+  final dictionary = data['newDictionary'];
+  if (dictionaries.contains(dictionary)) {
+    throw DictionaryAlreadyExistException();
+  }
+  dictionaries.add(dictionary);
+}
+
+void _removeDictionary(Map<String, dynamic> data) {
+  final dictionaries = data['dictionaries'];
+  final dictionaryId = data['dictionaryId'];
+  try {
+    Dictionary dictionary = dictionaries.firstWhere(
+      (dictionary) => dictionary.id == dictionaryId,
+    );
+    dictionaries.remove(dictionary);
+  } on StateError {
+    throw DictionaryNotExistException();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
@@ -20,54 +21,86 @@ class MockDictionaryRepository extends DictionaryRepository {
   @override
   Future<List<Word>> getWords(int offset) async {
     await Future.delayed(Duration(seconds: 1));
-
     final length = _words.length;
     final firstIndex = _firstIndex;
     final lastIndex = _firstIndex + offset;
-
-    if (lastIndex > length) {
-      return _words.getRange(firstIndex, length).toList();
-    } else {
+    if (lastIndex < length) {
       _firstIndex = lastIndex;
-      return _words.getRange(firstIndex, lastIndex).toList();
     }
+    return await compute(
+      _loadWords,
+      {
+        'words': _words,
+        'firstIndex': firstIndex,
+        'lastIndex': lastIndex > length ? length : lastIndex,
+      },
+    );
   }
 
   @override
   Future<void> addNewWord(Word newWord) async {
     await Future.delayed(Duration(seconds: 1));
-
-    if (_words.contains(newWord)) {
-      throw WordAlreadyExistException();
-    }
-    _words.add(newWord);
+    await compute(
+      _addWord,
+      {'words': _words, 'newWord': newWord},
+    );
   }
 
   @override
   Future<void> editWord(Word word) async {
     await Future.delayed(Duration(seconds: 1));
-
-    int wordIndex = _words.indexWhere(
-      (w) => w.id == word.id,
+    await compute(
+      _editWord,
+      {'words': _words, 'word': word},
     );
-    if (wordIndex == -1) {
-      throw WordNotExistException();
-    }
-    _words
-      ..removeAt(wordIndex)
-      ..insert(wordIndex, word);
   }
 
   @override
   Future<void> removeWord(String id) async {
     await Future.delayed(Duration(seconds: 1));
+    await compute(_removeWord, {'words': _words, 'wordId': id});
+  }
+}
 
-    try {
-      Word word = _words.firstWhere((w) => w.id == id);
-      _words.remove(word);
-    } on StateError {
-      throw WordNotExistException();
-    }
+List<Word> _loadWords(Map<String, dynamic> data) {
+  final words = data['words'];
+  final first = data['firstIndex'];
+  final last = data['lastIndex'];
+
+  return words.getRange(first, last).toList();
+}
+
+void _addWord(Map<String, dynamic> data) {
+  final words = data['words'];
+  final newWord = data['newWord'];
+  if (words.contains(newWord)) {
+    throw WordAlreadyExistException();
+  }
+  words.add(newWord);
+}
+
+void _editWord(Map<String, dynamic> data) {
+  final words = data['words'];
+  final word = data['word'];
+  final wordIndex = words.indexWhere(
+    (w) => w.id == word.id,
+  );
+  if (wordIndex == -1) {
+    throw WordNotExistException();
+  }
+  words
+    ..removeAt(wordIndex)
+    ..insert(wordIndex, word);
+}
+
+void _removeWord(Map<String, dynamic> data) {
+  final words = data['words'];
+  final wordId = data['wordId'];
+  try {
+    Word word = words.firstWhere((w) => w.id == wordId);
+    words.remove(word);
+  } on StateError {
+    throw WordNotExistException();
   }
 }
 
