@@ -3,28 +3,23 @@ import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 
 class WordsScreenPresenter with ChangeNotifier {
   final Dictionary dictionary;
-  final DictionaryRepository _dictionaryRepository;
-  final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
+  final _fetchedStep = GetIt.I<GlobalConfig>().fetchStep;
 
   List<Word> _words;
   bool _isNewWordsAvailable = true;
   bool _isNewWordsLoading = false;
   bool _isWordListUpdating = false;
+  int _firstIndex = 0;
 
   List<Word> get words => _words;
   bool get isNewWordsLoading => _isNewWordsLoading;
   bool get isLoading => _isWordListUpdating;
 
-  WordsScreenPresenter(
-    this.dictionary,
-  ) : _dictionaryRepository = GetIt.I.get<DictionaryRepository>(
-          instanceName: dictionary.id,
-        ) {
+  WordsScreenPresenter(this.dictionary) {
     _init();
   }
 
@@ -33,11 +28,11 @@ class WordsScreenPresenter with ChangeNotifier {
     notifyListeners();
     try {
       try {
-        _words = await _dictionaryRepository.getWords(_fetchStep);
-        if (_words.length < _fetchStep) {
+        _words = await dictionary.getWords(_firstIndex, _fetchedStep);
+        if (_words.length < _fetchedStep) {
           _isNewWordsAvailable = false;
-          notifyListeners();
         }
+        _firstIndex += _fetchedStep;
       } catch (e) {
         print('WordsScreenPresenter: _init() => inner "try" : $e');
         rethrow;
@@ -57,13 +52,16 @@ class WordsScreenPresenter with ChangeNotifier {
       notifyListeners();
 
       try {
-        final newWords = await _dictionaryRepository.getWords(_fetchStep);
+        final newWords = await dictionary.getWords(
+          _firstIndex,
+          _fetchedStep,
+        );
 
-        if (newWords.length < _fetchStep) {
+        if (newWords.length < _fetchedStep) {
           _isNewWordsAvailable = false;
-          notifyListeners();
         }
         _words += newWords;
+        _firstIndex += _fetchedStep;
       } catch (e) {
         print('WordsScreenPresenter: uploadNewWords() => $e');
         rethrow;
@@ -78,7 +76,7 @@ class WordsScreenPresenter with ChangeNotifier {
     _isWordListUpdating = true;
     notifyListeners();
     try {
-      await _dictionaryRepository.addNewWord(newWord);
+      await dictionary.addWord(newWord);
       words.insert(0, newWord);
     } catch (e) {
       print('NewWordScreenPresenter: addNewWord(newWord) => $e');
@@ -93,7 +91,7 @@ class WordsScreenPresenter with ChangeNotifier {
     _isWordListUpdating = true;
     notifyListeners();
     try {
-      await _dictionaryRepository.editWord(editedWord);
+      await dictionary.editWord(editedWord);
       int wordIndex = _words.indexWhere((w) => w.id == editedWord.id);
       _words
         ..removeAt(wordIndex)
@@ -111,7 +109,7 @@ class WordsScreenPresenter with ChangeNotifier {
     _isWordListUpdating = true;
     notifyListeners();
     try {
-      await _dictionaryRepository.removeWord(removedWordId);
+      await dictionary.removeWord(removedWordId);
       _words.removeWhere((w) => w.id == removedWordId);
     } catch (e) {
       print('EditWordScreenPresenter: removeWord(removedWordId) => $e');

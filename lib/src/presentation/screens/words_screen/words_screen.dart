@@ -40,7 +40,7 @@ class WordsScreen extends StatefulWidget {
 
 class _WordsScreenState extends State<WordsScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _controller = ScrollController(initialScrollOffset: 100.0);
+  final _controller = ScrollController();
 
   bool get _isIOS => Platform.isIOS;
 

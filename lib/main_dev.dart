@@ -3,8 +3,10 @@ import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/main.dart';
 import 'package:mydictionaryapp/src/data/repositories/mocks/mock_auth_repository.dart';
+import 'package:mydictionaryapp/src/data/repositories/mocks/mock_dictionary_repository.dart';
 import 'package:mydictionaryapp/src/data/repositories/mocks/mock_user_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
+import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/data/utils/store_interator.dart';
@@ -36,7 +38,8 @@ void main() {
     )
     ..registerSingleton<StoreInteractor>(StoreInteractor())
     ..registerSingleton<AuthRepository>(MockAuthRepository())
-    ..registerSingleton<UserRepository>(MockUserRepository());
+    ..registerSingleton<UserRepository>(MockUserRepository())
+    ..registerSingleton<DictionaryRepository>(MockDictionaryRepository());
 
   runMyDictionaryApp();
 }

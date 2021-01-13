@@ -10,12 +10,13 @@ import 'package:mydictionaryapp/src/global_config.dart';
 class DictionariesScreenPresenter with ChangeNotifier {
   final _userRepository = GetIt.I<UserRepository>();
   final _authRepository = GetIt.I<AuthRepository>();
-  final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
+  final _fetchedStep = GetIt.I<GlobalConfig>().fetchStep;
 
   List<Dictionary> _dictionaries;
   bool _isNewDictionariesAvailable = true;
   bool _isNewDictionariesLoading = false;
   bool _isLoading = false;
+  int _firstIndex = 0;
 
   List<Dictionary> get dictionaries => _dictionaries;
   bool get isNewDictionariesLoading => _isNewDictionariesLoading;
@@ -29,12 +30,14 @@ class DictionariesScreenPresenter with ChangeNotifier {
     _isNewDictionariesLoading = true;
     notifyListeners();
     try {
-      _dictionaries =
-          await _userRepository.getAndRegisterDictionaries(_fetchStep);
-      if (_dictionaries.length < _fetchStep) {
+      _dictionaries = await _userRepository.getDictionaries(
+        _firstIndex,
+        _fetchedStep,
+      );
+      if (_dictionaries.length < _fetchedStep) {
         _isNewDictionariesAvailable = false;
-        notifyListeners();
       }
+      _firstIndex += _fetchedStep;
     } catch (e) {
       print('DictionariesScreenPresenter: _init() => $e');
       rethrow;
@@ -49,16 +52,17 @@ class DictionariesScreenPresenter with ChangeNotifier {
     if (_isNewDictionariesAvailable) {
       _isNewDictionariesLoading = true;
       notifyListeners();
-
       try {
-        final newDictionaries =
-            await _userRepository.getAndRegisterDictionaries(_fetchStep);
+        final newDictionaries =  await _userRepository.getDictionaries(
+          _firstIndex,
+          _fetchedStep,
+        );
 
-        if (newDictionaries.length < _fetchStep) {
+        if (newDictionaries.length < _fetchedStep) {
           _isNewDictionariesAvailable = false;
-          notifyListeners();
         }
         _dictionaries += newDictionaries;
+        _firstIndex += _fetchedStep;
       } catch (e) {
         print('DictionariesScreenPresenter: uploadNewDictionaries() => $e');
         rethrow;
@@ -83,11 +87,5 @@ class DictionariesScreenPresenter with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
-  }
-
-  @override
-  void dispose() {
-    _userRepository.unregisterDictionaries(_dictionaries);
-    super.dispose();
   }
 }

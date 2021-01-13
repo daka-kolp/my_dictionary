@@ -1,30 +1,27 @@
-import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 
 class FirebaseDictionaryRepository extends DictionaryRepository {
-  FirebaseDictionaryRepository(Dictionary dictionary) : super(dictionary);
-
   @override
-  Future<List<Word>> getWords(int offset) {
+  Future<List<Word>> getWords(int firstIndex, int offset, String dictionaryId) {
     // TODO: implement getWords
     throw UnimplementedError();
   }
 
   @override
-  Future<void> addNewWord(Word newWord) {
+  Future<void> addNewWord(Word newWord, String dictionaryId) {
     // TODO: implement addNewWord
     throw UnimplementedError();
   }
 
   @override
-  Future<void> editWord(Word word) {
+  Future<void> editWord(Word word, String dictionaryId) {
     // TODO: implement editWord
     throw UnimplementedError();
   }
 
   @override
-  Future<void> removeWord(String id) {
+  Future<void> removeWord(String id, String dictionaryId) {
     // TODO: implement removeWord
     throw UnimplementedError();
   }

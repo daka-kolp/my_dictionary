@@ -20,29 +20,41 @@ class LogOutException implements Exception {
 }
 
 class DictionaryAlreadyExistException implements Exception {
+  final String dictionaryInfo;
+  DictionaryAlreadyExistException(this.dictionaryInfo);
+
   @override
   String toString() {
-    return 'The dictionary is already exist';
+    return 'The dictionary is already exist : $dictionaryInfo';
   }
 }
 
 class DictionaryNotExistException implements Exception {
+  final String dictionaryInfo;
+  DictionaryNotExistException(this.dictionaryInfo);
+
   @override
   String toString() {
-    return 'The dictionary is not exist';
+    return 'The dictionary is not exist : $dictionaryInfo';
   }
 }
 
 class WordAlreadyExistException implements Exception {
+  final String wordInfo;
+  WordAlreadyExistException(this.wordInfo);
+
   @override
   String toString() {
-    return 'The word is already exist';
+    return 'The word is already exist : $wordInfo';
   }
 }
 
 class WordNotExistException implements Exception {
+  final String wordInfo;
+  WordNotExistException(this.wordInfo);
+
   @override
   String toString() {
-    return 'The word is not exist';
+    return 'The word is not exist : $wordInfo';
   }
 }

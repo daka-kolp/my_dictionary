@@ -12,6 +12,7 @@ class Dictionary {
   final String translationLanguage;
   final String title;
   final TtsProperties ttsProperties;
+  final DictionaryRepository _dictionaryRepository;
 
   Dictionary({
     @required this.id,
@@ -22,7 +23,8 @@ class Dictionary {
         assert(originalLanguage != null),
         assert(translationLanguage != null),
         assert(title != null),
-        ttsProperties = TtsProperties(originalLanguage);
+        ttsProperties = TtsProperties(originalLanguage),
+        _dictionaryRepository = GetIt.I.get<DictionaryRepository>();
 
   @override
   bool operator ==(Object other) =>
@@ -35,10 +37,20 @@ class Dictionary {
   @override
   int get hashCode => id.hashCode ^ title.hashCode;
 
-  Future<List<Word>> getWords(int offset) async {
-    final dictionaryRepository =
-        GetIt.I.get<DictionaryRepository>(instanceName: id);
-    return await dictionaryRepository.getWords(offset);
+  Future<List<Word>> getWords(int firstIndex, int offset) async {
+    return await _dictionaryRepository.getWords(firstIndex, offset, id);
+  }
+
+  Future<void> addWord(Word word) async {
+    await _dictionaryRepository.addNewWord(word, id);
+  }
+
+  Future<void> editWord(Word word) async {
+    await _dictionaryRepository.editWord(word, id);
+  }
+
+  Future<void> removeWord(String wordId) async {
+    await _dictionaryRepository.removeWord(wordId, id);
   }
 }
 

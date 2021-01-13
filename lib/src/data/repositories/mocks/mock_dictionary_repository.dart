@@ -1,36 +1,29 @@
 import 'package:flutter/foundation.dart';
-import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
+
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 
 class MockDictionaryRepository extends DictionaryRepository {
-  int _firstIndex = 0;
-
-  MockDictionaryRepository(
-    Dictionary dictionary,
-  ) : super(dictionary);
-
   final _dictionaries = {
     'en-GB_ru-RU': _wordsEn,
     'uk-UA_ru-RU': _wordsUa,
   };
 
-  List<Word> get _words => _dictionaries[dictionary.id];
-
   @override
-  Future<List<Word>> getWords(int offset) async {
+  Future<List<Word>> getWords(
+    int firstIndex,
+    int offset,
+    String dictionaryId,
+  ) async {
     await Future.delayed(Duration(seconds: 1));
-    final length = _words.length;
-    final firstIndex = _firstIndex;
-    final lastIndex = _firstIndex + offset;
-    if (lastIndex < length) {
-      _firstIndex = lastIndex;
-    }
+    final words = _dictionaries[dictionaryId];
+    final length = words.length;
+    final lastIndex = firstIndex + offset;
     return await compute(
       _loadWords,
       {
-        'words': _words,
+        'words': words,
         'firstIndex': firstIndex,
         'lastIndex': lastIndex > length ? length : lastIndex,
       },
@@ -38,27 +31,40 @@ class MockDictionaryRepository extends DictionaryRepository {
   }
 
   @override
-  Future<void> addNewWord(Word newWord) async {
+  Future<void> addNewWord(Word newWord, String dictionaryId) async {
     await Future.delayed(Duration(seconds: 1));
-    await compute(
-      _addWord,
-      {'words': _words, 'newWord': newWord},
-    );
+    final words = _dictionaries[dictionaryId];
+    if (words.contains(newWord)) {
+      throw WordAlreadyExistException(newWord.word);
+    }
+    words.add(newWord);
   }
 
   @override
-  Future<void> editWord(Word word) async {
+  Future<void> editWord(Word word, String dictionaryId) async {
     await Future.delayed(Duration(seconds: 1));
-    await compute(
-      _editWord,
-      {'words': _words, 'word': word},
+    final words = _dictionaries[dictionaryId];
+    final wordIndex = words.indexWhere(
+      (w) => w.id == word.id,
     );
+    if (wordIndex == -1) {
+      throw WordNotExistException(word.word);
+    }
+    words
+      ..removeAt(wordIndex)
+      ..insert(wordIndex, word);
   }
 
   @override
-  Future<void> removeWord(String id) async {
+  Future<void> removeWord(String wordId, String dictionaryId) async {
     await Future.delayed(Duration(seconds: 1));
-    await compute(_removeWord, {'words': _words, 'wordId': id});
+    final words = _dictionaries[dictionaryId];
+    try {
+      final word = words.firstWhere((w) => w.id == wordId);
+      words.remove(word);
+    } on StateError {
+      throw WordNotExistException(wordId);
+    }
   }
 }
 
@@ -68,40 +74,6 @@ List<Word> _loadWords(Map<String, dynamic> data) {
   final last = data['lastIndex'];
 
   return words.getRange(first, last).toList();
-}
-
-void _addWord(Map<String, dynamic> data) {
-  final words = data['words'];
-  final newWord = data['newWord'];
-  if (words.contains(newWord)) {
-    throw WordAlreadyExistException();
-  }
-  words.add(newWord);
-}
-
-void _editWord(Map<String, dynamic> data) {
-  final words = data['words'];
-  final word = data['word'];
-  final wordIndex = words.indexWhere(
-    (w) => w.id == word.id,
-  );
-  if (wordIndex == -1) {
-    throw WordNotExistException();
-  }
-  words
-    ..removeAt(wordIndex)
-    ..insert(wordIndex, word);
-}
-
-void _removeWord(Map<String, dynamic> data) {
-  final words = data['words'];
-  final wordId = data['wordId'];
-  try {
-    Word word = words.firstWhere((w) => w.id == wordId);
-    words.remove(word);
-  } on StateError {
-    throw WordNotExistException();
-  }
 }
 
 final _wordsEn = [

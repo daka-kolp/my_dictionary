@@ -1,24 +1,11 @@
-import 'package:get_it/get_it.dart';
-
-import 'package:mydictionaryapp/src/data/repositories/firebase/firebase_dictionary_repository.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 
 class FirebaseUserRepository extends UserRepository {
-  List<Dictionary> _dictionaries;
-
   @override
-  Future<List<Dictionary>> getAndRegisterDictionaries(int offset) async {
-    _dictionaries = [];
-
-    _dictionaries.forEach((dictionary) {
-      GetIt.I.registerFactory(
-        () => FirebaseDictionaryRepository(dictionary),
-        instanceName: dictionary.id,
-      );
-    });
-
-    return _dictionaries;
+  Future<List<Dictionary>> getDictionaries(int firstIndex, int offset) {
+    // TODO: implement getDictionaries
+    throw UnimplementedError();
   }
 
   @override
@@ -31,11 +18,5 @@ class FirebaseUserRepository extends UserRepository {
   Future<void> removeDictionary(String id) {
     // TODO: implement removeDictionary
     throw UnimplementedError();
-  }
-
-  @override
-  void unregisterDictionaries(List<Dictionary> dictionaries) {
-    // TODO: implement unregisterDictionaries
-    super.unregisterDictionaries(dictionaries);
   }
 }
