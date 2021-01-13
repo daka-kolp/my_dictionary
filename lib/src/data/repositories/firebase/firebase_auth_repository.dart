@@ -16,7 +16,7 @@ class FirebaseAuthRepository extends AuthRepository {
 
   @override
   Future<bool> get isLoggedIn async {
-    final currentUser = await _auth.currentUser();
+    final currentUser = await _auth.currentUser;
     final token = await _storeInteractor.getToken();
     return currentUser != null && token != null;
   }
@@ -25,7 +25,7 @@ class FirebaseAuthRepository extends AuthRepository {
   Future<void> loginWith(String service) async {
     try {
       final credential = await _getAuthCredential(service);
-      final AuthResult authResult =
+      final authResult =
           await _auth.signInWithCredential(credential);
 
       final token = authResult.user.uid;
