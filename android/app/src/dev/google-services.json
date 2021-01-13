@@ -1,41 +1,85 @@
 {
   "project_info": {
-    "project_number": "358350395518",
-    "firebase_url": "https://my-dictionary-dev.firebaseio.com",
-    "project_id": "my-dictionary-dev",
-    "storage_bucket": "my-dictionary-dev.appspot.com"
+    "project_number": "830551986190",
+    "firebase_url": "https://my-dictionary-549a0.firebaseio.com",
+    "project_id": "my-dictionary-549a0",
+    "storage_bucket": "my-dictionary-549a0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:358350395518:android:29c14e089e40f2d24b202f",
+        "mobilesdk_app_id": "1:830551986190:android:18b71f6dd8516c0c8eac5f",
         "android_client_info": {
-          "package_name": "com.dkolp.mydictionaryapp.dev"
+          "package_name": "com.dkolp.mydictionaryapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "358350395518-203fj3mfokacrlmsqoug7kfijul449an.apps.googleusercontent.com",
+          "client_id": "830551986190-cil941h8c0ldlop8cljn9jpii9c62g5g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dkolp.mydictionaryapp",
+            "certificate_hash": "96e8593ddf7938cd991a441f113d3c34e848f251"
+          }
+        },
+        {
+          "client_id": "830551986190-cos1grevuphcbc2asfn4sdn6fehndbnn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDTrQrjiqH0-Qs0vRnJriKbtoe5g677Djo"
+          "current_key": "AIzaSyBxUr5gRrIXqUcCMm8g4a5dfhlMjG-PXmU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "358350395518-203fj3mfokacrlmsqoug7kfijul449an.apps.googleusercontent.com",
+              "client_id": "830551986190-cos1grevuphcbc2asfn4sdn6fehndbnn.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "358350395518-geau56cdbsrhce93jdg5vcnqtsq05bt4.apps.googleusercontent.com",
+              "client_id": "830551986190-uiuilr4u0j5kbhkkqh329gisqkbnduos.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.dkolp.mydictionaryapp.dev"
+                "bundle_id": "com.dkolp.mydictionaryapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830551986190:android:42680e5ab84a96c78eac5f",
+        "android_client_info": {
+          "package_name": "com.dkolp.mydictionaryapp.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "830551986190-cos1grevuphcbc2asfn4sdn6fehndbnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxUr5gRrIXqUcCMm8g4a5dfhlMjG-PXmU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "830551986190-cos1grevuphcbc2asfn4sdn6fehndbnn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "830551986190-uiuilr4u0j5kbhkkqh329gisqkbnduos.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dkolp.mydictionaryapp"
               }
             }
           ]
