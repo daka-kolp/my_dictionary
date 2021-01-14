@@ -8,16 +8,16 @@ import 'package:provider/provider.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-import 'package:mydictionaryapp/src/presentation/screens/word_screens/edit_word_screen.dart';
-import 'package:mydictionaryapp/src/presentation/screens/word_screens/new_word_screen.dart';
-import 'package:mydictionaryapp/src/presentation/screens/words_screen/words_screen_presenter.dart';
-import 'package:mydictionaryapp/src/presentation/screens/words_screen/widgets/tts_provider.dart';
-import 'package:mydictionaryapp/src/presentation/screens/words_screen/widgets/word_tile/word_tile.dart';
-import 'package:mydictionaryapp/src/presentation/widgets/loading_indicator.dart';
-import 'package:mydictionaryapp/src/presentation/widgets/loading_layout.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/edit_word_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/new_word_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen_presenter.dart';
+import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provider.dart';
+import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/word_tile/word_tile.dart';
+import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
+import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/localization/localization.dart';
+import 'package:mydictionaryapp/src/app/localization/localization.dart';
 
 class WordsScreen extends StatefulWidget {
   static PageRoute buildPageRoute(Dictionary dictionary) {

@@ -6,15 +6,15 @@ import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
-import 'package:mydictionaryapp/src/presentation/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
-import 'package:mydictionaryapp/src/presentation/screens/dictionary_screens/new_dictionary_screen.dart';
-import 'package:mydictionaryapp/src/presentation/screens/words_screen/words_screen.dart';
-import 'package:mydictionaryapp/src/presentation/widgets/loading_indicator.dart';
-import 'package:mydictionaryapp/src/presentation/widgets/loading_layout.dart';
-import 'package:mydictionaryapp/src/presentation/screens/login_screens/login_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen.dart';
+import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
+import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
+import 'package:mydictionaryapp/src/app/screens/login_screens/login_screen.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/localization/localization.dart';
+import 'package:mydictionaryapp/src/app/localization/localization.dart';
 
 part 'widgets/_dictionary_tile.dart';
 

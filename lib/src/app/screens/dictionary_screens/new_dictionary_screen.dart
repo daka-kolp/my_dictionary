@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:mydictionaryapp/src/presentation/screens/word_screens/widgets/title_tile.dart';
-import 'package:mydictionaryapp/src/presentation/widgets/no_scroll_behavior.dart';
-import 'package:mydictionaryapp/src/presentation/widgets/loading_layout.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
+import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
+import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/localization/localization.dart';
+import 'package:mydictionaryapp/src/app/localization/localization.dart';
 
 class NewDictionaryScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {
