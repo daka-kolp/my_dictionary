@@ -10,10 +10,12 @@ class _WordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () async => await showDialog(
-        context: context,
-        builder: _showHint,
-      ),
+      onTap: word.isHintExist
+          ? () async => await showDialog(
+                context: context,
+                builder: _showHint,
+              )
+          : null,
       child: Container(
         height: 48.0,
         alignment: Alignment.centerLeft,
@@ -24,7 +26,7 @@ class _WordWidget extends StatelessWidget {
   }
 
   Widget _showHint(BuildContext context) {
-    final contentText = Text(word.hint.isNotEmpty ? word.hint : noData);
+    final contentText = Text(word.hint);
     final okText = Text(ok);
 
     if (Platform.isIOS) {

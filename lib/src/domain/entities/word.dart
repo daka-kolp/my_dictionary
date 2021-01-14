@@ -40,6 +40,8 @@ class Word {
 
   @override
   int get hashCode => word.hashCode;
+
+  bool get isHintExist => hint != null && hint.isNotEmpty;
 }
 
 class Translation {
