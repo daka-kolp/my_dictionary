@@ -25,7 +25,7 @@ class WithoutErrorTextFormField extends FormField<String> {
     SmartDashesType smartDashesType,
     SmartQuotesType smartQuotesType,
     bool enableSuggestions = true,
-    bool autovalidate = false,
+    AutovalidateMode autovalidateMode = AutovalidateMode.disabled,
     bool maxLengthEnforced = true,
     int maxLines = 1,
     int minLines,
@@ -54,7 +54,7 @@ class WithoutErrorTextFormField extends FormField<String> {
         assert(obscureText != null),
         assert(autocorrect != null),
         assert(enableSuggestions != null),
-        assert(autovalidate != null),
+        assert(autovalidateMode != null),
         assert(maxLengthEnforced != null),
         assert(scrollPadding != null),
         assert(maxLines == null || maxLines > 0),
@@ -80,7 +80,7 @@ class WithoutErrorTextFormField extends FormField<String> {
               controller != null ? controller.text : (initialValue ?? ''),
           onSaved: onSaved,
           validator: validator,
-          autovalidate: autovalidate,
+          autovalidateMode: autovalidateMode,
           enabled: enabled,
           builder: (field) {
             final _WithoutErrorTextFormFieldState state =
