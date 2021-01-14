@@ -5,11 +5,6 @@ import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 
 class MockDictionaryRepository extends DictionaryRepository {
-  final _dictionaries = {
-    'en-GB_ru-RU': _wordsEn,
-    'uk-UA_ru-RU': _wordsUa,
-  };
-
   @override
   Future<List<Word>> getWords(
     int firstIndex,
@@ -75,6 +70,11 @@ List<Word> _loadWords(Map<String, dynamic> data) {
 
   return words.getRange(first, last).toList();
 }
+
+final _dictionaries = {
+  'en-GB_ru-RU': _wordsEn,
+  'uk-UA_ru-RU': _wordsUa,
+};
 
 final _wordsEn = [
   Word(

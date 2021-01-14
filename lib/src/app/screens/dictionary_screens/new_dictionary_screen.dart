@@ -8,7 +8,7 @@ import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 class NewDictionaryScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {

@@ -14,7 +14,7 @@ import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 part 'widgets/_dictionary_tile.dart';
 

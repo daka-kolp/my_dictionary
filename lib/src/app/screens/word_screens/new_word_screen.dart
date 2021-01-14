@@ -12,7 +12,7 @@ import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 class NewWordScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {

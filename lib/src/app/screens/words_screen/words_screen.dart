@@ -17,7 +17,7 @@ import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 class WordsScreen extends StatefulWidget {
   static PageRoute buildPageRoute(Dictionary dictionary) {

@@ -11,7 +11,7 @@ import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen_presen
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 class LoginScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {

@@ -7,7 +7,7 @@ import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/environment_banner.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 Future<void> runMyDictionaryApp() async {
   final isLoggedIn = await GetIt.I<AuthRepository>().isLoggedIn;

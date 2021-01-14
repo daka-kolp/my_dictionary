@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 part '_translation_list_tile.dart';
 

@@ -11,7 +11,7 @@ import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/translations_list_form_field.dart';
 
 //TODO: remove the import
-import 'package:mydictionaryapp/src/app/localization/localization.dart';
+import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 class EditWordScreen extends StatefulWidget {
   final Word word;
