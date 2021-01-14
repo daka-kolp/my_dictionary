@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
-import 'package:mydictionaryapp/src/app/screens/login_screens/login_screen_presenter.dart';
+import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen_presenter.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 
 //TODO: remove the import

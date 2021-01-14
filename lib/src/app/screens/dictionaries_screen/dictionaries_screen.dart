@@ -11,7 +11,7 @@ import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionar
 import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
-import 'package:mydictionaryapp/src/app/screens/login_screens/login_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/app/localization/localization.dart';

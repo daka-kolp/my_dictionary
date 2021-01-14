@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
-import 'package:mydictionaryapp/src/app/screens/login_screens/login_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/environment_banner.dart';
 
 //TODO: remove the import
