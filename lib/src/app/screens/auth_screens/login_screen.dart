@@ -2,13 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen_presenter.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
@@ -46,7 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
           end: Alignment.bottomRight,
         ),
       );
-
   LoginScreenPresenter get _watch => context.watch<LoginScreenPresenter>();
   LoginScreenPresenter get _read => context.read<LoginScreenPresenter>();
 
@@ -62,9 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Expanded(
-                child: Image.asset(GetIt.I<GlobalConfig>().mainImagePath),
-              ),
+              Expanded(child: Image.asset(_watch.logo)),
               Expanded(child: _buildLoginButtons()),
               Expanded(child: SizedBox())
             ],
@@ -104,6 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await _read.loginWithGoogle();
       await _routeToDictionariesScreen();
+    } on WrongCredentialsException {
+      _showErrorMessage(wrongCredentials);
     } catch (e) {
       //TODO: handle errors
       _showErrorMessage('LoginScreen: _login() => $e');

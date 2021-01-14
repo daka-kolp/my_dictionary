@@ -10,12 +10,7 @@ class _WordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: word.isHintExist
-          ? () async => await showDialog(
-                context: context,
-                builder: _showHint,
-              )
-          : null,
+      onTap: word.isHintExist ? () async => await _showDialog(context) : null,
       child: Container(
         height: 48.0,
         alignment: Alignment.centerLeft,
@@ -25,32 +20,15 @@ class _WordWidget extends StatelessWidget {
     );
   }
 
-  Widget _showHint(BuildContext context) {
-    final contentText = Text(word.hint);
-    final okText = Text(ok);
-
-    if (Platform.isIOS) {
-      return CupertinoAlertDialog(
-        content: contentText,
-        actions: <Widget>[
-          CupertinoDialogAction(
-            child: okText,
-            onPressed: () => _onOkPressed(context),
-          )
-        ],
-      );
-    }
-
-    return AlertDialog(
-      content: contentText,
-      actions: <Widget>[
-        FlatButton(
-          child: okText,
-          onPressed: () => _onOkPressed(context),
-        ),
-      ],
+  Future<void> _showDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: dialogBuilder(
+        context,
+        word.hint,
+        () => Navigator.pop(context),
+        isCancelButtonExist: false,
+      ),
     );
   }
-
-  void _onOkPressed(BuildContext context) => Navigator.pop(context);
 }

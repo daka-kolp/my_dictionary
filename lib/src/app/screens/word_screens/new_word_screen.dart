@@ -4,12 +4,12 @@ import 'package:uuid/uuid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/translations_list_form_field.dart';
 import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
+import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
@@ -22,7 +22,7 @@ class NewWordScreen extends StatefulWidget {
     return MaterialPageRoute(builder: _builder);
   }
 
-  static Widget _builder(context) => NewWordScreen();
+  static Widget _builder(BuildContext context) => NewWordScreen();
 
   @override
   _NewWordScreenState createState() => _NewWordScreenState();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
+import 'package:mydictionaryapp/src/global_config.dart';
 
 class LoginScreenPresenter extends ChangeNotifier {
   final AuthRepository _authRepository;
@@ -9,6 +10,7 @@ class LoginScreenPresenter extends ChangeNotifier {
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
+  String get logo => GetIt.I<GlobalConfig>().mainImagePath;
 
   LoginScreenPresenter() : _authRepository = GetIt.I<AuthRepository>();
 

@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:mydictionaryapp/src/domain/entities/word.dart';
+import 'package:mydictionaryapp/src/app/widgets/dialog_builder.dart';
 import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/translations_list_form_field.dart';
+import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
@@ -83,43 +84,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
   Future<void> _showDialogOnRemoveWord() async {
     await showDialog(
       context: context,
-      builder: _buildDialogOnRemoveWord,
-    );
-  }
-
-  Widget _buildDialogOnRemoveWord(BuildContext context) {
-    final contentText = Text(removeWordQuestion);
-    final okText = Text(ok);
-    final cancelText = Text(cancel);
-
-    if (Platform.isIOS) {
-      return CupertinoAlertDialog(
-        content: contentText,
-        actions: <Widget>[
-          CupertinoDialogAction(
-            child: cancelText,
-            onPressed: Navigator.of(context).pop,
-          ),
-          CupertinoDialogAction(
-            child: okText,
-            onPressed: _onRemove,
-          )
-        ],
-      );
-    }
-
-    return AlertDialog(
-      content: contentText,
-      actions: <Widget>[
-        FlatButton(
-          child: cancelText,
-          onPressed: Navigator.of(context).pop,
-        ),
-        FlatButton(
-          child: okText,
-          onPressed: _onRemove,
-        ),
-      ],
+      builder: dialogBuilder(context, removeWordQuestion, _onRemove),
     );
   }
 

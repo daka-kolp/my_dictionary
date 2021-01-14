@@ -18,9 +18,7 @@ class NewDictionaryScreen extends StatefulWidget {
     return MaterialPageRoute(builder: _builder);
   }
 
-  static Widget _builder(BuildContext context) {
-    return NewDictionaryScreen();
-  }
+  static Widget _builder(BuildContext context) => NewDictionaryScreen();
 
   @override
   _NewDictionaryScreenState createState() => _NewDictionaryScreenState();

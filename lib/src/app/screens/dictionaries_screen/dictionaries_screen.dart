@@ -6,12 +6,13 @@ import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
+import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
 import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
-import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
+import 'package:mydictionaryapp/src/app/widgets/dialog_builder.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
@@ -28,7 +29,7 @@ class DictionariesScreen extends StatefulWidget {
 
   static Widget _builder(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => DictionariesScreenPresenter(),
+      create: (context) => DictionariesScreenPresenter(),
       child: DictionariesScreen(),
     );
   }
@@ -191,43 +192,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   Future<void> _showDialogOnLogout() async {
     await showDialog(
       context: context,
-      builder: _buildDialogOnLogout,
-    );
-  }
-
-  Widget _buildDialogOnLogout(BuildContext context) {
-    final contentText = Text(askChangeUser);
-    final okText = Text(ok);
-    final cancelText = Text(cancel);
-
-    if (Platform.isIOS) {
-      return CupertinoAlertDialog(
-        content: contentText,
-        actions: <Widget>[
-          CupertinoDialogAction(
-            child: cancelText,
-            onPressed: Navigator.of(context).pop,
-          ),
-          CupertinoDialogAction(
-            child: okText,
-            onPressed: _onExit,
-          )
-        ],
-      );
-    }
-
-    return AlertDialog(
-      content: contentText,
-      actions: <Widget>[
-        FlatButton(
-          child: cancelText,
-          onPressed: Navigator.of(context).pop,
-        ),
-        FlatButton(
-          child: okText,
-          onPressed: _onExit,
-        ),
-      ],
+      builder: dialogBuilder(context, askChangeUser, _onExit),
     );
   }
 

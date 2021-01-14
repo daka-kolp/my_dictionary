@@ -1,6 +1,5 @@
 final appName = 'MyDictionary';
 final hint = 'Подсказка';
-final noData = 'Нет данных';
 final ok = 'Ок';
 final showTranslation = 'Показать перевод';
 final add = 'Добавить';
@@ -32,3 +31,4 @@ final newDictionary = 'Новый словарь';
 final addOriginalLanguage = 'Выберите язык словаря';
 final addTranslationLanguage = 'Выберите язык перевода (по умолчанию будет использоваться язык локазизации Вашего устройства)';
 final enterDictionaryName = 'Введите название словаря (генерируется автоматически)';
+final wrongCredentials = 'Неверные учетные данные';

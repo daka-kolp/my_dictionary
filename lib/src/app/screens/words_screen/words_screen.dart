@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
-import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
-import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/edit_word_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/new_word_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen_presenter.dart';
@@ -15,6 +12,9 @@ import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provide
 import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/word_tile/word_tile.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
+import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
+import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
