@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/translations_list_form_field.dart';
-import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
+import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 

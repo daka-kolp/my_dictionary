@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
-import 'package:mydictionaryapp/src/app/widgets/no_scroll_behavior.dart';
+import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 
 //TODO: remove the import
