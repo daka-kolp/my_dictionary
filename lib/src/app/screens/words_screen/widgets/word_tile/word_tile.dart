@@ -21,9 +21,8 @@ class WordTile extends StatelessWidget {
     Key key,
     @required this.word,
     @required this.onEdit,
-    bool isEven,
-  })  : this.isEven = isEven ?? false,
-        assert(word != null),
+    this.isEven = false,
+  })  : assert(word != null),
         super(key: key);
 
   @override

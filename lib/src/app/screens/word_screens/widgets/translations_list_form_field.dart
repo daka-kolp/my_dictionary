@@ -16,10 +16,7 @@ class TranslationListFormField extends FormField<List<Translation>> {
   }) : super(
           key: key,
           initialValue: initialList,
-          validator: (list) {
-            if (list.isEmpty) return '';
-            return null;
-          },
+          validator: (list) => list.isEmpty ? '' : null,
           builder: (field) {
             return _TranslationList(
               initialList: initialList,

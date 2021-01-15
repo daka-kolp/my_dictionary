@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _showErrorMessage(wrongCredentials);
     } catch (e) {
       //TODO: handle errors
-      _showErrorMessage('LoginScreen: _login() => $e');
+      _showErrorMessage(e);
     }
   }
 
@@ -120,8 +120,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _showErrorMessage(String message) {
-    _scaffoldKey.currentState.showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
   }
 }

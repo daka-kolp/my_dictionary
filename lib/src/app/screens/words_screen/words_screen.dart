@@ -163,6 +163,9 @@ class _WordsScreenState extends State<WordsScreen> {
         }
       } on WordNotExistException {
         _showErrorMessage(wordAlreadyExistException);
+      } catch (e) {
+        //TODO: handle errors
+        _showErrorMessage(e);
       }
     }
   }

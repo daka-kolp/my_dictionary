@@ -7,9 +7,8 @@ class TitleTile extends StatelessWidget {
   const TitleTile({
     Key key,
     @required this.title,
-    bool isRequired,
-  })  : this.isRequired = isRequired ?? false,
-        assert(title != null),
+    this.isRequired = false,
+  })  : assert(title != null),
         super(key: key);
 
   @override

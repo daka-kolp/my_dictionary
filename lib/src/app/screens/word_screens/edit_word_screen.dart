@@ -125,14 +125,9 @@ class _EditWordScreenState extends State<EditWordScreen> {
       child: WithoutErrorTextFormField(
         key: _wordStateKey,
         initialValue: widget.word.word,
-        validator: _validateTextFormField,
+        validator: (value) => value.isEmpty ? '' : null,
       ),
     );
-  }
-
-  String _validateTextFormField(String value) {
-    if (value.isEmpty) return '';
-    return null;
   }
 
   Widget _buildTranslationsListFormField() {

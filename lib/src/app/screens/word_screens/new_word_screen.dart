@@ -55,13 +55,9 @@ class _NewWordScreenState extends State<NewWordScreen> {
     final title = Text(newWord);
 
     if (Platform.isIOS) {
-      return CupertinoNavigationBar(
-        middle: title,
-      );
+      return CupertinoNavigationBar(middle: title);
     }
-    return AppBar(
-      title: title,
-    );
+    return AppBar(title: title);
   }
   
   Widget _buildBody() {
@@ -96,14 +92,9 @@ class _NewWordScreenState extends State<NewWordScreen> {
     return PaddingWrapper(
       child: WithoutErrorTextFormField(
         key: _wordStateKey,
-        validator: _validateTextFormField,
+        validator: (value) => value.isEmpty ? '' : null,
       ),
     );
-  }
-
-  String _validateTextFormField(String value) {
-    if (value.isEmpty) return '';
-    return null;
   }
 
   Widget _buildTranslationsListFormField() {
@@ -121,9 +112,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
         keyboardType: TextInputType.multiline,
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
-        decoration: InputDecoration(
-          hintText: writeAssociationOrHint,
-        ),
+        decoration: InputDecoration(hintText: writeAssociationOrHint),
       ),
     );
   }

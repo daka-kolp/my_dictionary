@@ -3,7 +3,10 @@ part of 'word_tile.dart';
 class _TranslationPopupButton extends StatelessWidget {
   final List<Translation> translations;
 
-  _TranslationPopupButton({Key key, this.translations}) : super(key: key);
+  _TranslationPopupButton({
+    Key key,
+    @required this.translations,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

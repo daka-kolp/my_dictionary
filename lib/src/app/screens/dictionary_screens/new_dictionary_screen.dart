@@ -49,13 +49,9 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
     final title = Text(newDictionary);
 
     if (Platform.isIOS) {
-      return CupertinoNavigationBar(
-        middle: title,
-      );
+      return CupertinoNavigationBar(middle: title);
     }
-    return AppBar(
-      title: title,
-    );
+    return AppBar(title: title);
   }
 
   Widget _buildBody() {

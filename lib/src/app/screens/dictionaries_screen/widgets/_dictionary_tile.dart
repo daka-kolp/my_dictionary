@@ -71,8 +71,6 @@ class _DictionaryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return InkWell(
       onTap: () async => await onPressed(dictionary),
       child: Container(
@@ -81,7 +79,7 @@ class _DictionaryWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Text(
           dictionary.title,
-          style: theme.textTheme.subtitle1,
+          style: Theme.of(context).textTheme.subtitle1,
         ),
       ),
     );
