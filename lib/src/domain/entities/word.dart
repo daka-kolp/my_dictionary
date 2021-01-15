@@ -1,4 +1,6 @@
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 
 class Word {
   final String id;
@@ -18,6 +20,20 @@ class Word {
         this.addingTime = addingTime ?? DateTime.utc(1970),
         assert(id != null),
         assert(word != null && word.isNotEmpty);
+
+  factory Word.newInstance({
+    String word,
+    List<Translation> translations,
+    String hint,
+  }) {
+    return Word(
+      id: GetIt.I.get<Uuid>().v1(),
+      word: word,
+      translations: translations,
+      hint: hint,
+      addingTime: DateTime.now(),
+    );
+  }
 
   Word copyWith({
     String word,
@@ -53,5 +69,13 @@ class Translation {
     @required this.translation,
   })  : assert(id != null),
         assert(translation != null);
-}
 
+  factory Translation.newInstance({
+    String translation,
+  }) {
+    return Translation(
+      id: GetIt.I.get<Uuid>().v1(),
+      translation: translation,
+    );
+  }
+}

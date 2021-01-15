@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:uuid/uuid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,8 +28,6 @@ class NewWordScreen extends StatefulWidget {
 }
 
 class _NewWordScreenState extends State<NewWordScreen> {
-  final _uuid = Uuid();
-
   final _formStateKey = GlobalKey<FormState>();
   final _wordStateKey = GlobalKey<FormFieldState<String>>();
   final _listStateKey = GlobalKey<FormFieldState<List<Translation>>>();
@@ -131,12 +128,10 @@ class _NewWordScreenState extends State<NewWordScreen> {
   }
 
   Future<void> _onAdd() async {
-    final newWord = Word(
-      id: _uuid.v4(),
+    final newWord = Word.newInstance(
       word: _wordStateKey.currentState.value,
       translations: _listStateKey.currentState.value,
       hint: _hintStateKey.currentState.value,
-      addingTime: DateTime.now(),
     );
 
     Navigator.pop<Word>(context, newWord);

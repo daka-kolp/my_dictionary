@@ -1,18 +1,14 @@
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 
 class MockAuthRepository extends AuthRepository {
-  final Uuid _uuid;
   final StoreInteractor _storeInteractor;
 
-  MockAuthRepository()
-      : _uuid = Uuid(),
-        _storeInteractor = GetIt.I<StoreInteractor>();
+  MockAuthRepository() : _storeInteractor = GetIt.I<StoreInteractor>();
 
   @override
   Future<String> get userId async => _storeInteractor.getToken();
@@ -42,7 +38,7 @@ class MockAuthRepository extends AuthRepository {
         );
       }
 
-      await _storeInteractor.setToken(_uuid.v4());
+      await _storeInteractor.setToken('token_123');
     } on PlatformException catch (e) {
       if (e.code == 'ERROR_USER_NOT_FOUND') {
         throw WrongCredentialsException();

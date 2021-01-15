@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
@@ -42,7 +41,6 @@ class _TranslationList extends StatefulWidget {
 }
 
 class _TranslationListState extends State<_TranslationList> {
-  final _uuid = Uuid();
   final _translationController = TextEditingController();
 
   List<Translation> _translationsList;
@@ -88,8 +86,7 @@ class _TranslationListState extends State<_TranslationList> {
   void _onAdd() {
     setState(() {
       _translationsList.add(
-        Translation(
-          id: _uuid.v1(),
+        Translation.newInstance(
           translation: _translationController.text,
         ),
       );
