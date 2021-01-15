@@ -23,7 +23,11 @@ class MockUserRepository extends UserRepository {
   }
 
   @override
-  Future<List<Dictionary>> getDictionaries(int firstIndex, int offset) async {
+  Future<List<Dictionary>> getDictionaries(
+      int firstIndex,
+      int offset,
+      String userId,
+    ) async {
     await Future.delayed(Duration(seconds: 1));
     final length = _dictionaries.length;
     final lastIndex = firstIndex + offset;
@@ -39,7 +43,7 @@ class MockUserRepository extends UserRepository {
   }
 
   @override
-  Future<void> createNewDictionary(Dictionary dictionary) async {
+  Future<void> createNewDictionary(Dictionary dictionary, String userId) async {
     await Future.delayed(Duration(seconds: 1));
     try {
       if (_dictionaries.contains(dictionary)) {
@@ -52,7 +56,7 @@ class MockUserRepository extends UserRepository {
   }
 
   @override
-  Future<void> removeDictionary(String dictionaryId) async {
+  Future<void> removeDictionary(String dictionaryId, String userId) async {
     await Future.delayed(Duration(seconds: 1));
     try {
       final dictionary = _dictionaries.firstWhere(

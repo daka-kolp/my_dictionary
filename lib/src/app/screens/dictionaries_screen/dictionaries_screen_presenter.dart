@@ -3,13 +3,10 @@ import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
-import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
-import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
+import 'package:mydictionaryapp/src/domain/entities/user.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 
 class DictionariesScreenPresenter with ChangeNotifier {
-  final _userRepository = GetIt.I<UserRepository>();
-  final _authRepository = GetIt.I<AuthRepository>();
   final _fetchedStep = GetIt.I<GlobalConfig>().fetchStep;
 
   List<Dictionary> _dictionaries;
@@ -17,6 +14,8 @@ class DictionariesScreenPresenter with ChangeNotifier {
   bool _isNewDictionariesLoading = false;
   bool _isLoading = false;
   int _firstIndex = 0;
+
+  User get _user =>  User.I;
 
   List<Dictionary> get dictionaries => _dictionaries;
   bool get isNewDictionariesLoading => _isNewDictionariesLoading;
@@ -30,7 +29,7 @@ class DictionariesScreenPresenter with ChangeNotifier {
     _isNewDictionariesLoading = true;
     notifyListeners();
     try {
-      _dictionaries = await _userRepository.getDictionaries(
+      _dictionaries = await _user.getDictionaries(
         _firstIndex,
         _fetchedStep,
       );
@@ -53,7 +52,7 @@ class DictionariesScreenPresenter with ChangeNotifier {
       _isNewDictionariesLoading = true;
       notifyListeners();
       try {
-        final newDictionaries =  await _userRepository.getDictionaries(
+        final newDictionaries =  await _user.getDictionaries(
           _firstIndex,
           _fetchedStep,
         );
@@ -77,7 +76,7 @@ class DictionariesScreenPresenter with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      bool isLoggedOut = await _authRepository.logOut();
+      bool isLoggedOut = await _user.logOut();
       if (!isLoggedOut) {
         throw LogOutException();
       }

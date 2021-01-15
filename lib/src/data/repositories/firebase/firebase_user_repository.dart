@@ -3,19 +3,23 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repositor
 
 class FirebaseUserRepository extends UserRepository {
   @override
-  Future<List<Dictionary>> getDictionaries(int firstIndex, int offset) {
+  Future<List<Dictionary>> getDictionaries(
+      int firstIndex,
+      int offset,
+      String userId,
+    ) {
     // TODO: implement getDictionaries
     throw UnimplementedError();
   }
 
   @override
-  Future<void> createNewDictionary(Dictionary dictionary) {
+  Future<void> createNewDictionary(Dictionary dictionary, String userId) {
     // TODO: implement createNewDictionary
     throw UnimplementedError();
   }
 
   @override
-  Future<void> removeDictionary(String id) {
+  Future<void> removeDictionary(String id, String userId) {
     // TODO: implement removeDictionary
     throw UnimplementedError();
   }

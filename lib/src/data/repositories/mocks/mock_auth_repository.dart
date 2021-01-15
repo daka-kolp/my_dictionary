@@ -15,10 +15,7 @@ class MockAuthRepository extends AuthRepository {
         _storeInteractor = GetIt.I<StoreInteractor>();
 
   @override
-  Future<bool> get isLoggedIn async {
-    final token = await _storeInteractor.getToken();
-    return token != null;
-  }
+  Future<String> get userId async => _storeInteractor.getToken();
 
   @override
   Future<void> loginWith(LoginService service) async {

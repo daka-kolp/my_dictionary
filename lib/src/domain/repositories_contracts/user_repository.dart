@@ -1,9 +1,13 @@
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 
 abstract class UserRepository {
-  Future<List<Dictionary>> getDictionaries(int firstIndex, int offset);
+  Future<List<Dictionary>> getDictionaries(
+    int firstIndex,
+    int offset,
+    String userId,
+  );
 
-  Future<void> createNewDictionary(Dictionary dictionary);
+  Future<void> createNewDictionary(Dictionary dictionary, String userId);
 
-  Future<void> removeDictionary(String id);
+  Future<void> removeDictionary(String dictionaryId, String userId);
 }

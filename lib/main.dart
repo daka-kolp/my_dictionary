@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/environment_banner.dart';
+import 'package:mydictionaryapp/src/domain/entities/user.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 Future<void> runMyDictionaryApp() async {
-  final isLoggedIn = await GetIt.I<AuthRepository>().isLoggedIn;
+  final isLoggedIn = await User.I.isLoggedIn;
   runApp(MyDictionaryApp(isLoggedIn: isLoggedIn));
 }
 

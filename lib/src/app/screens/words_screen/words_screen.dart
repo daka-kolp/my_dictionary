@@ -187,6 +187,9 @@ class _WordsScreenState extends State<WordsScreen> {
         await _read.addNewWord(returnedValue);
       } on WordAlreadyExistException {
         _showErrorMessage(wordAlreadyExistException);
+      } catch (e) {
+        //TODO: handle errors
+        _showErrorMessage(e);
       }
     }
   }

@@ -1,5 +1,5 @@
 abstract class AuthRepository {
-  Future<bool> get isLoggedIn;
+  Future<String> get userId;
 
   Future<void> loginWith(LoginService service);
 

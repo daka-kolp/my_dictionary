@@ -2,8 +2,8 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repositor
 
 class FirebaseAuthRepository extends AuthRepository {
   @override
-  // TODO: implement isLoggedIn
-  Future<bool> get isLoggedIn async => false;
+  // TODO: implement userId
+  Future<String> get userId => throw UnimplementedError();
 
   @override
   Future<void> loginWith(LoginService service) {
