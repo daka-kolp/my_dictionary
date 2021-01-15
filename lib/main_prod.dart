@@ -11,7 +11,7 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repositor
 import 'package:mydictionaryapp/src/global_config.dart';
 import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final theme = ThemeData(
@@ -41,5 +41,5 @@ void main() {
     ..registerSingleton<UserRepository>(FirebaseUserRepository())
     ..registerSingleton<DictionaryRepository>(FirebaseDictionaryRepository());
 
-  runMyDictionaryApp();
+  await runMyDictionaryApp();
 }
