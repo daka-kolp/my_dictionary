@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
@@ -7,6 +8,7 @@ import 'package:mydictionaryapp/src/global_config.dart';
 
 class WordsScreenPresenter with ChangeNotifier {
   final Dictionary dictionary;
+  final FlutterTts tts;
   final _fetchedStep = GetIt.I<GlobalConfig>().fetchStep;
 
   List<Word> _words;
@@ -19,11 +21,12 @@ class WordsScreenPresenter with ChangeNotifier {
   bool get isNewWordsLoading => _isNewWordsLoading;
   bool get isLoading => _isWordListUpdating;
 
-  WordsScreenPresenter(this.dictionary) {
+  WordsScreenPresenter(this.dictionary) : tts = FlutterTts() {
     _init();
   }
 
   Future<void> _init() async {
+    await _initTts();
     _isNewWordsLoading = true;
     notifyListeners();
     try {
@@ -43,6 +46,16 @@ class WordsScreenPresenter with ChangeNotifier {
     } catch (e) {
       print('WordsScreenPresenter: _init() => outer "try" : $e');
     }
+  }
+
+  Future<void> _initTts() async {
+    final ttsProp = dictionary.ttsProperties;
+    await Future.wait([
+      tts.setLanguage(ttsProp.language),
+      tts.setSpeechRate(ttsProp.speechRate),
+      tts.setVolume(ttsProp.volume),
+      tts.setPitch(ttsProp.pitch),
+    ]);
   }
 
   Future<void> uploadNewWords() async {
@@ -118,5 +131,11 @@ class WordsScreenPresenter with ChangeNotifier {
       _isWordListUpdating = false;
       notifyListeners();
     }
+  }
+
+  @override
+  Future <void> dispose() async{
+    await tts.stop();
+    super.dispose();
   }
 }

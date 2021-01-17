@@ -158,7 +158,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
       NewDictionaryScreen.buildPageRoute(),
     );
     if (newDictionary != null) {
-      //TODO: insert new dictionary
+      //TODO: create new dictionary
     }
   }
 

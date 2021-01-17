@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/screens/word_screens/edit_word_screen.dart';
@@ -47,12 +46,9 @@ class _WordsScreenState extends State<WordsScreen> {
   WordsScreenPresenter get _watch => context.watch<WordsScreenPresenter>();
   WordsScreenPresenter get _read => context.read<WordsScreenPresenter>();
 
-  FlutterTts _tts;
-
   @override
   void initState() {
     super.initState();
-    _initTts();
     _controller.addListener(_scrollListener);
   }
 
@@ -62,18 +58,6 @@ class _WordsScreenState extends State<WordsScreen> {
     if (position.pixels >= position.maxScrollExtent * 0.8) {
       await _read.uploadNewWords();
     }
-  }
-
-  Future<void> _initTts() async {
-    final ttsProp = _read.dictionary.ttsProperties;
-    _tts = FlutterTts();
-
-    await Future.wait([
-      _tts.setLanguage(ttsProp.language),
-      _tts.setSpeechRate(ttsProp.speechRate),
-      _tts.setVolume(ttsProp.volume),
-      _tts.setPitch(ttsProp.pitch),
-    ]);
   }
 
   @override
@@ -120,7 +104,7 @@ class _WordsScreenState extends State<WordsScreen> {
 
     final words = _watch.words;
     return TtsProvider(
-      tts: _tts,
+      tts: _watch.tts,
       child: CustomScrollView(
         controller: _controller,
 
@@ -202,7 +186,6 @@ class _WordsScreenState extends State<WordsScreen> {
 
   @override
   void dispose() {
-    _tts.stop();
     _controller.dispose();
     super.dispose();
   }

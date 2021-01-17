@@ -14,9 +14,9 @@ class User {
       : _authRepository = GetIt.I<AuthRepository>(),
         _userRepository = GetIt.I<UserRepository>();
 
-  Future<String> get id => _authRepository.userId;
+  Future<String> get _id => _authRepository.userId;
 
-  Future<bool> get isLoggedIn async => await id != null;
+  Future<bool> get isLoggedIn async => await _id != null;
 
   Future<void> loginWithGoogle() async {
     await _authRepository.loginWith(LoginService.google);
@@ -31,14 +31,14 @@ class User {
   }
 
   Future<List<Dictionary>> getDictionaries(int firstIndex, int offset) async {
-    return _userRepository.getDictionaries(firstIndex, offset, await id);
+    return _userRepository.getDictionaries(firstIndex, offset, await _id);
   }
 
   Future<void> createDictionary(Dictionary dictionary) async {
-    await _userRepository.createNewDictionary(dictionary, await id);
+    await _userRepository.createNewDictionary(dictionary, await _id);
   }
 
   Future<void> removeDictionary(String dictionaryId) async {
-    _userRepository.removeDictionary(dictionaryId, await id);
+    _userRepository.removeDictionary(dictionaryId, await _id);
   }
 }
