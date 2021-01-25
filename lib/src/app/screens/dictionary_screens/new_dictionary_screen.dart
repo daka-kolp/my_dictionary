@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_screen_presenter.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
+import 'package:provider/provider.dart';
 
 class NewDictionaryScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {
@@ -18,7 +20,12 @@ class NewDictionaryScreen extends StatefulWidget {
     return MaterialPageRoute(builder: _builder);
   }
 
-  static Widget _builder(BuildContext context) => NewDictionaryScreen();
+  static Widget _builder(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => NewDictionaryScreenPresenter(),
+      child: NewDictionaryScreen(),
+    );
+  }
 
   @override
   _NewDictionaryScreenState createState() => _NewDictionaryScreenState();
@@ -28,6 +35,11 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   final _formStateKey = GlobalKey<FormState>();
 
   bool _isFromValid = false;
+
+  NewDictionaryScreenPresenter get _watch =>
+      context.watch<NewDictionaryScreenPresenter>();
+  NewDictionaryScreenPresenter get _read =>
+      context.read<NewDictionaryScreenPresenter>();
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +77,11 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TitleTile(title: addOriginalLanguage),
-              Container(height: 48.0),
+              _emptyTile,
               TitleTile(title: addTranslationLanguage),
-              Container(height: 48.0),
+              _emptyTile,
               TitleTile(title: enterDictionaryName),
-              Container(height: 48.0),
+              _emptyTile,
               _buildAddDictionaryButton(),
             ],
           ),
@@ -81,6 +93,8 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   void _onFormChange() {
     setState(() => _isFromValid = _formStateKey.currentState.validate());
   }
+
+  Widget get _emptyTile => Container(height: 48.0);
 
   Widget _buildAddDictionaryButton() {
     return SafeArea(
