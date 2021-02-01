@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 
+import 'package:mydictionaryapp/src/domain/entities/language.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 
 class Dictionary {
   final String id;
-  final String originalLanguage;
-  final String translationLanguage;
+  final Language originalLanguage;
+  final Language translationLanguage;
   final String title;
   final TtsProperties ttsProperties;
   final DictionaryRepository _dictionaryRepository;
@@ -23,7 +24,7 @@ class Dictionary {
         assert(originalLanguage != null),
         assert(translationLanguage != null),
         assert(title != null),
-        ttsProperties = TtsProperties(originalLanguage),
+        ttsProperties = TtsProperties(originalLanguage.code),
         _dictionaryRepository = GetIt.I.get<DictionaryRepository>();
 
   @override

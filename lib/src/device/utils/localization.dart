@@ -32,3 +32,5 @@ final addOriginalLanguage = 'Выберите язык словаря';
 final addTranslationLanguage = 'Выберите язык перевода (по умолчанию будет использоваться язык локазизации Вашего устройства)';
 final enterDictionaryName = 'Введите название словаря (генерируется автоматически)';
 final wrongCredentials = 'Неверные учетные данные';
+final choseTargetLanguage = 'Выберите целевой язык';
+final choseLanguage = 'Выберите язык перевода';

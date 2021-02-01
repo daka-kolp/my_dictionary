@@ -1,18 +1,27 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+
+import 'package:mydictionaryapp/src/domain/entities/language.dart';
+import 'package:mydictionaryapp/src/domain/entities/user.dart';
 
 class NewDictionaryScreenPresenter with ChangeNotifier {
-  final FlutterTts _tts;
+  User get _user =>  User.I;
 
-  NewDictionaryScreenPresenter() : _tts = FlutterTts() {
+  List<Language> _languages = [];
+  bool _isLoading = false;
+
+  List<Language> get languages => _languages;
+  bool get isLoading => _isLoading;
+
+  NewDictionaryScreenPresenter() {
     _init();
   }
 
-  Future<void> _init() async {}
-
-  @override
-  void dispose() {
-    _tts.stop();
-    super.dispose();
+  Future<void> _init() async {
+    _isLoading = true;
+    notifyListeners();
+    _languages = await _user.getLanguages();
+    _isLoading = false;
+    notifyListeners();
   }
 }

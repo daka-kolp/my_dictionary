@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
+import 'package:mydictionaryapp/src/domain/entities/language.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 
 class MockUserRepository extends UserRepository {
@@ -9,14 +10,14 @@ class MockUserRepository extends UserRepository {
     return [
       Dictionary(
         id: 'en-GB_ru-RU',
-        originalLanguage: 'en-GB',
-        translationLanguage: 'ru',
+        originalLanguage: Language('en-GB', 'English(GB)'),
+        translationLanguage: Language('ru', 'Russian'),
         title: 'English(GB)',
       ),
       Dictionary(
         id: 'uk-UA_ru-RU',
-        originalLanguage: 'uk-UA',
-        translationLanguage: 'ru',
+        originalLanguage: Language('uk-UA', 'Українська'),
+        translationLanguage: Language('ru', 'Русский'),
         title: 'Ukrainian',
       ),
     ];

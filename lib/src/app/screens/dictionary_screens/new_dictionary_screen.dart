@@ -2,15 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_screen_presenter.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionary_screens/widgets/languages_list_button.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
+import 'package:mydictionaryapp/src/domain/entities/language.dart';
 
 //TODO: remove the import
 import 'package:mydictionaryapp/src/device/utils/localization.dart';
-import 'package:provider/provider.dart';
 
 class NewDictionaryScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {
@@ -33,6 +35,8 @@ class NewDictionaryScreen extends StatefulWidget {
 
 class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   final _formStateKey = GlobalKey<FormState>();
+  final _targetLanguagesKey = GlobalKey<FormFieldState<Language>>();
+  final _languagesKey = GlobalKey<FormFieldState<Language>>();
 
   bool _isFromValid = false;
 
@@ -43,15 +47,9 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return LoadingLayout(
-      isLoading: false,
-      child: GestureDetector(
-        onTap: _resetFocusNode,
-        child: Scaffold(
-          appBar: _buildAppBar(),
-          body: _buildBody(),
-        ),
-      ),
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: _buildBody(),
     );
   }
 
@@ -67,23 +65,30 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   }
 
   Widget _buildBody() {
-    return ScrollConfiguration(
-      behavior: NoOverScrollBehavior(),
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formStateKey,
-          onChanged: _onFormChange,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TitleTile(title: addOriginalLanguage),
-              _emptyTile,
-              TitleTile(title: addTranslationLanguage),
-              _emptyTile,
-              TitleTile(title: enterDictionaryName),
-              _emptyTile,
-              _buildAddDictionaryButton(),
-            ],
+    return LoadingLayout(
+      isLoading: _watch.isLoading,
+      child: GestureDetector(
+        onTap: _resetFocusNode,
+        child: ScrollConfiguration(
+          behavior: NoOverScrollBehavior(),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formStateKey,
+              onChanged: _onFormChange,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  TitleTile(title: addOriginalLanguage, isRequired: true),
+                  _watch.languages.isNotEmpty ? _targetLanguagesListButton : _emptyTile,
+                  TitleTile(title: addTranslationLanguage, isRequired: true),
+                  _watch.languages.isNotEmpty ? _languagesListButton : _emptyTile,
+                  TitleTile(title: enterDictionaryName, isRequired:  true),
+                  //TODO: add dictionary name field
+                  _emptyTile,
+                  _buildAddDictionaryButton(),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -94,7 +99,23 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
     setState(() => _isFromValid = _formStateKey.currentState.validate());
   }
 
-  Widget get _emptyTile => Container(height: 48.0);
+  Widget get _targetLanguagesListButton {
+    return LanguagesListButton(
+      languagesListKey: _targetLanguagesKey,
+      hint: choseTargetLanguage,
+      languages: _read.languages,
+    );
+  }
+
+  Widget get _languagesListButton {
+    return LanguagesListButton(
+      languagesListKey: _languagesKey,
+      hint: choseLanguage,
+      languages: _watch.languages,
+    );
+  }
+
+  Widget get _emptyTile => Container(height: 64.0);
 
   Widget _buildAddDictionaryButton() {
     return SafeArea(

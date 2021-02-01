@@ -76,15 +76,13 @@ class WithoutErrorTextFormField extends FormField<String> {
         assert(enableInteractiveSelection != null),
         super(
           key: key,
-          initialValue:
-              controller != null ? controller.text : (initialValue ?? ''),
+          initialValue: controller != null ? controller.text : (initialValue ?? ''),
           onSaved: onSaved,
           validator: validator,
           autovalidateMode: autovalidateMode,
           enabled: enabled,
           builder: (field) {
-            final _WithoutErrorTextFormFieldState state =
-                field as _WithoutErrorTextFormFieldState;
+            final _WithoutErrorTextFormFieldState state = field as _WithoutErrorTextFormFieldState;
             void onChangedHandler(String value) {
               if (onChanged != null) {
                 onChanged(value);
@@ -110,14 +108,8 @@ class WithoutErrorTextFormField extends FormField<String> {
               showCursor: showCursor,
               obscureText: obscureText,
               autocorrect: autocorrect,
-              smartDashesType: smartDashesType ??
-                  (obscureText
-                      ? SmartDashesType.disabled
-                      : SmartDashesType.enabled),
-              smartQuotesType: smartQuotesType ??
-                  (obscureText
-                      ? SmartQuotesType.disabled
-                      : SmartQuotesType.enabled),
+              smartDashesType: smartDashesType ?? (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
+              smartQuotesType: smartQuotesType ?? (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
               enableSuggestions: enableSuggestions,
               maxLengthEnforced: maxLengthEnforced,
               maxLines: maxLines,
@@ -145,19 +137,16 @@ class WithoutErrorTextFormField extends FormField<String> {
   final TextEditingController controller;
 
   @override
-  _WithoutErrorTextFormFieldState createState() =>
-      _WithoutErrorTextFormFieldState();
+  _WithoutErrorTextFormFieldState createState() => _WithoutErrorTextFormFieldState();
 }
 
 class _WithoutErrorTextFormFieldState extends FormFieldState<String> {
   TextEditingController _controller;
 
-  TextEditingController get _effectiveController =>
-      widget.controller ?? _controller;
+  TextEditingController get _effectiveController => widget.controller ?? _controller;
 
   @override
-  WithoutErrorTextFormField get widget =>
-      super.widget as WithoutErrorTextFormField;
+  WithoutErrorTextFormField get widget => super.widget as WithoutErrorTextFormField;
 
   @override
   void initState() {
@@ -177,9 +166,7 @@ class _WithoutErrorTextFormFieldState extends FormFieldState<String> {
       widget.controller?.addListener(_handleControllerChanged);
 
       if (oldWidget.controller != null && widget.controller == null) {
-        _controller = TextEditingController.fromValue(
-          oldWidget.controller.value,
-        );
+        _controller = TextEditingController.fromValue(oldWidget.controller.value);
       }
       if (widget.controller != null) {
         setValue(widget.controller.text);

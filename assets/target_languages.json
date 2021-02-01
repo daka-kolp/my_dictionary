@@ -1,11 +1,30 @@
-{
-  "ar" : "العربية",
-  "de-DE" : "Deutsch",
-  "en-GB" : "English(GB)",
-  "es-ES" : "Española",
-  "fr-FR" : "Français",
-  "it-IT" : "Italiano",
-  "ru-RU" : "Русский",
-  "uk-UA" : "Українська",
-  "zh-CN" : "中文"
-}
+[
+  {
+    "code": "de-DE",
+    "name": "Deutsch"
+  },
+  {
+    "code": "en-GB",
+    "name": "English(GB)"
+  },
+  {
+    "code": "es-ES",
+    "name": "Española"
+  },
+  {
+    "code": "fr-FR",
+    "name": "Français"
+  },
+  {
+    "code": "it-IT",
+    "name": "Italiano"
+  },
+  {
+    "code": "ru-RU",
+    "name": "Русский"
+  },
+  {
+    "code": "uk-UA",
+    "name": "Українська"
+  }
+]
