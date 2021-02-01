@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:mydictionaryapp/src/app/screens/new_dictionary_screen/widgets/without_error_dropdown_button_form_field.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 
 class LanguagesListButton extends StatelessWidget {
@@ -23,14 +25,12 @@ class LanguagesListButton extends StatelessWidget {
     return FutureBuilder<List<DropdownMenuItem<Language>>>(
       future: _asyncLanguagesListBuilder(languages),
       builder: (context, snapshot) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: DropdownButtonFormField<Language>(
+        return PaddingWrapper(
+          child: WithoutErrorDropdownButtonFormField<Language>(
             key: languagesListKey,
             hint: Text(hint),
             items: snapshot.data,
             validator: (value) => value == null ? '' : null,
-            onChanged: (value) {},
           ),
         );
       },

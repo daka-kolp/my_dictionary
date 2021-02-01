@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionary_screens/widgets/languages_list_button.dart';
+import 'package:mydictionaryapp/src/app/screens/new_dictionary_screen/new_dictionary_screen_presenter.dart';
+import 'package:mydictionaryapp/src/app/screens/new_dictionary_screen/widgets/languages_list_button.dart';
+import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
+import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 
 //TODO: remove the import
@@ -35,8 +37,9 @@ class NewDictionaryScreen extends StatefulWidget {
 
 class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   final _formStateKey = GlobalKey<FormState>();
-  final _targetLanguagesKey = GlobalKey<FormFieldState<Language>>();
-  final _languagesKey = GlobalKey<FormFieldState<Language>>();
+  final _targetLanguagesStateKey = GlobalKey<FormFieldState<Language>>();
+  final _languagesStateKey = GlobalKey<FormFieldState<Language>>();
+  final _dictionaryNameStateKey = GlobalKey<FormFieldState<String>>();
 
   bool _isFromValid = false;
 
@@ -79,12 +82,11 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TitleTile(title: addOriginalLanguage, isRequired: true),
-                  _watch.languages.isNotEmpty ? _targetLanguagesListButton : _emptyTile,
+                  _watch.languages.isNotEmpty ? _buildTargetLanguagesListButton() : _buildEmptyTile(),
                   TitleTile(title: addTranslationLanguage, isRequired: true),
-                  _watch.languages.isNotEmpty ? _languagesListButton : _emptyTile,
+                  _watch.languages.isNotEmpty ? _buildLanguagesListButton() : _buildEmptyTile(),
                   TitleTile(title: enterDictionaryName, isRequired:  true),
-                  //TODO: add dictionary name field
-                  _emptyTile,
+                  _buildDictionaryNameFormField(),
                   _buildAddDictionaryButton(),
                 ],
               ),
@@ -99,23 +101,32 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
     setState(() => _isFromValid = _formStateKey.currentState.validate());
   }
 
-  Widget get _targetLanguagesListButton {
+  Widget _buildTargetLanguagesListButton() {
     return LanguagesListButton(
-      languagesListKey: _targetLanguagesKey,
+      languagesListKey: _targetLanguagesStateKey,
       hint: choseTargetLanguage,
-      languages: _read.languages,
+      languages: _watch.languages,
     );
   }
 
-  Widget get _languagesListButton {
+  Widget _buildLanguagesListButton() {
     return LanguagesListButton(
-      languagesListKey: _languagesKey,
+      languagesListKey: _languagesStateKey,
       hint: choseLanguage,
       languages: _watch.languages,
     );
   }
 
-  Widget get _emptyTile => Container(height: 64.0);
+  Widget _buildDictionaryNameFormField() {
+    return PaddingWrapper(
+      child: WithoutErrorTextFormField(
+        key: _dictionaryNameStateKey,
+        validator: (value) => value.isEmpty ? '' : null,
+      ),
+    );
+  }
+
+  Widget _buildEmptyTile() => Container(height: 64.0);
 
   Widget _buildAddDictionaryButton() {
     return SafeArea(
@@ -131,6 +142,9 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   }
 
   Future<void> _onAdd() async {
-    //TODO: add new dictionary
+    print('_onAdd');
+    print(_targetLanguagesStateKey.currentState.value.name);
+    print(_languagesStateKey.currentState.value.name);
+    print(_dictionaryNameStateKey.currentState.value);
   }
 }
