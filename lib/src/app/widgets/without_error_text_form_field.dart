@@ -191,6 +191,12 @@ class _WithoutErrorTextFormFieldState extends FormFieldState<String> {
     });
   }
 
+  @override
+  void setValue(String value) {
+    super.setValue(value);
+    _effectiveController.text = value;
+  }
+
   void _handleControllerChanged() {
     if (_effectiveController.text != value) {
       didChange(_effectiveController.text);

@@ -33,11 +33,13 @@ class _TranslationListTile extends StatelessWidget {
   }
 
   Widget _buildTranslationText(ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Text(
-        translation.translation,
-        style: theme.textTheme.subtitle1,
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Text(
+          translation.translation,
+          style: theme.textTheme.subtitle1,
+        ),
       ),
     );
   }

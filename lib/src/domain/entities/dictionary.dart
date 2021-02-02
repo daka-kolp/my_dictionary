@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
@@ -26,6 +27,20 @@ class Dictionary {
         assert(title != null),
         ttsProperties = TtsProperties(originalLanguage.code),
         _dictionaryRepository = GetIt.I.get<DictionaryRepository>();
+
+
+  factory Dictionary.newInstance({
+    String title,
+    Language originalLanguage,
+    Language translationLanguage,
+  }) {
+    return Dictionary(
+      id: GetIt.I.get<Uuid>().v1(),
+      originalLanguage: originalLanguage,
+      translationLanguage: translationLanguage,
+      title: title,
+    );
+  }
 
   @override
   bool operator ==(Object other) =>

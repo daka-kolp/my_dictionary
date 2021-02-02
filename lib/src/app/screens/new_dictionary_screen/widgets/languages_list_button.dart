@@ -9,12 +9,14 @@ class LanguagesListButton extends StatelessWidget {
   final GlobalKey<FormFieldState<Language>> languagesListKey;
   final String hint;
   final List<Language> languages;
+  final ValueChanged<Language> onChanged;
 
   const LanguagesListButton({
     Key key,
     @required this.languagesListKey,
     @required this.hint,
     @required this.languages,
+    this.onChanged,
   })  : assert(languagesListKey != null),
         assert(hint != null),
         assert(languages != null),
@@ -31,6 +33,7 @@ class LanguagesListButton extends StatelessWidget {
             hint: Text(hint),
             items: snapshot.data,
             validator: (value) => value == null ? '' : null,
+            onChanged: onChanged,
           ),
         );
       },

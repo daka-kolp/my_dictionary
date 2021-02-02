@@ -11,6 +11,7 @@ import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
+import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 
 //TODO: remove the import
@@ -43,10 +44,7 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
 
   bool _isFromValid = false;
 
-  NewDictionaryScreenPresenter get _watch =>
-      context.watch<NewDictionaryScreenPresenter>();
-  NewDictionaryScreenPresenter get _read =>
-      context.read<NewDictionaryScreenPresenter>();
+  NewDictionaryScreenPresenter get _watch => context.watch<NewDictionaryScreenPresenter>();
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +104,11 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
       languagesListKey: _targetLanguagesStateKey,
       hint: choseTargetLanguage,
       languages: _watch.languages,
+      onChanged: (value) {
+        _dictionaryNameStateKey.currentState
+          ..setValue(value.name)
+          ..didChange(value.name);
+      } ,
     );
   }
 
@@ -142,9 +145,11 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   }
 
   Future<void> _onAdd() async {
-    print('_onAdd');
-    print(_targetLanguagesStateKey.currentState.value.name);
-    print(_languagesStateKey.currentState.value.name);
-    print(_dictionaryNameStateKey.currentState.value);
+    final newDictionary = Dictionary.newInstance(
+      title: _dictionaryNameStateKey.currentState.value,
+      originalLanguage: _targetLanguagesStateKey.currentState.value,
+      translationLanguage: _languagesStateKey.currentState.value,
+    );
+    Navigator.pop<Dictionary>(context, newDictionary);
   }
 }
