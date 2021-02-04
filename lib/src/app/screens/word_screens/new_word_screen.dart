@@ -133,7 +133,6 @@ class _NewWordScreenState extends State<NewWordScreen> {
       translations: _listStateKey.currentState.value,
       hint: _hintStateKey.currentState.value,
     );
-
     Navigator.pop<Word>(context, newWord);
   }
 }

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen_presenter.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
+import 'package:mydictionaryapp/src/app/utils/show_snack_bar.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 
 //TODO: remove the import
@@ -101,10 +102,10 @@ class _LoginScreenState extends State<LoginScreen> {
       await _read.loginWithGoogle();
       await _routeToDictionariesScreen();
     } on WrongCredentialsException {
-      _showErrorMessage(wrongCredentials);
+      showErrorMessage(_scaffoldKey, wrongCredentials);
     } catch (e) {
       //TODO: handle errors
-      _showErrorMessage(e);
+      showErrorMessage(_scaffoldKey, e);
     }
   }
 
@@ -117,9 +118,5 @@ class _LoginScreenState extends State<LoginScreen> {
       DictionariesScreen.buildPageRoute(),
       (route) => false,
     );
-  }
-
-  void _showErrorMessage(String message) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
   }
 }

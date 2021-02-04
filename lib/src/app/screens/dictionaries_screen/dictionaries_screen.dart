@@ -10,7 +10,8 @@ import 'package:mydictionaryapp/src/app/screens/new_dictionary_screen/new_dictio
 import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
-import 'package:mydictionaryapp/src/app/widgets/dialog_builder.dart';
+import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
+import 'package:mydictionaryapp/src/app/utils/show_snack_bar.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 
@@ -205,15 +206,11 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
         (route) => false,
       );
     } on LogOutException {
-      _showErrorMessage(logOutException);
+      showErrorMessage(_scaffoldKey, logOutException);
     } catch (e) {
       //TODO: handle errors
-      _showErrorMessage(e);
+      showErrorMessage(_scaffoldKey, e);
     }
-  }
-
-  void _showErrorMessage(String message) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override

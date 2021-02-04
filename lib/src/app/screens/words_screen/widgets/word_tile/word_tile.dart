@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provider.dart';
-import 'package:mydictionaryapp/src/app/widgets/dialog_builder.dart';
+import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
 //TODO: remove the import

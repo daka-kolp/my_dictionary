@@ -9,6 +9,7 @@ import 'package:mydictionaryapp/src/app/screens/word_screens/new_word_screen.dar
 import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen_presenter.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provider.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/word_tile/word_tile.dart';
+import 'package:mydictionaryapp/src/app/utils/show_snack_bar.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
@@ -146,10 +147,10 @@ class _WordsScreenState extends State<WordsScreen> {
           await _read.updateWord(returnedValue);
         }
       } on WordNotExistException {
-        _showErrorMessage(wordAlreadyExistException);
+        showErrorMessage(_scaffoldKey, wordAlreadyExistException);
       } catch (e) {
         //TODO: handle errors
-        _showErrorMessage(e);
+        showErrorMessage(_scaffoldKey, e);
       }
     }
   }
@@ -170,18 +171,12 @@ class _WordsScreenState extends State<WordsScreen> {
       try {
         await _read.addNewWord(returnedValue);
       } on WordAlreadyExistException {
-        _showErrorMessage(wordAlreadyExistException);
+        showErrorMessage(_scaffoldKey, wordAlreadyExistException);
       } catch (e) {
         //TODO: handle errors
-        _showErrorMessage(e);
+        showErrorMessage(_scaffoldKey, e);
       }
     }
-  }
-
-  void _showErrorMessage(String message) {
-    _scaffoldKey.currentState.showSnackBar(
-      SnackBar(content: Text(message)),
-    );
   }
 
   @override
