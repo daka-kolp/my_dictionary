@@ -98,8 +98,7 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   void _onFormChange() {
     final dictionaryName = '${_targetLanguagesStateKey.currentState.value?.name ?? '...'} - ${_languagesStateKey.currentState.value?.name ?? '...'}';
     _dictionaryNameStateKey.currentState
-      ..setValue(dictionaryName)
-      ..didChange(dictionaryName);
+      ..setValue(dictionaryName);
 
     setState(() => _isFromValid = _formStateKey.currentState.validate());
   }
