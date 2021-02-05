@@ -80,10 +80,10 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TitleTile(title: addOriginalLanguage, isRequired: true),
-                  _watch.languages.isNotEmpty ? _buildTargetLanguagesListButton() : _buildEmptyTile(),
+                  _watch.isLoading ? _buildEmptyTile() : _buildTargetLanguagesListButton(),
                   TitleTile(title: addTranslationLanguage, isRequired: true),
-                  _watch.languages.isNotEmpty ? _buildLanguagesListButton() : _buildEmptyTile(),
-                  TitleTile(title: enterDictionaryName, isRequired:  true),
+                  _watch.isLoading ? _buildEmptyTile() : _buildLanguagesListButton(),
+                  TitleTile(title: enterDictionaryName, isRequired: true),
                   _buildDictionaryNameFormField(),
                   _buildAddDictionaryButton(),
                 ],
@@ -96,6 +96,11 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   }
 
   void _onFormChange() {
+    final dictionaryName = '${_targetLanguagesStateKey.currentState.value?.name ?? '...'} - ${_languagesStateKey.currentState.value?.name ?? '...'}';
+    _dictionaryNameStateKey.currentState
+      ..setValue(dictionaryName)
+      ..didChange(dictionaryName);
+
     setState(() => _isFromValid = _formStateKey.currentState.validate());
   }
 
@@ -104,16 +109,12 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
       languagesListKey: _targetLanguagesStateKey,
       hint: choseTargetLanguage,
       languages: _watch.languages,
-      onChanged: (value) {
-        _dictionaryNameStateKey.currentState
-          ..setValue(value.name)
-          ..didChange(value.name);
-      } ,
     );
   }
 
   Widget _buildLanguagesListButton() {
     return LanguagesListButton(
+      initialValue: _watch.platformLanguage,
       languagesListKey: _languagesStateKey,
       hint: choseLanguage,
       languages: _watch.languages,

@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+part of 'languages_list_button.dart';
 
-class WithoutErrorDropdownButtonFormField<T> extends FormField<T> {
+class _WithoutErrorDropdownButtonFormField<T> extends FormField<T> {
   final ValueChanged<T> onChanged;
 
-  WithoutErrorDropdownButtonFormField({
+  _WithoutErrorDropdownButtonFormField({
     Key key,
     @required List<DropdownMenuItem<T>> items,
     DropdownButtonBuilder selectedItemBuilder,
@@ -97,7 +97,7 @@ class WithoutErrorDropdownButtonFormField<T> extends FormField<T> {
 
 class _WithoutErrorDropdownButtonFormFieldState<T> extends FormFieldState<T> {
   @override
-  WithoutErrorDropdownButtonFormField<T> get widget => super.widget as WithoutErrorDropdownButtonFormField<T>;
+  _WithoutErrorDropdownButtonFormField<T> get widget => super.widget as _WithoutErrorDropdownButtonFormField<T>;
 
   @override
   void didChange(T value) {
@@ -108,7 +108,7 @@ class _WithoutErrorDropdownButtonFormFieldState<T> extends FormFieldState<T> {
   }
 
   @override
-  void didUpdateWidget(WithoutErrorDropdownButtonFormField<T> oldWidget) {
+  void didUpdateWidget(_WithoutErrorDropdownButtonFormField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.initialValue != widget.initialValue) {
       setValue(widget.initialValue);

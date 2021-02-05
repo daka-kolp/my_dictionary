@@ -36,10 +36,6 @@ class User {
 
   Future<List<Dictionary>> getDictionaries(int firstIndex, int offset) async {
     return _userRepository.getDictionaries(firstIndex, offset, await _id);
-  }  
-  
-  Future<List<Language>> getLanguages() async {
-    return _languagesRepository.getLanguages();
   }
 
   Future<void> createDictionary(Dictionary dictionary) async {
@@ -47,6 +43,14 @@ class User {
   }
 
   Future<void> removeDictionary(String dictionaryId) async {
-    _userRepository.removeDictionary(dictionaryId, await _id);
+    await _userRepository.removeDictionary(dictionaryId, await _id);
+  }
+
+  Future<Language> getLocalLanguage() async {
+    return _languagesRepository.getLocalLanguage();
+  }
+
+  Future<List<Language>> getLanguages() async {
+    return _languagesRepository.getLanguages();
   }
 }

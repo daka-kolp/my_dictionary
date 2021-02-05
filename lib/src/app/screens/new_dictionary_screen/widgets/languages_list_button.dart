@@ -1,22 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:mydictionaryapp/src/app/screens/new_dictionary_screen/widgets/without_error_dropdown_button_form_field.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
+
+part '_without_error_dropdown_button_form_field.dart';
 
 class LanguagesListButton extends StatelessWidget {
   final GlobalKey<FormFieldState<Language>> languagesListKey;
   final String hint;
   final List<Language> languages;
-  final ValueChanged<Language> onChanged;
+  final Language initialValue;
 
   const LanguagesListButton({
     Key key,
     @required this.languagesListKey,
     @required this.hint,
     @required this.languages,
-    this.onChanged,
+    this.initialValue,
   })  : assert(languagesListKey != null),
         assert(hint != null),
         assert(languages != null),
@@ -28,12 +29,12 @@ class LanguagesListButton extends StatelessWidget {
       future: _asyncLanguagesListBuilder(languages),
       builder: (context, snapshot) {
         return PaddingWrapper(
-          child: WithoutErrorDropdownButtonFormField<Language>(
+          child: _WithoutErrorDropdownButtonFormField<Language>(
             key: languagesListKey,
+            value: initialValue,
             hint: Text(hint),
             items: snapshot.data,
             validator: (value) => value == null ? '' : null,
-            onChanged: onChanged,
           ),
         );
       },
