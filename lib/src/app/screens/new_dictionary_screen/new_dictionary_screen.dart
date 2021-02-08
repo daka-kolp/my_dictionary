@@ -110,7 +110,9 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
 
   void _onTargetLanguagesChanged(Language value) {
     final dictionaryName = '${value.name} - ${_languagesStateKey.currentState.value?.name ?? '...'}';
-    _dictionaryNameStateKey.currentState.setValue(dictionaryName);
+    _dictionaryNameStateKey.currentState
+      ..didChange(dictionaryName)
+      ..setValue(dictionaryName);
   }
 
   Widget _buildLanguagesListButton() {
@@ -125,7 +127,9 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
 
   void _onLanguagesChanged(Language value) {
     final dictionaryName = '${_targetLanguagesStateKey.currentState.value?.name ?? '...'} - ${value.name}';
-    _dictionaryNameStateKey.currentState.setValue(dictionaryName);
+    _dictionaryNameStateKey.currentState
+      ..didChange(dictionaryName)
+      ..setValue(dictionaryName);
   }
 
   Widget _buildDictionaryNameFormField() {
