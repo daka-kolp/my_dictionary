@@ -14,12 +14,12 @@ class WordsScreenPresenter with ChangeNotifier {
   List<Word> _words;
   bool _isNewWordsAvailable = true;
   bool _isNewWordsLoading = false;
-  bool _isWordListUpdating = false;
+  bool _isWordsListUpdating = false;
   int _firstIndex = 0;
 
   List<Word> get words => _words;
   bool get isNewWordsLoading => _isNewWordsLoading;
-  bool get isLoading => _isWordListUpdating;
+  bool get isLoading => _isWordsListUpdating;
 
   WordsScreenPresenter(this.dictionary) : tts = FlutterTts() {
     _init();
@@ -30,21 +30,17 @@ class WordsScreenPresenter with ChangeNotifier {
     _isNewWordsLoading = true;
     notifyListeners();
     try {
-      try {
-        _words = await dictionary.getWords(_firstIndex, _fetchedStep);
-        if (_words.length < _fetchedStep) {
-          _isNewWordsAvailable = false;
-        }
-        _firstIndex += _fetchedStep;
-      } catch (e) {
-        print('WordsScreenPresenter: _init() => inner "try" : $e');
-        rethrow;
-      } finally {
-        _isNewWordsLoading = false;
-        notifyListeners();
+      _words = await dictionary.getWords(_firstIndex, _fetchedStep);
+      if (_words.length < _fetchedStep) {
+        _isNewWordsAvailable = false;
       }
+      _firstIndex += _fetchedStep;
     } catch (e) {
-      print('WordsScreenPresenter: _init() => outer "try" : $e');
+      _words = <Word>[];
+      print('WordsScreenPresenter: _init() => $e');
+    } finally {
+      _isNewWordsLoading = false;
+      notifyListeners();
     }
   }
 
@@ -86,22 +82,22 @@ class WordsScreenPresenter with ChangeNotifier {
   }
 
   Future<void> addNewWord(Word newWord) async {
-    _isWordListUpdating = true;
+    _isWordsListUpdating = true;
     notifyListeners();
     try {
       await dictionary.addWord(newWord);
-      words.insert(0, newWord);
+      _words.insert(0, newWord);
     } catch (e) {
-      print('NewWordScreenPresenter: addNewWord(newWord) => $e');
+      print('WordsScreenPresenter: addNewWord(newWord) => $e');
       rethrow;
     } finally {
-      _isWordListUpdating = false;
+      _isWordsListUpdating = false;
       notifyListeners();
     }
   }
 
   Future<void> updateWord(Word editedWord) async {
-    _isWordListUpdating = true;
+    _isWordsListUpdating = true;
     notifyListeners();
     try {
       await dictionary.editWord(editedWord);
@@ -110,25 +106,25 @@ class WordsScreenPresenter with ChangeNotifier {
         ..removeAt(wordIndex)
         ..insert(wordIndex, editedWord);
     } catch (e) {
-      print('EditWordScreenPresenter: editWord(editedWord) => $e');
+      print('WordsScreenPresenter: editWord(editedWord) => $e');
       rethrow;
     } finally {
-      _isWordListUpdating = false;
+      _isWordsListUpdating = false;
       notifyListeners();
     }
   }
 
   Future<void> removeWord(String removedWordId) async {
-    _isWordListUpdating = true;
+    _isWordsListUpdating = true;
     notifyListeners();
     try {
       await dictionary.removeWord(removedWordId);
       _words.removeWhere((w) => w.id == removedWordId);
     } catch (e) {
-      print('EditWordScreenPresenter: removeWord(removedWordId) => $e');
+      print('WordsScreenPresenter: removeWord(removedWordId) => $e');
       rethrow;
     } finally {
-      _isWordListUpdating = false;
+      _isWordsListUpdating = false;
       notifyListeners();
     }
   }

@@ -155,11 +155,19 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   Future<void> _onAddNewDictionaryPressed() async {
-    final newDictionary = await Navigator.of(context).push(
+    final returnedValue = await Navigator.of(context).push(
       NewDictionaryScreen.buildPageRoute(),
     );
-    if (newDictionary != null) {
-      //TODO: create new dictionary
+
+    if (returnedValue != null && returnedValue.runtimeType == Dictionary) {
+      try {
+        await _read.createDictionary(returnedValue);
+      } on DictionaryAlreadyExistException {
+        showErrorMessage(_scaffoldKey, dictionaryAlreadyExistException);
+      } catch (e) {
+        //TODO: handle errors
+        showErrorMessage(_scaffoldKey, e);
+      }
     }
   }
 

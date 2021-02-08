@@ -96,10 +96,6 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   }
 
   void _onFormChange() {
-    final dictionaryName = '${_targetLanguagesStateKey.currentState.value?.name ?? '...'} - ${_languagesStateKey.currentState.value?.name ?? '...'}';
-    _dictionaryNameStateKey.currentState
-      ..setValue(dictionaryName);
-
     setState(() => _isFromValid = _formStateKey.currentState.validate());
   }
 
@@ -108,7 +104,13 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
       languagesListKey: _targetLanguagesStateKey,
       hint: choseTargetLanguage,
       languages: _watch.languages,
+      onChanged: _onTargetLanguagesChanged,
     );
+  }
+
+  void _onTargetLanguagesChanged(Language value) {
+    final dictionaryName = '${value.name} - ${_languagesStateKey.currentState.value?.name ?? '...'}';
+    _dictionaryNameStateKey.currentState.setValue(dictionaryName);
   }
 
   Widget _buildLanguagesListButton() {
@@ -117,7 +119,13 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
       languagesListKey: _languagesStateKey,
       hint: choseLanguage,
       languages: _watch.languages,
+      onChanged: _onLanguagesChanged,
     );
+  }
+
+  void _onLanguagesChanged(Language value) {
+    final dictionaryName = '${_targetLanguagesStateKey.currentState.value?.name ?? '...'} - ${value.name}';
+    _dictionaryNameStateKey.currentState.setValue(dictionaryName);
   }
 
   Widget _buildDictionaryNameFormField() {

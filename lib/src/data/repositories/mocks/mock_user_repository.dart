@@ -48,7 +48,7 @@ class MockUserRepository extends UserRepository {
     await Future.delayed(Duration(seconds: 1));
     try {
       if (_dictionaries.contains(dictionary)) {
-        throw DictionaryAlreadyExistException(dictionary.id);
+        throw DictionaryAlreadyExistException(dictionary.title);
       }
       _dictionaries.add(dictionary);
     } on DictionaryAlreadyExistException {

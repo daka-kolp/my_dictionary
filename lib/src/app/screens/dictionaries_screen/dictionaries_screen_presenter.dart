@@ -38,8 +38,8 @@ class DictionariesScreenPresenter with ChangeNotifier {
       }
       _firstIndex += _fetchedStep;
     } catch (e) {
+      _dictionaries = <Dictionary>[];
       print('DictionariesScreenPresenter: _init() => $e');
-      rethrow;
     } finally {
       _isNewDictionariesLoading = false;
       notifyListeners();
@@ -82,6 +82,21 @@ class DictionariesScreenPresenter with ChangeNotifier {
       }
     } catch (e) {
       print('DictionariesScreenPresenter: changeUser() => $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> createDictionary(Dictionary newDictionary) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await _user.createDictionary(newDictionary);
+      _dictionaries.insert(0, newDictionary);
+    } catch (e) {
+      print('DictionariesScreenPresenter: createDictionary(newDictionary) => $e');
+      rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();

@@ -47,11 +47,10 @@ class Dictionary {
       identical(this, other) ||
       other is Dictionary &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
           title == other.title;
 
   @override
-  int get hashCode => id.hashCode ^ title.hashCode;
+  int get hashCode => title.hashCode;
 
   Future<List<Word>> getWords(int firstIndex, int offset) async {
     return await _dictionaryRepository.getWords(firstIndex, offset, id);
