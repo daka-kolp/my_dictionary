@@ -147,7 +147,7 @@ class _WordsScreenState extends State<WordsScreen> {
           await _read.updateWord(returnedValue);
         }
       } on WordNotExistException {
-        showErrorMessage(_scaffoldKey, wordAlreadyExistException);
+        showErrorMessage(_scaffoldKey, wordNotExistException);
       } catch (e) {
         //TODO: handle errors
         showErrorMessage(_scaffoldKey, e);

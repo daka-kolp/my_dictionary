@@ -42,6 +42,10 @@ class User {
     await _userRepository.createNewDictionary(dictionary, await _id);
   }
 
+  Future<void> editDictionary(Dictionary editedDictionary) async {
+    await _userRepository.editDictionary(editedDictionary, await _id);
+  }
+
   Future<void> removeDictionary(String dictionaryId) async {
     await _userRepository.removeDictionary(dictionaryId, await _id);
   }

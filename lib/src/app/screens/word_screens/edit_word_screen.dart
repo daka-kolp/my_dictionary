@@ -17,7 +17,9 @@ import 'package:mydictionaryapp/src/device/utils/localization.dart';
 class EditWordScreen extends StatefulWidget {
   final Word word;
 
-  const EditWordScreen({Key key, this.word}) : super(key: key);
+  const EditWordScreen({Key key, @required this.word})
+      : assert(word != null),
+        super(key: key);
 
   static PageRoute buildPageRoute(Word word) {
     if (Platform.isIOS) {

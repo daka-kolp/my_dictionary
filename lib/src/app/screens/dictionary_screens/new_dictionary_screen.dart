@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mydictionaryapp/src/app/screens/new_dictionary_screen/new_dictionary_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/new_dictionary_screen/widgets/languages_list_button.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_screen_presenter.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionary_screens/widgets/languages_list_button.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';

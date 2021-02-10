@@ -28,7 +28,6 @@ class Dictionary {
         ttsProperties = TtsProperties(originalLanguage.code),
         _dictionaryRepository = GetIt.I.get<DictionaryRepository>();
 
-
   factory Dictionary.newInstance({
     String title,
     Language originalLanguage,
@@ -39,6 +38,15 @@ class Dictionary {
       originalLanguage: originalLanguage,
       translationLanguage: translationLanguage,
       title: title,
+    );
+  }
+
+  Dictionary copyWith({String title}) {
+    return Dictionary(
+      id: id,
+      title: title ?? this.title,
+      originalLanguage: originalLanguage,
+      translationLanguage: translationLanguage,
     );
   }
 

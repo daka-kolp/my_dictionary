@@ -57,6 +57,20 @@ class MockUserRepository extends UserRepository {
   }
 
   @override
+  Future<void> editDictionary(Dictionary dictionary, String userId) async {
+    await Future.delayed(Duration(seconds: 1));
+    final dictionaryIndex = _dictionaries.indexWhere(
+      (d) => d.id == dictionary.id,
+    );
+    if (dictionaryIndex == -1) {
+      throw DictionaryNotExistException(dictionary.title);
+    }
+    _dictionaries
+      ..removeAt(dictionaryIndex)
+      ..insert(dictionaryIndex, dictionary);
+  }
+
+  @override
   Future<void> removeDictionary(String dictionaryId, String userId) async {
     await Future.delayed(Duration(seconds: 1));
     try {

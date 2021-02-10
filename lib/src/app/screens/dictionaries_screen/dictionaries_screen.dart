@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/new_dictionary_screen/new_dictionary_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionary_screens/edit_dictionary_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_screen.dart';
 import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
@@ -144,7 +145,24 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   Future<void> _onItemEdit(Dictionary dictionary) async {
-    //TODO: edit dictionary
+    final returnedValue = await Navigator.of(context).push(
+      EditDictionaryScreen.buildPageRoute(dictionary),
+    );
+
+    if (returnedValue != null) {
+      try {
+        if (returnedValue.runtimeType == String) {
+          await _read.removeDictionary(returnedValue);
+        } else if (returnedValue.runtimeType == Dictionary) {
+          await _read.editDictionary(returnedValue);
+        }
+      } on DictionaryNotExistException {
+        showErrorMessage(_scaffoldKey, dictionaryNotExistException);
+      } catch (e) {
+        //TODO: handle errors
+        showErrorMessage(_scaffoldKey, e);
+      }
+    }
   }
 
   Widget _buildFloatingActionButton() {
