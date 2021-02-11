@@ -37,3 +37,5 @@ final choseLanguage = 'Выберите язык перевода';
 final dictionaryAlreadyExistException = 'Словарь с таким названием уже существует';
 final dictionaryNotExistException = 'Это слово не существует в словаре';
 final editDictionaryName = 'Отредактируйте название словаря';
+final removeDictionaryQuestion = 'Вы уверены что хотите удалить этот словарь?';
+

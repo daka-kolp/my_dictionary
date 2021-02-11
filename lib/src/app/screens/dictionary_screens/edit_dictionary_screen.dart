@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
+import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
@@ -60,7 +61,7 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           child: Icon(CupertinoIcons.delete_simple),
-          onPressed: () {},
+          onPressed: _showDialogOnRemoveDictionary,
         ),
       );
     }
@@ -71,10 +72,21 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
         IconButton(
           icon: Icon(Icons.delete),
           tooltip: remove,
-          onPressed: () {},
+          onPressed: _showDialogOnRemoveDictionary,
         ),
       ],
     );
+  }
+
+  Future<void> _showDialogOnRemoveDictionary() async {
+    await showDialog(
+      context: context,
+      builder: dialogBuilder(context, removeDictionaryQuestion, _onRemove),
+    );
+  }
+
+  void _onRemove() {
+    Navigator.of(context)..pop()..pop<String>(widget.dictionary.id);
   }
 
   Widget _buildBody() {
@@ -112,9 +124,14 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
       child: WithoutErrorTextFormField(
         key: _dictionaryNameStateKey,
         initialValue: widget.dictionary.title,
-        validator: (value) => value.isEmpty || value.compareTo(widget.dictionary.title) == 0 ? '' : null,
+        validator: _dictionaryNameValidator,
       ),
     );
+  }
+
+  String _dictionaryNameValidator(String value) {
+    final isValidate = value.isEmpty || value.compareTo(widget.dictionary.title) == 0;
+    return isValidate ? '' : null;
   }
 
   Widget _buildEditDictionaryButton() {

@@ -90,7 +90,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
     );
   }
 
-  Future<void> _onRemove() async {
+  void _onRemove() {
     Navigator.of(context)..pop()..pop<String>(widget.word.id);
   }
 
