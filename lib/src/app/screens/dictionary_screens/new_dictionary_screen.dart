@@ -39,7 +39,6 @@ class NewDictionaryScreen extends StatefulWidget {
 class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   final _formStateKey = GlobalKey<FormState>();
   final _targetLanguagesStateKey = GlobalKey<FormFieldState<Language>>();
-  final _languagesStateKey = GlobalKey<FormFieldState<Language>>();
   final _dictionaryNameStateKey = GlobalKey<FormFieldState<String>>();
 
   bool _isFromValid = false;
@@ -81,8 +80,6 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
                 children: <Widget>[
                   TitleTile(title: addOriginalLanguage, isRequired: true),
                   _watch.isLoading ? _buildEmptyTile() : _buildTargetLanguagesListButton(),
-                  TitleTile(title: addTranslationLanguage, isRequired: true),
-                  _watch.isLoading ? _buildEmptyTile() : _buildLanguagesListButton(),
                   TitleTile(title: enterDictionaryName, isRequired: true),
                   _buildDictionaryNameFormField(),
                   _buildAddDictionaryButton(),
@@ -109,28 +106,13 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   }
 
   void _onTargetLanguagesChanged(Language value) {
-    final dictionaryName = '${value.name} - ${_languagesStateKey.currentState.value?.name ?? '...'}';
+    final dictionaryName = value.name;
     _dictionaryNameStateKey.currentState
       ..didChange(dictionaryName)
       ..setValue(dictionaryName);
   }
 
-  Widget _buildLanguagesListButton() {
-    return LanguagesListButton(
-      initialValue: _watch.platformLanguage,
-      languagesListKey: _languagesStateKey,
-      hint: choseLanguage,
-      languages: _watch.languages,
-      onChanged: _onLanguagesChanged,
-    );
-  }
-
-  void _onLanguagesChanged(Language value) {
-    final dictionaryName = '${_targetLanguagesStateKey.currentState.value?.name ?? '...'} - ${value.name}';
-    _dictionaryNameStateKey.currentState
-      ..didChange(dictionaryName)
-      ..setValue(dictionaryName);
-  }
+  Widget _buildEmptyTile() => Container(height: 64.0);
 
   Widget _buildDictionaryNameFormField() {
     return PaddingWrapper(
@@ -140,8 +122,6 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
       ),
     );
   }
-
-  Widget _buildEmptyTile() => Container(height: 64.0);
 
   Widget _buildAddDictionaryButton() {
     return SafeArea(
@@ -160,7 +140,6 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
     final newDictionary = Dictionary.newInstance(
       title: _dictionaryNameStateKey.currentState.value,
       originalLanguage: _targetLanguagesStateKey.currentState.value,
-      translationLanguage: _languagesStateKey.currentState.value,
     );
     Navigator.pop<Dictionary>(context, newDictionary);
   }

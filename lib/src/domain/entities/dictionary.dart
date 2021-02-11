@@ -11,7 +11,6 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_rep
 class Dictionary {
   final String id;
   final Language originalLanguage;
-  final Language translationLanguage;
   final String title;
   final TtsProperties ttsProperties;
   final DictionaryRepository _dictionaryRepository;
@@ -19,11 +18,9 @@ class Dictionary {
   Dictionary({
     @required this.id,
     @required this.originalLanguage,
-    @required this.translationLanguage,
     @required this.title,
   })  : assert(id != null),
         assert(originalLanguage != null),
-        assert(translationLanguage != null),
         assert(title != null),
         ttsProperties = TtsProperties(originalLanguage.code),
         _dictionaryRepository = GetIt.I.get<DictionaryRepository>();
@@ -31,12 +28,10 @@ class Dictionary {
   factory Dictionary.newInstance({
     String title,
     Language originalLanguage,
-    Language translationLanguage,
   }) {
     return Dictionary(
       id: GetIt.I.get<Uuid>().v1(),
       originalLanguage: originalLanguage,
-      translationLanguage: translationLanguage,
       title: title,
     );
   }
@@ -46,7 +41,6 @@ class Dictionary {
       id: id,
       title: title ?? this.title,
       originalLanguage: originalLanguage,
-      translationLanguage: translationLanguage,
     );
   }
 

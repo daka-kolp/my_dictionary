@@ -11,13 +11,11 @@ class MockUserRepository extends UserRepository {
       Dictionary(
         id: 'en-GB_ru-RU',
         originalLanguage: Language('en-GB', 'English(GB)'),
-        translationLanguage: Language('ru', 'Russian'),
         title: 'English(GB)',
       ),
       Dictionary(
         id: 'uk-UA_ru-RU',
         originalLanguage: Language('uk-UA', 'Українська'),
-        translationLanguage: Language('ru', 'Русский'),
         title: 'Ukrainian',
       ),
     ];
