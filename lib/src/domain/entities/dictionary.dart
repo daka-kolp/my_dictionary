@@ -16,18 +16,15 @@ class Dictionary {
   final DictionaryRepository _dictionaryRepository;
 
   Dictionary({
-    @required this.id,
-    @required this.originalLanguage,
-    @required this.title,
-  })  : assert(id != null),
-        assert(originalLanguage != null),
-        assert(title != null),
-        ttsProperties = TtsProperties(originalLanguage.code),
+    required this.id,
+    required this.originalLanguage,
+    required this.title,
+  })   : ttsProperties = TtsProperties(originalLanguage.code!),
         _dictionaryRepository = GetIt.I.get<DictionaryRepository>();
 
   factory Dictionary.newInstance({
-    String title,
-    Language originalLanguage,
+    required String title,
+    required Language originalLanguage,
   }) {
     return Dictionary(
       id: GetIt.I.get<Uuid>().v1(),
@@ -36,7 +33,7 @@ class Dictionary {
     );
   }
 
-  Dictionary copyWith({String title}) {
+  Dictionary copyWith({String? title}) {
     return Dictionary(
       id: id,
       title: title ?? this.title,

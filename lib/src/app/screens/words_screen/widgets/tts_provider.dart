@@ -5,14 +5,12 @@ class TtsProvider extends InheritedWidget {
   final FlutterTts tts;
 
   const TtsProvider({
-    Key key,
-    @required this.tts,
-    @required Widget child,
-  })  : assert(tts != null),
-        assert(child != null),
-        super(key: key, child: child);
+    Key? key,
+    required this.tts,
+    required Widget child,
+  }) : super(key: key, child: child);
 
-  static TtsProvider of(BuildContext context) {
+  static TtsProvider? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<TtsProvider>();
   }
 

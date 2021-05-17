@@ -39,7 +39,6 @@ class WordsScreen extends StatefulWidget {
 }
 
 class _WordsScreenState extends State<WordsScreen> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = ScrollController();
 
   bool get _isIOS => Platform.isIOS;
@@ -66,7 +65,7 @@ class _WordsScreenState extends State<WordsScreen> {
     return LoadingLayout(
       isLoading: _watch.isLoading,
       child: Scaffold(
-        key: _scaffoldKey,
+        // key: _scaffoldKey,
         appBar: _buildAppBar(),
         body: _buildBody(),
         floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
@@ -91,7 +90,7 @@ class _WordsScreenState extends State<WordsScreen> {
   }
 
   Widget _buildBody() {
-    if (_watch.words == null) {
+    if (_watch.words.isEmpty) {
       return LoadingIndicator();
     }
 
@@ -147,10 +146,10 @@ class _WordsScreenState extends State<WordsScreen> {
           await _read.updateWord(returnedValue);
         }
       } on WordNotExistException {
-        showErrorMessage(_scaffoldKey, wordNotExistException);
+        showErrorMessage(context, wordNotExistException);
       } catch (e) {
         //TODO: handle errors
-        showErrorMessage(_scaffoldKey, e);
+        showErrorMessage(context, e);
       }
     }
   }
@@ -171,10 +170,10 @@ class _WordsScreenState extends State<WordsScreen> {
       try {
         await _read.addNewWord(returnedValue);
       } on WordAlreadyExistException {
-        showErrorMessage(_scaffoldKey, wordAlreadyExistException);
+        showErrorMessage(context, wordAlreadyExistException);
       } catch (e) {
         //TODO: handle errors
-        showErrorMessage(_scaffoldKey, e);
+        showErrorMessage(context, e);
       }
     }
   }

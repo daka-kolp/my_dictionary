@@ -11,7 +11,8 @@ class WordsScreenPresenter with ChangeNotifier {
   final FlutterTts tts;
   final _fetchedStep = GetIt.I<GlobalConfig>().fetchStep;
 
-  List<Word> _words;
+  late List<Word> _words = [];
+
   bool _isNewWordsAvailable = true;
   bool _isNewWordsLoading = false;
   bool _isWordsListUpdating = false;

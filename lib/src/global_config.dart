@@ -12,8 +12,7 @@ class GlobalConfig {
   final int fetchStep = 20;
 
   GlobalConfig({
-    @required this.environment,
-    @required this.mainImagePath,
-  })  : assert(environment != null),
-        assert(mainImagePath != null);
+    required this.environment,
+    required this.mainImagePath,
+  });
 }

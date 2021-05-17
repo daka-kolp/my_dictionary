@@ -9,16 +9,12 @@ class _DictionaryTile extends StatelessWidget {
   final DictionaryCallback onEdit;
 
   const _DictionaryTile({
-    Key key,
-    @required this.dictionary,
-    @required this.isEven,
-    @required this.onPressed,
-    @required this.onEdit,
-  })  : assert(dictionary != null),
-        assert(isEven != null),
-        assert(onPressed != null),
-        assert(onEdit != null),
-        super(key: key);
+    Key? key,
+    required this.dictionary,
+    required this.isEven,
+    required this.onPressed,
+    required this.onEdit,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +58,10 @@ class _DictionaryWidget extends StatelessWidget {
   final DictionaryCallback onPressed;
 
   const _DictionaryWidget({
-    Key key,
-    @required this.dictionary,
-    @required this.onPressed,
-  })  : assert(dictionary != null),
-        assert(onPressed != null),
-        super(key: key);
+    Key? key,
+    required this.dictionary,
+    required this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

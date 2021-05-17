@@ -9,7 +9,8 @@ import 'package:mydictionaryapp/src/global_config.dart';
 class DictionariesScreenPresenter with ChangeNotifier {
   final _fetchedStep = GetIt.I<GlobalConfig>().fetchStep;
 
-  List<Dictionary> _dictionaries;
+  late List<Dictionary> _dictionaries = [];
+
   bool _isNewDictionariesAvailable = true;
   bool _isNewDictionariesLoading = false;
   bool _isLoading = false;

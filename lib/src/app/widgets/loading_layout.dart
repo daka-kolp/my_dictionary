@@ -7,12 +7,10 @@ class LoadingLayout extends StatelessWidget {
   final bool isLoading;
 
   LoadingLayout({
-    Key key,
-    @required this.isLoading,
-    @required this.child,
-  })  : assert(child != null),
-        assert(isLoading != null),
-        super(key: key);
+    Key? key,
+    required this.isLoading,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

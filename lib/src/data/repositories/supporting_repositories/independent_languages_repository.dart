@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -32,8 +33,8 @@ List<Language> _languagesDecoder(String value) {
 }
 
 Language _getLocalLanguage(Map<String, dynamic> data) {
-  return (data['languages'] as List<Language>).firstWhere(
-    (l) => l.code.contains(data['code'] as String),
-    orElse: () => null,
+  final result = (data['languages'] as List<Language>).firstWhereOrNull(
+    (l) => l.code!.contains(data['code'] as String),
   );
+  return result ?? Language('en');
 }

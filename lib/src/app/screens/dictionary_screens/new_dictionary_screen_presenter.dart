@@ -8,11 +8,11 @@ class NewDictionaryScreenPresenter with ChangeNotifier {
 
   bool _isLoading = false;
   List<Language> _languages = [];
-  Language _platformLanguage;
+  Language? _platformLanguage;
 
   bool get isLoading => _isLoading;
   List<Language> get languages => _languages;
-  Language get platformLanguage => _platformLanguage;
+  Language? get platformLanguage => _platformLanguage;
 
   NewDictionaryScreenPresenter() {
     _init();

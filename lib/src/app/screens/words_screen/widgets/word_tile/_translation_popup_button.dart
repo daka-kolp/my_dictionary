@@ -4,8 +4,8 @@ class _TranslationPopupButton extends StatelessWidget {
   final List<Translation> translations;
 
   _TranslationPopupButton({
-    Key key,
-    @required this.translations,
+    Key? key,
+    required this.translations,
   }) : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class _TranslationPopupButton extends StatelessWidget {
     return translations.fold(
       [],
       (previousValue, element) {
-        previousValue.add(_buildTranslationItem(context, element));
+        previousValue.add(_buildTranslationItem(context, element) as PopupMenuEntry<dynamic>);
         if (element != translations.last) {
           previousValue.add(PopupMenuDivider(height: 1.0));
         }

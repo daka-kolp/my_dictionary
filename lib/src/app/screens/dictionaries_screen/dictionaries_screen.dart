@@ -41,7 +41,6 @@ class DictionariesScreen extends StatefulWidget {
 }
 
 class _DictionariesScreenState extends State<DictionariesScreen> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = ScrollController();
 
   bool get _isIOS => Platform.isIOS;
@@ -69,7 +68,6 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
     return LoadingLayout(
       isLoading: _watch.isLoading,
       child: Scaffold(
-        key: _scaffoldKey,
         appBar: _buildAppBar(),
         body: _buildBody(),
         floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
@@ -99,7 +97,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   Widget _buildBody() {
-    if (_watch.dictionaries == null) {
+    if (_watch.dictionaries.isEmpty) {
       return LoadingIndicator();
     }
 
@@ -157,10 +155,10 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
           await _read.editDictionary(returnedValue);
         }
       } on DictionaryNotExistException {
-        showErrorMessage(_scaffoldKey, dictionaryNotExistException);
+        showErrorMessage(context, dictionaryNotExistException);
       } catch (e) {
         //TODO: handle errors
-        showErrorMessage(_scaffoldKey, e);
+        showErrorMessage(context, e);
       }
     }
   }
@@ -181,10 +179,10 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
       try {
         await _read.createDictionary(returnedValue);
       } on DictionaryAlreadyExistException {
-        showErrorMessage(_scaffoldKey, dictionaryAlreadyExistException);
+        showErrorMessage(context, dictionaryAlreadyExistException);
       } catch (e) {
         //TODO: handle errors
-        showErrorMessage(_scaffoldKey, e);
+        showErrorMessage(context, e);
       }
     }
   }
@@ -232,10 +230,10 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
         (route) => false,
       );
     } on LogOutException {
-      showErrorMessage(_scaffoldKey, logOutException);
+      showErrorMessage(context, logOutException);
     } catch (e) {
       //TODO: handle errors
-      showErrorMessage(_scaffoldKey, e);
+      showErrorMessage(context, e);
     }
   }
 

@@ -1,8 +1,8 @@
 class Language {
-  final String code;
-  final String name;
+  final String? code;
+  final String? name;
 
-  Language(this.code, this.name);
+  Language(this.code, [this.name]);
 
   @override
   bool operator ==(Object other) =>
@@ -17,8 +17,8 @@ class Language {
 
   factory Language.fromJson(Map<String, dynamic> json) {
     return Language(
-      json['code'] as String,
-      json['name'] as String,
+      json['code'] as String?,
+      json['name'] as String?,
     );
   }
 }

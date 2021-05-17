@@ -9,13 +9,13 @@ part '_translation_list_tile.dart';
 
 class TranslationListFormField extends FormField<List<Translation>> {
   TranslationListFormField({
-    Key key,
+    Key? key,
     List<Translation> initialList = const [],
-    FormFieldSetter<List<Translation>> onSaved,
+    FormFieldSetter<List<Translation>>? onSaved,
   }) : super(
           key: key,
           initialValue: initialList,
-          validator: (list) => list.isEmpty ? '' : null,
+          validator: (list) => list!.isEmpty ? '' : null,
           builder: (field) {
             return _TranslationList(
               initialList: initialList,
@@ -27,12 +27,12 @@ class TranslationListFormField extends FormField<List<Translation>> {
 
 class _TranslationList extends StatefulWidget {
   final List<Translation> initialList;
-  final ValueChanged<List<Translation>> onChanged;
+  final ValueChanged<List<Translation>?> onChanged;
 
   const _TranslationList({
-    Key key,
-    @required this.initialList,
-    @required this.onChanged,
+    Key? key,
+    required this.initialList,
+    required this.onChanged,
   })  : assert(onChanged != null),
         super(key: key);
 
@@ -43,7 +43,7 @@ class _TranslationList extends StatefulWidget {
 class _TranslationListState extends State<_TranslationList> {
   final _translationController = TextEditingController();
 
-  List<Translation> _translationsList;
+  List<Translation>? _translationsList;
   bool _textNotEmpty = false;
 
   @override
@@ -85,7 +85,7 @@ class _TranslationListState extends State<_TranslationList> {
 
   void _onAdd() {
     setState(() {
-      _translationsList.add(
+      _translationsList!.add(
         Translation.newInstance(
           translation: _translationController.text,
         ),
@@ -96,13 +96,13 @@ class _TranslationListState extends State<_TranslationList> {
   }
 
   Widget _buildTranslationsList() {
-    return _translationsList.isNotEmpty
+    return _translationsList!.isNotEmpty
         ? ListView(
             padding: const EdgeInsets.only(top: 8.0),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             children:
-                _translationsList.reversed.map(_buildTranslationTile).toList(),
+                _translationsList!.reversed.map(_buildTranslationTile).toList(),
           )
         : Container();
   }
@@ -116,7 +116,7 @@ class _TranslationListState extends State<_TranslationList> {
   }
 
   void _onRemove(Translation data) {
-    setState(() => _translationsList.remove(data));
+    setState(() => _translationsList!.remove(data));
     widget.onChanged(_translationsList);
   }
 

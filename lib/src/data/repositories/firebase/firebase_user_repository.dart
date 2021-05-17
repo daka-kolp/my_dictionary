@@ -6,26 +6,26 @@ class FirebaseUserRepository extends UserRepository {
   Future<List<Dictionary>> getDictionaries(
       int firstIndex,
       int offset,
-      String userId,
+      String? userId,
     ) {
     // TODO: implement getDictionaries
     throw UnimplementedError();
   }
 
   @override
-  Future<void> createNewDictionary(Dictionary dictionary, String userId) {
+  Future<void> createNewDictionary(Dictionary dictionary, String? userId) {
     // TODO: implement createNewDictionary
     throw UnimplementedError();
   }
 
   @override
-  Future<void> editDictionary(Dictionary editedDictionary, String userId) {
+  Future<void> editDictionary(Dictionary editedDictionary, String? userId) {
     // TODO: implement editDictionary
     throw UnimplementedError();
   }
 
   @override
-  Future<void> removeDictionary(String id, String userId) {
+  Future<void> removeDictionary(String id, String? userId) {
     // TODO: implement removeDictionary
     throw UnimplementedError();
   }

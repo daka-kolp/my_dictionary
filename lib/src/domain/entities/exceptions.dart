@@ -40,7 +40,7 @@ class DictionaryNotExistException implements Exception {
 }
 
 class WordAlreadyExistException implements Exception {
-  final String wordInfo;
+  final String? wordInfo;
   WordAlreadyExistException(this.wordInfo);
 
   @override
@@ -50,7 +50,7 @@ class WordAlreadyExistException implements Exception {
 }
 
 class WordNotExistException implements Exception {
-  final String wordInfo;
+  final String? wordInfo;
   WordNotExistException(this.wordInfo);
 
   @override

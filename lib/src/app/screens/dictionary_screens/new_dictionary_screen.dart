@@ -93,7 +93,7 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   }
 
   void _onFormChange() {
-    setState(() => _isFromValid = _formStateKey.currentState.validate());
+    setState(() => _isFromValid = _formStateKey.currentState!.validate());
   }
 
   Widget _buildTargetLanguagesListButton() {
@@ -108,7 +108,7 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   void _onTargetLanguagesChanged(Language value) {
     final dictionaryName = value.name;
     _dictionaryNameStateKey.currentState
-      ..didChange(dictionaryName)
+      ?..didChange(dictionaryName)
       ..setValue(dictionaryName);
   }
 
@@ -118,7 +118,7 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
     return PaddingWrapper(
       child: WithoutErrorTextFormField(
         key: _dictionaryNameStateKey,
-        validator: (value) => value.isEmpty ? '' : null,
+        validator: (value) => value!.isEmpty ? '' : null,
       ),
     );
   }
@@ -128,7 +128,7 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
       child: Container(
         margin: const EdgeInsets.all(16.0),
         width: double.infinity,
-        child: RaisedButton(
+        child: ElevatedButton(
           child: Text(add),
           onPressed: _isFromValid ? _onAdd : null,
         ),
@@ -138,8 +138,8 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
 
   Future<void> _onAdd() async {
     final newDictionary = Dictionary.newInstance(
-      title: _dictionaryNameStateKey.currentState.value,
-      originalLanguage: _targetLanguagesStateKey.currentState.value,
+      title: _dictionaryNameStateKey.currentState!.value!,
+      originalLanguage: _targetLanguagesStateKey.currentState!.value!,
     );
     Navigator.pop<Dictionary>(context, newDictionary);
   }

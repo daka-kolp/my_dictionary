@@ -10,14 +10,14 @@ class LanguagesListButton extends StatelessWidget {
   final GlobalKey<FormFieldState<Language>> languagesListKey;
   final String hint;
   final List<Language> languages;
-  final Language initialValue;
-  final ValueChanged<Language> onChanged;
+  final Language? initialValue;
+  final ValueChanged<Language>? onChanged;
 
   const LanguagesListButton({
-    Key key,
-    @required this.languagesListKey,
-    @required this.hint,
-    @required this.languages,
+    Key? key,
+    required this.languagesListKey,
+    required this.hint,
+    required this.languages,
     this.initialValue,
     this.onChanged,
   })  : assert(languagesListKey != null),
@@ -57,7 +57,7 @@ List<DropdownMenuItem<Language>> _languagesListBuilder(
   return languages.map((language) {
     return DropdownMenuItem(
       value: language,
-      child: Text(language.name),
+      child: Text(language.name!),
     );
   }).toList();
 }

@@ -5,12 +5,10 @@ class _TranslationListTile extends StatelessWidget {
   final ValueChanged<Translation> onRemove;
 
   const _TranslationListTile({
-    Key key,
-    @required this.translation,
-    @required this.onRemove,
-  })  : assert(translation != null),
-        assert(onRemove != null),
-        super(key: key);
+    Key? key,
+    required this.translation,
+    required this.onRemove,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

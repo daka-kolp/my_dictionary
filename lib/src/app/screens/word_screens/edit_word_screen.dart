@@ -17,7 +17,7 @@ import 'package:mydictionaryapp/src/device/utils/localization.dart';
 class EditWordScreen extends StatefulWidget {
   final Word word;
 
-  const EditWordScreen({Key key, @required this.word})
+  const EditWordScreen({Key? key, required this.word})
       : assert(word != null),
         super(key: key);
 
@@ -58,7 +58,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
   void _resetFocusNode() => FocusScope.of(context).requestFocus(FocusNode());
 
   PreferredSizeWidget _buildAppBar() {
-    final title = Text(widget.word.word);
+    final title = Text(widget.word.word!);
 
     if (Platform.isIOS) {
       return CupertinoNavigationBar(
@@ -119,7 +119,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
   }
 
   void _onFormChange() {
-    setState(() => _isFromValid = _formStateKey.currentState.validate());
+    setState(() => _isFromValid = _formStateKey.currentState!.validate());
   }
 
   Widget _buildWordFormField() {
@@ -127,7 +127,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
       child: WithoutErrorTextFormField(
         key: _wordStateKey,
         initialValue: widget.word.word,
-        validator: (value) => value.isEmpty ? '' : null,
+        validator: (value) => value!.isEmpty ? '' : null,
       ),
     );
   }
@@ -169,9 +169,9 @@ class _EditWordScreenState extends State<EditWordScreen> {
 
   Future<void> _onEdit() async {
     final editedWord = widget.word.copyWith(
-      word: _wordStateKey.currentState.value,
-      translations: _listStateKey.currentState.value,
-      hint: _hintStateKey.currentState.value,
+      word: _wordStateKey.currentState!.value,
+      translations: _listStateKey.currentState!.value,
+      hint: _hintStateKey.currentState!.value,
     );
     Navigator.pop<Word>(context, editedWord);
   }

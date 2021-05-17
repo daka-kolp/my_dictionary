@@ -9,9 +9,9 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repositor
 class User {
   static final User I = User._();
 
-  final AuthRepository _authRepository;
-  final UserRepository _userRepository;
-  final LanguagesRepository _languagesRepository;
+  late final AuthRepository _authRepository;
+  late final UserRepository _userRepository;
+  late final LanguagesRepository _languagesRepository;
 
   User._()
       : _authRepository = GetIt.I<AuthRepository>(),
@@ -20,7 +20,7 @@ class User {
 
   Future<String> get _id => _authRepository.userId;
 
-  Future<bool> get isLoggedIn async => await _id != null;
+  Future<bool> get isLoggedIn async => await _id.then((id) => id.isEmpty);
 
   Future<void> loginWithGoogle() async {
     await _authRepository.loginWith(LoginService.google);
