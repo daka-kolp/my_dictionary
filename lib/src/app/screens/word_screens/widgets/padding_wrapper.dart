@@ -6,8 +6,7 @@ class PaddingWrapper extends StatelessWidget {
   const PaddingWrapper({
     Key? key,
     required this.child,
-  })  : assert(child != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

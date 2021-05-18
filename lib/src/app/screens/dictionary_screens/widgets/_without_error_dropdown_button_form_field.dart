@@ -33,12 +33,7 @@ class _WithoutErrorDropdownButtonFormField<T> extends FormField<T?> {
           'There should be exactly one item with [DropdownButton]\'s value: $value. \n'
           'Either zero or 2 or more [DropdownMenuItem]s were detected with the same value',
         ),
-        assert(elevation != null),
-        assert(iconSize != null),
-        assert(isDense != null),
-        assert(isExpanded != null),
         assert(itemHeight == null || itemHeight >= kMinInteractiveDimension),
-        assert(autofocus != null),
         super(
           key: key,
           onSaved: onSaved,

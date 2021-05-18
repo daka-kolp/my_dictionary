@@ -17,9 +17,7 @@ import 'package:mydictionaryapp/src/device/utils/localization.dart';
 class EditWordScreen extends StatefulWidget {
   final Word word;
 
-  const EditWordScreen({Key? key, required this.word})
-      : assert(word != null),
-        super(key: key);
+  const EditWordScreen({Key? key, required this.word}) : super(key: key);
 
   static PageRoute buildPageRoute(Word word) {
     if (Platform.isIOS) {
@@ -159,7 +157,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
       child: Container(
         margin: const EdgeInsets.all(16.0),
         width: double.infinity,
-        child: RaisedButton(
+        child: ElevatedButton(
           child: Text(edit),
           onPressed: _isFromValid ? _onEdit : null,
         ),

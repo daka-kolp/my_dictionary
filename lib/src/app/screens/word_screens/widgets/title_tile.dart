@@ -8,8 +8,7 @@ class TitleTile extends StatelessWidget {
     Key? key,
     required this.title,
     this.isRequired = false,
-  })  : assert(title != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

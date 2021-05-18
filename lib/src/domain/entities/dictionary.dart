@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
@@ -74,5 +73,5 @@ class TtsProperties {
   final volume = 1.0;
   final pitch = 1.0; //voice tone
 
-  TtsProperties(this.language) : assert(language != null);
+  TtsProperties(this.language);
 }

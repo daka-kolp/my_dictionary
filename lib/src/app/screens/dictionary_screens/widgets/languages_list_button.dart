@@ -20,10 +20,7 @@ class LanguagesListButton extends StatelessWidget {
     required this.languages,
     this.initialValue,
     this.onChanged,
-  })  : assert(languagesListKey != null),
-        assert(hint != null),
-        assert(languages != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

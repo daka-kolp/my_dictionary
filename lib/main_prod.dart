@@ -17,7 +17,6 @@ Future<void> main() async {
   final theme = ThemeData(
     primarySwatch: Colors.blue,
     accentColor: Colors.yellowAccent,
-    cursorColor: Colors.blue,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     buttonTheme: ButtonThemeData(
       buttonColor: Colors.yellowAccent[700],

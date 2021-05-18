@@ -33,8 +33,7 @@ class _TranslationList extends StatefulWidget {
     Key? key,
     required this.initialList,
     required this.onChanged,
-  })  : assert(onChanged != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   _TranslationListState createState() => _TranslationListState();
