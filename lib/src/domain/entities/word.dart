@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 class Word {
@@ -10,25 +9,24 @@ class Word {
   final DateTime addingTime;
 
   Word({
-    @required this.id,
-    @required this.word,
-    List<Translation> translations,
-    String hint,
-    DateTime addingTime,
+    required this.id,
+    required this.word,
+    List<Translation>? translations,
+    String? hint,
+    DateTime? addingTime,
   })  : this.translations = translations ?? [],
         this.hint = hint ?? '',
         this.addingTime = addingTime ?? DateTime.utc(1970),
-        assert(id != null),
-        assert(word != null && word.isNotEmpty);
+        assert(word.isNotEmpty);
 
   factory Word.newInstance({
-    String word,
-    List<Translation> translations,
-    String hint,
+    String? word,
+    List<Translation>? translations,
+    String? hint,
   }) {
     return Word(
       id: GetIt.I.get<Uuid>().v1(),
-      word: word,
+      word: word ?? '',
       translations: translations,
       hint: hint,
       addingTime: DateTime.now(),
@@ -36,9 +34,9 @@ class Word {
   }
 
   Word copyWith({
-    String word,
-    List<Translation> translations,
-    String hint,
+    String? word,
+    List<Translation>? translations,
+    String? hint,
   }) {
     return Word(
       id: id,
@@ -57,7 +55,7 @@ class Word {
   @override
   int get hashCode => word.hashCode;
 
-  bool get isHintExist => hint != null && hint.isNotEmpty;
+  bool get isHintExist => hint.isNotEmpty;
 }
 
 class Translation {
@@ -65,17 +63,16 @@ class Translation {
   final String translation;
 
   Translation({
-    @required this.id,
-    @required this.translation,
-  })  : assert(id != null),
-        assert(translation != null);
+    required this.id,
+    required this.translation,
+  });
 
   factory Translation.newInstance({
-    String translation,
+    String? translation,
   }) {
     return Translation(
       id: GetIt.I.get<Uuid>().v1(),
-      translation: translation,
+      translation: translation ?? '',
     );
   }
 }

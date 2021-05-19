@@ -8,7 +8,7 @@ class NewDictionaryScreenPresenter with ChangeNotifier {
 
   bool _isLoading = false;
   List<Language> _languages = [];
-  Language _platformLanguage;
+  late Language _platformLanguage;
 
   bool get isLoading => _isLoading;
   List<Language> get languages => _languages;

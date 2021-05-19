@@ -3,9 +3,7 @@ part of 'word_tile.dart';
 class _WordWidget extends StatelessWidget {
   final Word word;
 
-  const _WordWidget({Key key, @required this.word})
-      : assert(word != null),
-        super(key: key);
+  const _WordWidget({Key? key, required this.word}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

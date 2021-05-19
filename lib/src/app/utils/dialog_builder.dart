@@ -12,10 +12,6 @@ WidgetBuilder dialogBuilder(
   VoidCallback onOkPressed, {
   bool isCancelButtonExist = true,
 }) {
-  assert(context != null);
-  assert(contentText != null);
-  assert(onOkPressed != null);
-
   final content = Text(contentText);
   final okText = Text(ok);
   final cancelText = Text(cancel);

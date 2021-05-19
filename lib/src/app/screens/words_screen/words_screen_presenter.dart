@@ -11,7 +11,8 @@ class WordsScreenPresenter with ChangeNotifier {
   final FlutterTts tts;
   final _fetchedStep = GetIt.I<GlobalConfig>().fetchStep;
 
-  List<Word> _words;
+  late List<Word> _words;
+  bool _isInit = true;
   bool _isNewWordsAvailable = true;
   bool _isNewWordsLoading = false;
   bool _isWordsListUpdating = false;
@@ -19,6 +20,7 @@ class WordsScreenPresenter with ChangeNotifier {
 
   List<Word> get words => _words;
   bool get isNewWordsLoading => _isNewWordsLoading;
+  bool get isInit => _isInit;
   bool get isLoading => _isWordsListUpdating;
 
   WordsScreenPresenter(this.dictionary) : tts = FlutterTts() {
@@ -40,6 +42,7 @@ class WordsScreenPresenter with ChangeNotifier {
       print('WordsScreenPresenter: _init() => $e');
     } finally {
       _isNewWordsLoading = false;
+      _isInit = false;
       notifyListeners();
     }
   }

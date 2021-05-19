@@ -4,8 +4,8 @@ class _TranslationPopupButton extends StatelessWidget {
   final List<Translation> translations;
 
   _TranslationPopupButton({
-    Key key,
-    @required this.translations,
+    Key? key,
+    required this.translations,
   }) : super(key: key);
 
   @override
@@ -34,7 +34,7 @@ class _TranslationPopupButton extends StatelessWidget {
     );
   }
 
-  Widget _buildTranslationItem(
+  PopupMenuItem<Translation> _buildTranslationItem(
     BuildContext context,
     Translation translation,
   ) {

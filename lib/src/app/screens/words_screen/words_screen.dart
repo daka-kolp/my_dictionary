@@ -91,7 +91,7 @@ class _WordsScreenState extends State<WordsScreen> {
   }
 
   Widget _buildBody() {
-    if (_watch.words == null) {
+    if (_watch.isInit) {
       return LoadingIndicator();
     }
 
@@ -147,10 +147,10 @@ class _WordsScreenState extends State<WordsScreen> {
           await _read.updateWord(returnedValue);
         }
       } on WordNotExistException {
-        showErrorMessage(_scaffoldKey, wordNotExistException);
+        showErrorMessage(context, wordNotExistException);
       } catch (e) {
         //TODO: handle errors
-        showErrorMessage(_scaffoldKey, e);
+        showErrorMessage(context, e.toString());
       }
     }
   }
@@ -171,10 +171,10 @@ class _WordsScreenState extends State<WordsScreen> {
       try {
         await _read.addNewWord(returnedValue);
       } on WordAlreadyExistException {
-        showErrorMessage(_scaffoldKey, wordAlreadyExistException);
+        showErrorMessage(context, wordAlreadyExistException);
       } catch (e) {
         //TODO: handle errors
-        showErrorMessage(_scaffoldKey, e);
+        showErrorMessage(context, e.toString());
       }
     }
   }

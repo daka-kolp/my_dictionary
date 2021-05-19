@@ -33,8 +33,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
   ThemeData get _theme => Theme.of(context);
   BoxDecoration get _decoration => BoxDecoration(
         gradient: LinearGradient(
@@ -54,7 +52,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return LoadingLayout(
       isLoading: _watch.isLoading,
       child: Scaffold(
-        key: _scaffoldKey,
         body: Container(
           alignment: Alignment.center,
           decoration: _decoration,
@@ -76,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          RaisedButton(
+          ElevatedButton(
             child: Text(enterWithGoogle),
             onPressed: _loginWithGoogle,
           ),
@@ -102,10 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
       await _read.loginWithGoogle();
       await _routeToDictionariesScreen();
     } on WrongCredentialsException {
-      showErrorMessage(_scaffoldKey, wrongCredentials);
+      showErrorMessage(context, wrongCredentials);
     } catch (e) {
       //TODO: handle errors
-      showErrorMessage(_scaffoldKey, e);
+      showErrorMessage(context, e.toString());
     }
   }
 

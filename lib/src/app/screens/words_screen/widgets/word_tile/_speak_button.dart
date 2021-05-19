@@ -2,11 +2,11 @@ part of 'word_tile.dart';
 
 class _SpeakButton extends StatelessWidget {
   final Word word;
+
   const _SpeakButton({
-    Key key,
-    @required this.word,
-  })  : assert(word != null),
-        super(key: key);
+    Key? key,
+    required this.word,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

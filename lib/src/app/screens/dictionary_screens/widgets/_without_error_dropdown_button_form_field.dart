@@ -1,44 +1,39 @@
 part of 'languages_list_button.dart';
 
 class _WithoutErrorDropdownButtonFormField<T> extends FormField<T> {
-  final ValueChanged<T> onChanged;
+  final ValueChanged<T>? onChanged;
 
   _WithoutErrorDropdownButtonFormField({
-    Key key,
-    @required List<DropdownMenuItem<T>> items,
-    DropdownButtonBuilder selectedItemBuilder,
-    T value,
-    Widget hint,
-    Widget disabledHint,
+    Key? key,
+    required List<DropdownMenuItem<T>> items,
+    DropdownButtonBuilder? selectedItemBuilder,
+    T? value,
+    Widget? hint,
+    Widget? disabledHint,
     this.onChanged,
-    VoidCallback onTap,
+    VoidCallback? onTap,
     int elevation = 8,
-    TextStyle style,
-    Widget icon,
-    Color iconDisabledColor,
-    Color iconEnabledColor,
+    TextStyle? style,
+    Widget? icon,
+    Color? iconDisabledColor,
+    Color? iconEnabledColor,
     double iconSize = 24.0,
     bool isDense = true,
     bool isExpanded = false,
-    double itemHeight,
-    Color focusColor,
-    FocusNode focusNode,
+    double? itemHeight,
+    Color? focusColor,
+    FocusNode? focusNode,
     bool autofocus = false,
-    Color dropdownColor,
-    InputDecoration decoration,
-    FormFieldSetter<T> onSaved,
-    FormFieldValidator<T> validator,
-    AutovalidateMode autovalidateMode,
-  }) :  assert(items == null || items.isEmpty || value == null || items.where((item) => item.value == value).length == 1,
+    Color? dropdownColor,
+    InputDecoration? decoration,
+    FormFieldSetter<T>? onSaved,
+    FormFieldValidator<T>? validator,
+    AutovalidateMode? autovalidateMode,
+  }) :  assert(items.isEmpty || value == null || items.where((item) => item.value == value).length == 1,
           'There should be exactly one item with [DropdownButton]\'s value: $value. \n'
           'Either zero or 2 or more [DropdownMenuItem]s were detected with the same value',
         ),
-        assert(elevation != null),
-        assert(iconSize != null),
-        assert(isDense != null),
-        assert(isExpanded != null),
         assert(itemHeight == null || itemHeight >= kMinInteractiveDimension),
-        assert(autofocus != null),
         super(
           key: key,
           onSaved: onSaved,
@@ -100,11 +95,11 @@ class _WithoutErrorDropdownButtonFormFieldState<T> extends FormFieldState<T> {
   _WithoutErrorDropdownButtonFormField<T> get widget => super.widget as _WithoutErrorDropdownButtonFormField<T>;
 
   @override
-  void didChange(T value) {
+  void didChange(T? value) {
     super.didChange(value);
-    if (widget.onChanged != null) {
-      widget.onChanged(value);
-    }
+    if (widget.onChanged != null)
+      widget.onChanged!(value!);
+
   }
 
   @override

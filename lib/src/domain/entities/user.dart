@@ -20,7 +20,7 @@ class User {
 
   Future<String> get _id => _authRepository.userId;
 
-  Future<bool> get isLoggedIn async => await _id != null;
+  Future<bool> get isLoggedIn async => await _id.then((id) => id.isEmpty);
 
   Future<void> loginWithGoogle() async {
     await _authRepository.loginWith(LoginService.google);

@@ -25,10 +25,9 @@ class MyDictionaryApp extends StatelessWidget {
   final bool isLoggedIn;
 
   const MyDictionaryApp({
-    Key key,
-    @required this.isLoggedIn,
-  })  : assert(isLoggedIn != null),
-        super(key: key);
+    Key? key,
+    required this.isLoggedIn,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

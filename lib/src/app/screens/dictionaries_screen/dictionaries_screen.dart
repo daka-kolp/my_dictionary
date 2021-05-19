@@ -99,7 +99,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   Widget _buildBody() {
-    if (_watch.dictionaries == null) {
+    if (_watch.isInit) {
       return LoadingIndicator();
     }
 
@@ -157,10 +157,10 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
           await _read.editDictionary(returnedValue);
         }
       } on DictionaryNotExistException {
-        showErrorMessage(_scaffoldKey, dictionaryNotExistException);
+        showErrorMessage(context, dictionaryNotExistException);
       } catch (e) {
         //TODO: handle errors
-        showErrorMessage(_scaffoldKey, e);
+        showErrorMessage(context, e.toString());
       }
     }
   }
@@ -181,10 +181,10 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
       try {
         await _read.createDictionary(returnedValue);
       } on DictionaryAlreadyExistException {
-        showErrorMessage(_scaffoldKey, dictionaryAlreadyExistException);
+        showErrorMessage(context, dictionaryAlreadyExistException);
       } catch (e) {
         //TODO: handle errors
-        showErrorMessage(_scaffoldKey, e);
+        showErrorMessage(context, e.toString());
       }
     }
   }
@@ -232,10 +232,10 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
         (route) => false,
       );
     } on LogOutException {
-      showErrorMessage(_scaffoldKey, logOutException);
+      showErrorMessage(context, logOutException);
     } catch (e) {
       //TODO: handle errors
-      showErrorMessage(_scaffoldKey, e);
+      showErrorMessage(context, e.toString());
     }
   }
 

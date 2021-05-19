@@ -18,12 +18,11 @@ class WordTile extends StatelessWidget {
   final VoidCallback onEdit;
 
   const WordTile({
-    Key key,
-    @required this.word,
-    @required this.onEdit,
+    Key? key,
+    required this.word,
+    required this.onEdit,
     this.isEven = false,
-  })  : assert(word != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

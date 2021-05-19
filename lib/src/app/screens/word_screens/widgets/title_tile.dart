@@ -5,11 +5,10 @@ class TitleTile extends StatelessWidget {
   final bool isRequired;
 
   const TitleTile({
-    Key key,
-    @required this.title,
+    Key? key,
+    required this.title,
     this.isRequired = false,
-  })  : assert(title != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class TitleTile extends StatelessWidget {
             if (isRequired)
               TextSpan(
                 text: ' * ',
-                style: theme.textTheme.subtitle1.copyWith(
+                style: theme.textTheme.subtitle1?.copyWith(
                   color: theme.errorColor,
                 ),
               ),

@@ -5,7 +5,7 @@ const _TOKEN = 'token';
 class StoreInteractor {
   Future<String> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_TOKEN);
+    return prefs.getString(_TOKEN) ?? '';
   }
 
   Future<void> setToken(String token) async {

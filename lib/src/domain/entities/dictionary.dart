@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
@@ -16,27 +15,24 @@ class Dictionary {
   final DictionaryRepository _dictionaryRepository;
 
   Dictionary({
-    @required this.id,
-    @required this.originalLanguage,
-    @required this.title,
-  })  : assert(id != null),
-        assert(originalLanguage != null),
-        assert(title != null),
-        ttsProperties = TtsProperties(originalLanguage.code),
+    required this.id,
+    required this.originalLanguage,
+    required this.title,
+  })  : ttsProperties = TtsProperties(originalLanguage.code),
         _dictionaryRepository = GetIt.I.get<DictionaryRepository>();
 
   factory Dictionary.newInstance({
-    String title,
-    Language originalLanguage,
+    String? title,
+    Language? originalLanguage,
   }) {
     return Dictionary(
       id: GetIt.I.get<Uuid>().v1(),
-      originalLanguage: originalLanguage,
-      title: title,
+      title: title ?? '',
+      originalLanguage: originalLanguage ?? Language.byDefault(),
     );
   }
 
-  Dictionary copyWith({String title}) {
+  Dictionary copyWith({String? title}) {
     return Dictionary(
       id: id,
       title: title ?? this.title,
@@ -77,5 +73,5 @@ class TtsProperties {
   final volume = 1.0;
   final pitch = 1.0; //voice tone
 
-  TtsProperties(this.language) : assert(language != null);
+  TtsProperties(this.language);
 }

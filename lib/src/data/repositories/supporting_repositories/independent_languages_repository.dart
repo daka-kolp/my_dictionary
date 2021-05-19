@@ -34,6 +34,6 @@ List<Language> _languagesDecoder(String value) {
 Language _getLocalLanguage(Map<String, dynamic> data) {
   return (data['languages'] as List<Language>).firstWhere(
     (l) => l.code.contains(data['code'] as String),
-    orElse: () => null,
+    // orElse: () => null,
   );
 }

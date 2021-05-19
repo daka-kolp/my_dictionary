@@ -9,7 +9,8 @@ import 'package:mydictionaryapp/src/global_config.dart';
 class DictionariesScreenPresenter with ChangeNotifier {
   final _fetchedStep = GetIt.I<GlobalConfig>().fetchStep;
 
-  List<Dictionary> _dictionaries;
+  late List<Dictionary> _dictionaries;
+  bool _isInit = true;
   bool _isNewDictionariesAvailable = true;
   bool _isNewDictionariesLoading = false;
   bool _isLoading = false;
@@ -19,6 +20,7 @@ class DictionariesScreenPresenter with ChangeNotifier {
   User get _user => User.I;
   List<Dictionary> get dictionaries => _dictionaries;
   bool get isNewDictionariesLoading => _isNewDictionariesLoading;
+  bool get isInit => _isInit;
   bool get isLoading => _isLoading || _isDictionariesListUpdating;
 
   DictionariesScreenPresenter() {
@@ -42,6 +44,7 @@ class DictionariesScreenPresenter with ChangeNotifier {
       print('DictionariesScreenPresenter: _init() => $e');
     } finally {
       _isNewDictionariesLoading = false;
+      _isInit = false;
       notifyListeners();
     }
   }

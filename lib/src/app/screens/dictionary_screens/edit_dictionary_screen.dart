@@ -17,9 +17,8 @@ import 'package:mydictionaryapp/src/device/utils/localization.dart';
 class EditDictionaryScreen extends StatefulWidget {
   final Dictionary dictionary;
 
-  const EditDictionaryScreen({Key key, @required this.dictionary})
-      : assert(dictionary != null),
-        super(key: key);
+  const EditDictionaryScreen({Key? key, required this.dictionary})
+      : super(key: key);
 
   static PageRoute buildPageRoute(Dictionary dictionary) {
     if (Platform.isIOS) {
@@ -116,7 +115,9 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
   }
 
   void _onFormChange() {
-    setState(() => _isFromValid = _formStateKey.currentState.validate());
+    setState(() {
+      _isFromValid = _formStateKey.currentState?.validate() ?? false;
+    });
   }
 
   Widget _buildDictionaryNameFormField() {
@@ -129,8 +130,11 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
     );
   }
 
-  String _dictionaryNameValidator(String value) {
-    final isValidate = value.isEmpty || value.compareTo(widget.dictionary.title) == 0;
+  String? _dictionaryNameValidator(String? value) {
+    final isValidate =
+        value == null ||
+        value.isEmpty ||
+        value.compareTo(widget.dictionary.title) == 0;
     return isValidate ? '' : null;
   }
 
@@ -149,7 +153,7 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
 
   Future<void> _onEdit() async {
     final editDictionary = widget.dictionary.copyWith(
-      title: _dictionaryNameStateKey.currentState.value,
+      title: _dictionaryNameStateKey.currentState?.value,
     );
     Navigator.pop<Dictionary>(context, editDictionary);
   }

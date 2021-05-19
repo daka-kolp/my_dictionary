@@ -82,14 +82,16 @@ class _NewWordScreenState extends State<NewWordScreen> {
   }
 
   void _onFormChange() {
-    setState(() => _isFromValid = _formStateKey.currentState.validate());
+    setState(() {
+      _isFromValid = _formStateKey.currentState?.validate() ?? false;
+    });
   }
 
   Widget _buildWordFormField() {
     return PaddingWrapper(
       child: WithoutErrorTextFormField(
         key: _wordStateKey,
-        validator: (value) => value.isEmpty ? '' : null,
+        validator: (value) => value?.isEmpty ?? false ? '' : null,
       ),
     );
   }
@@ -129,9 +131,9 @@ class _NewWordScreenState extends State<NewWordScreen> {
 
   Future<void> _onAdd() async {
     final newWord = Word.newInstance(
-      word: _wordStateKey.currentState.value,
-      translations: _listStateKey.currentState.value,
-      hint: _hintStateKey.currentState.value,
+      word: _wordStateKey.currentState?.value,
+      translations: _listStateKey.currentState?.value,
+      hint: _hintStateKey.currentState?.value,
     );
     Navigator.pop<Word>(context, newWord);
   }

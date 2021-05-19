@@ -10,20 +10,17 @@ class LanguagesListButton extends StatelessWidget {
   final GlobalKey<FormFieldState<Language>> languagesListKey;
   final String hint;
   final List<Language> languages;
-  final Language initialValue;
-  final ValueChanged<Language> onChanged;
+  final Language? initialValue;
+  final ValueChanged<Language>? onChanged;
 
   const LanguagesListButton({
-    Key key,
-    @required this.languagesListKey,
-    @required this.hint,
-    @required this.languages,
+    Key? key,
+    required this.languagesListKey,
+    required this.hint,
+    required this.languages,
     this.initialValue,
     this.onChanged,
-  })  : assert(languagesListKey != null),
-        assert(hint != null),
-        assert(languages != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +32,7 @@ class LanguagesListButton extends StatelessWidget {
             key: languagesListKey,
             value: initialValue,
             hint: Text(hint),
-            items: snapshot.data,
+            items: snapshot.data ?? [],
             validator: (value) => value == null ? '' : null,
             onChanged: onChanged,
           ),
