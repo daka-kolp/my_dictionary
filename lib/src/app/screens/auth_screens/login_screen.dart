@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 16.0),
                 Text(or),
                 SizedBox(height: 16.0),
-                RaisedButton(
+                ElevatedButton(
                   child: Text(enterWithApple),
                   onPressed: _loginWithApple,
                 ),

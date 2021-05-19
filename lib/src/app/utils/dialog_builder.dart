@@ -38,11 +38,11 @@ WidgetBuilder dialogBuilder(
       content: content,
       actions: <Widget>[
         if (isCancelButtonExist)
-          FlatButton(
+          TextButton(
             child: cancelText,
             onPressed: Navigator.of(context).pop,
           ),
-        FlatButton(
+        TextButton(
           child: okText,
           onPressed: onOkPressed,
         ),

@@ -143,7 +143,7 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
       child: Container(
         margin: const EdgeInsets.all(16.0),
         width: double.infinity,
-        child: RaisedButton(
+        child: ElevatedButton(
           child: Text(edit),
           onPressed: _isFromValid ? _onEdit : null,
         ),

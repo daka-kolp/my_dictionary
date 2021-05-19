@@ -17,13 +17,15 @@ Future<void> main() async {
   final theme = ThemeData(
     primarySwatch: Colors.green,
     accentColor: Colors.redAccent,
-    cursorColor: Colors.green,
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    buttonTheme: ButtonThemeData(
-      buttonColor: Colors.redAccent[100],
-      padding: const EdgeInsets.all(16.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.redAccent[100],
+        onPrimary: Colors.black,
+        padding: const EdgeInsets.all(16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+        ),
       ),
     ),
   );

@@ -121,7 +121,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
       child: Container(
         margin: const EdgeInsets.all(16.0),
         width: double.infinity,
-        child: RaisedButton(
+        child: ElevatedButton(
           child: Text(add),
           onPressed: _isFromValid ? _onAdd : null,
         ),
