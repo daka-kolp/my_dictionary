@@ -58,3 +58,10 @@ class WordNotExistException implements Exception {
     return 'The word is not exist : $wordInfo';
   }
 }
+
+class GoogleLoginException implements Exception {
+  @override
+  String toString() {
+    return 'Google login exception';
+  }
+}
