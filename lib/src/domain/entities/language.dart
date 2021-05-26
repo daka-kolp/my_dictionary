@@ -4,7 +4,7 @@ class Language {
 
   Language(this.code, this.name);
 
-  Language.byDefault() : code = 'en', name = 'US';
+  Language.byDefault() : code = 'en-GB', name = 'English(GB)';
 
   @override
   bool operator ==(Object other) =>
