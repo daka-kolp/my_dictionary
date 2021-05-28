@@ -1,17 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+
 import 'package:mydictionaryapp/src/data/utils/google_service.dart';
 import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 
 class FirebaseAuthRepository extends AuthRepository {
   late final FirebaseAuth _auth = FirebaseAuth.instance;
-  final StoreInteractor _storeInteractor;
-  final GoogleService _googleService;
-
-  FirebaseAuthRepository()
-      : _storeInteractor = GetIt.I<StoreInteractor>(),
-        _googleService = GetIt.I<GoogleService>();
+  late final _storeInteractor = GetIt.I<StoreInteractor>();
+  late final _googleService = GetIt.I<GoogleService>();
 
   @override
   Future<String> get userId async => await _storeInteractor.getToken();

@@ -9,18 +9,23 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/languages_repo
 
 class IndependentLanguagesRepository extends LanguagesRepository {
   @override
-  Future<List<Language>> getLanguages() async {
-    return await rootBundle
+  Future<List<Language>> getLanguages() {
+    return rootBundle
         .loadString('assets/target_languages.json')
         .then((v) => compute(_languagesDecoder, v));
   }
 
   @override
-  Future<Language> getLocalLanguage() async {
-    return await getLanguages().then(
+  Future<Language> getLocalLanguage() {
+    return getLanguageByCode(window.locale.languageCode);
+  }
+
+  @override
+  Future<Language> getLanguageByCode(String code) {
+    return getLanguages().then(
       (languages) => compute(
         _getLocalLanguage,
-        {'languages': languages, 'code': window.locale.languageCode},
+        {'languages': languages, 'code': code},
       ),
     );
   }
@@ -34,6 +39,6 @@ List<Language> _languagesDecoder(String value) {
 Language _getLocalLanguage(Map<String, dynamic> data) {
   return (data['languages'] as List<Language>).firstWhere(
     (l) => l.code.contains(data['code'] as String),
-    // orElse: () => null,
+    orElse: () => Language.byDefault(),
   );
 }
