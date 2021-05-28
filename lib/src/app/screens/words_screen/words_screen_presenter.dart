@@ -134,6 +134,7 @@ class WordsScreenPresenter with ChangeNotifier {
 
   @override
   Future <void> dispose() async{
+    dictionary.reset();
     await tts.stop();
     super.dispose();
   }

@@ -1,29 +1,91 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
+
+import 'package:mydictionaryapp/src/data/repositories/firebase/firestore_ids.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
+import 'package:mydictionaryapp/src/global_config.dart';
 
 class FirebaseDictionaryRepository extends DictionaryRepository {
+  late final _firestore = FirebaseFirestore.instance;
+  late final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
+
   @override
-  Future<List<Word>> getWords(int firstIndex, int offset, String dictionaryId) {
-    // TODO: implement getWords
-    throw UnimplementedError();
+  Future<List<Word>> getWords(
+    int firstIndex,
+    int offset,
+    String userId,
+    String dictionaryId,
+  ) async {
+    final query = _dictionaryReference(userId, dictionaryId)
+        .orderBy(FirestoreIds.ADDING_TIME, descending: true)
+        .limit(_fetchStep);
+    final querySnapshot = _lastDocument == null
+        ? await query.get()
+        : await query.startAfterDocument(_lastDocument!).get();
+    if (querySnapshot.docs.isEmpty) {
+      return [];
+    }
+    _lastDocument = querySnapshot.docs.last;
+    return Future.wait(
+      querySnapshot.docs.map((doc) => compute(_parseWordFromJson, doc.data())),
+    );
   }
 
   @override
-  Future<void> addNewWord(Word newWord, String dictionaryId) {
+  Future<void> addNewWord(
+    Word newWord,
+    String userId,
+    String dictionaryId,
+  ) {
     // TODO: implement addNewWord
     throw UnimplementedError();
   }
 
   @override
-  Future<void> editWord(Word word, String dictionaryId) {
+  Future<void> editWord(Word word, String userId, String dictionaryId) {
     // TODO: implement editWord
     throw UnimplementedError();
   }
 
   @override
-  Future<void> removeWord(String id, String dictionaryId) {
+  Future<void> removeWord(String id, String userId, String dictionaryId) {
     // TODO: implement removeWord
     throw UnimplementedError();
   }
+
+  @override
+  void reset() {
+    _lastDocument = null;
+  }
+
+  DocumentSnapshot? _lastDocument;
+
+  CollectionReference<Map<String, dynamic>> _dictionaryReference(
+    String userId,
+    String dictionaryId,
+  ) {
+    return _firestore
+        .collection(FirestoreIds.USERS)
+        .doc(userId)
+        .collection(dictionaryId);
+  }
 }
 
+Word _parseWordFromJson(Map<String, dynamic> json) {
+  return Word(
+    id: json[FirestoreIds.ID],
+    word: json[FirestoreIds.WORD],
+    translations: json[FirestoreIds.TRANSLATIONS]
+        .map<Translation>(
+          (e) => Translation(
+            id: e[FirestoreIds.ID],
+            translation: e[FirestoreIds.TRANSLATION],
+          ),
+        )
+        .toList(),
+    hint: json[FirestoreIds.HINT],
+    addingTime: json[FirestoreIds.ADDING_TIME].toDate(),
+  );
+}

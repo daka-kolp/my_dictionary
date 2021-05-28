@@ -9,6 +9,7 @@ class MockDictionaryRepository extends DictionaryRepository {
   Future<List<Word>> getWords(
     int firstIndex,
     int offset,
+    String userId,
     String dictionaryId,
   ) async {
     await Future.delayed(Duration(seconds: 1));
@@ -26,7 +27,11 @@ class MockDictionaryRepository extends DictionaryRepository {
   }
 
   @override
-  Future<void> addNewWord(Word newWord, String dictionaryId) async {
+  Future<void> addNewWord(
+    Word newWord,
+    String userId,
+    String dictionaryId,
+  ) async {
     await Future.delayed(Duration(seconds: 1));
     final words = _getWords(dictionaryId);
     if (words.contains(newWord)) {
@@ -36,7 +41,7 @@ class MockDictionaryRepository extends DictionaryRepository {
   }
 
   @override
-  Future<void> editWord(Word word, String dictionaryId) async {
+  Future<void> editWord(Word word, String userId, String dictionaryId) async {
     await Future.delayed(Duration(seconds: 1));
     final words = _getWords(dictionaryId);
     final wordIndex = words.indexWhere(
@@ -51,7 +56,11 @@ class MockDictionaryRepository extends DictionaryRepository {
   }
 
   @override
-  Future<void> removeWord(String wordId, String dictionaryId) async {
+  Future<void> removeWord(
+    String wordId,
+    String userId,
+    String dictionaryId
+  ) async {
     await Future.delayed(Duration(seconds: 1));
     final words = _getWords(dictionaryId);
     try {
@@ -61,6 +70,9 @@ class MockDictionaryRepository extends DictionaryRepository {
       throw WordNotExistException(wordId);
     }
   }
+
+  @override
+  void reset() {}
 
   List<Word> _getWords(String dictionaryId) {
     return _dictionaries[dictionaryId] ?? <Word>[];

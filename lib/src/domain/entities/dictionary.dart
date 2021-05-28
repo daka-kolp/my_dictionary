@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
+import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 
 class Dictionary {
@@ -12,6 +13,7 @@ class Dictionary {
   final Language originalLanguage;
   final String title;
   final TtsProperties ttsProperties;
+  final AuthRepository _authRepository;
   final DictionaryRepository _dictionaryRepository;
 
   Dictionary({
@@ -19,6 +21,7 @@ class Dictionary {
     required this.originalLanguage,
     required this.title,
   })  : ttsProperties = TtsProperties(originalLanguage.code),
+        _authRepository = GetIt.I<AuthRepository>(),
         _dictionaryRepository = GetIt.I.get<DictionaryRepository>();
 
   factory Dictionary.newInstance({
@@ -50,20 +53,31 @@ class Dictionary {
   @override
   int get hashCode => title.hashCode;
 
+  Future<String> get _userId => _authRepository.userId;
+
   Future<List<Word>> getWords(int firstIndex, int offset) async {
-    return await _dictionaryRepository.getWords(firstIndex, offset, id);
+    return await _dictionaryRepository.getWords(
+      firstIndex,
+      offset,
+      await _userId,
+      id,
+    );
   }
 
   Future<void> addWord(Word word) async {
-    await _dictionaryRepository.addNewWord(word, id);
+    await _dictionaryRepository.addNewWord(word, await _userId, id);
   }
 
   Future<void> editWord(Word word) async {
-    await _dictionaryRepository.editWord(word, id);
+    await _dictionaryRepository.editWord(word, await _userId, id);
   }
 
   Future<void> removeWord(String wordId) async {
-    await _dictionaryRepository.removeWord(wordId, id);
+    await _dictionaryRepository.removeWord(wordId, await _userId, id);
+  }
+
+  void reset() {
+    _dictionaryRepository.reset();
   }
 }
 

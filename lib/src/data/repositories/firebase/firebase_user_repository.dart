@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/data/repositories/firebase/firestore_ids.dart';
@@ -17,13 +18,12 @@ class FirebaseUserRepository extends UserRepository {
     String userId,
   ) async {
     final userDataJson = await _users.doc(userId).get();
-    final json = userDataJson.data();
-    return _parseJsonDictionaries(json);
+    return _parseDictionariesFromJson(userDataJson.data());
   }
 
   @override
   Future<void> createNewDictionary(Dictionary dictionary, String userId) async {
-    final dictionaryJson = _dictionaryToJson(dictionary);
+    final dictionaryJson = await compute(_parseDictionaryToJson, dictionary);
     try {
       await _users.doc(userId).update({
         FirestoreIds.DICTIONARIES: FieldValue.arrayUnion([dictionaryJson]),
@@ -39,10 +39,22 @@ class FirebaseUserRepository extends UserRepository {
     }
   }
 
+  @override
+  Future<void> editDictionary(Dictionary editedDictionary, String userId) {
+    // TODO: implement editDictionary
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removeDictionary(String id, String userId) {
+    // TODO: implement removeDictionary
+    throw UnimplementedError();
+  }
+
   CollectionReference<Map<String, dynamic>> get _users =>
       _firestore.collection(FirestoreIds.USERS);
 
-  Future<List<Dictionary>> _parseJsonDictionaries(
+  Future<List<Dictionary>> _parseDictionariesFromJson(
     Map<String, dynamic>? userDataJson,
   ) async {
     if (userDataJson == null) {
@@ -63,24 +75,12 @@ class FirebaseUserRepository extends UserRepository {
       ).toList(),
     );
   }
+}
 
-  Map<String, dynamic> _dictionaryToJson(Dictionary dictionary) {
-    return {
-      FirestoreIds.ID: dictionary.id,
-      FirestoreIds.ORIGINAL_LANGUAGE: dictionary.originalLanguage.code,
-      FirestoreIds.TITLE: dictionary.title,
-    };
-  }
-
-  @override
-  Future<void> editDictionary(Dictionary editedDictionary, String userId) {
-    // TODO: implement editDictionary
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> removeDictionary(String id, String userId) {
-    // TODO: implement removeDictionary
-    throw UnimplementedError();
-  }
+Map<String, dynamic> _parseDictionaryToJson(Dictionary dictionary) {
+  return {
+    FirestoreIds.ID: dictionary.id,
+    FirestoreIds.ORIGINAL_LANGUAGE: dictionary.originalLanguage.code,
+    FirestoreIds.TITLE: dictionary.title,
+  };
 }
