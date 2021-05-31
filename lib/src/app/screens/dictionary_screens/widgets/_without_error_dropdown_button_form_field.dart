@@ -97,9 +97,9 @@ class _WithoutErrorDropdownButtonFormFieldState<T> extends FormFieldState<T> {
   @override
   void didChange(T? value) {
     super.didChange(value);
-    if (widget.onChanged != null)
+    if (widget.onChanged != null) {
       widget.onChanged!(value!);
-
+    }
   }
 
   @override

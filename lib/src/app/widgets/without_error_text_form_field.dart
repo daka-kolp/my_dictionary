@@ -38,7 +38,7 @@ class WithoutErrorTextFormField extends FormField<String> {
     VoidCallback? onEditingComplete,
     ValueChanged<String>? onFieldSubmitted,
     FormFieldSetter<String>? onSaved,
-    FormFieldValidator<String?>? validator,
+    FormFieldValidator<String>? validator,
     List<TextInputFormatter>? inputFormatters,
     bool enabled = true,
     double cursorWidth = 2.0,

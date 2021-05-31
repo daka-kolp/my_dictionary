@@ -131,9 +131,7 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
   }
 
   String? _dictionaryNameValidator(String? value) {
-    final isValidate =
-        value == null ||
-        value.isEmpty ||
+    final isValidate = value == null || value.isEmpty ||
         value.compareTo(widget.dictionary.title) == 0;
     return isValidate ? '' : null;
   }

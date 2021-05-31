@@ -31,17 +31,9 @@ class MockAuthRepository extends AuthRepository {
   Future<void> _login(_MockLoginPayload loginPayload) async {
     try {
       if (loginPayload.email != 'test@test.com') {
-        throw PlatformException(
-          code: 'ERROR_USER_NOT_FOUND',
-        );
-      }
-
-      await _storeInteractor.setToken('token_123');
-    } on PlatformException catch (e) {
-      if (e.code == 'ERROR_USER_NOT_FOUND') {
         throw WrongCredentialsException();
       }
-      rethrow;
+      await _storeInteractor.setToken('token_123');
     } catch (e) {
       print('MockAuthRepository: _login => $e');
       rethrow;
