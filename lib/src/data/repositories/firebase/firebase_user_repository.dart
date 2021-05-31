@@ -3,14 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/data/repositories/firebase/firestore_ids.dart';
-import 'package:mydictionaryapp/src/device/utils/languages_service.dart';
+import 'package:mydictionaryapp/src/data/utils/dictionaries_service.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 
 class FirebaseUserRepository extends UserRepository {
   late final _firestore = FirebaseFirestore.instance;
-  late final _languagesService = GetIt.I<LanguagesService>();
+  late final _dictionariesService = GetIt.I<DictionariesService>();
 
   @override
   Future<List<Dictionary>> getDictionaries(
@@ -66,7 +66,7 @@ class FirebaseUserRepository extends UserRepository {
       dictionariesJson.map<Future<Dictionary>>(
         (json) async {
           final String langCode = json[FirestoreIds.originalLanguage];
-          final language = await _languagesService.getLanguageByCode(langCode);
+          final language = await _dictionariesService.getLanguageByCode(langCode);
           return Dictionary(
             id: json[FirestoreIds.id],
             originalLanguage: language,
@@ -78,10 +78,8 @@ class FirebaseUserRepository extends UserRepository {
   }
 
   @override
-  Future<List<Language>> getLanguages() => _languagesService.getLanguages();
-
-  @override
-  Future<Language> getLocalLanguage() => _languagesService.getLocalLanguage();
+  Future<List<Language>> getDictionaryLanguages() =>
+      _dictionariesService.getLanguages();
 }
 
 Map<String, dynamic> _parseDictionaryToJson(Dictionary dictionary) {

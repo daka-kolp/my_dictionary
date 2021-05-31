@@ -6,6 +6,7 @@ import 'package:mydictionaryapp/main.dart';
 import 'package:mydictionaryapp/src/data/repositories/firebase/firebase_auth_repository.dart';
 import 'package:mydictionaryapp/src/data/repositories/firebase/firebase_dictionary_repository.dart';
 import 'package:mydictionaryapp/src/data/repositories/firebase/firebase_user_repository.dart';
+import 'package:mydictionaryapp/src/data/utils/dictionaries_service.dart';
 import 'package:mydictionaryapp/src/data/utils/google_service.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
@@ -40,6 +41,7 @@ Future<void> main() async {
       ),
     )
     ..registerSingleton<GoogleService>(GoogleService())
+    ..registerSingleton<DictionariesService>(DictionariesService())
     ..registerSingleton<AuthRepository>(FirebaseAuthRepository())
     ..registerSingleton<UserRepository>(FirebaseUserRepository())
     ..registerSingleton<DictionaryRepository>(FirebaseDictionaryRepository());

@@ -14,7 +14,5 @@ abstract class UserRepository {
 
   Future<void> removeDictionary(String dictionaryId, String userId);
 
-  Future<Language> getLocalLanguage();
-
-  Future<List<Language>> getLanguages();
+  Future<List<Language>> getDictionaryLanguages();
 }

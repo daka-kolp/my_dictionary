@@ -8,11 +8,9 @@ class NewDictionaryScreenPresenter with ChangeNotifier {
 
   bool _isLoading = false;
   List<Language> _languages = [];
-  late Language _platformLanguage;
 
   bool get isLoading => _isLoading;
   List<Language> get languages => _languages;
-  Language get platformLanguage => _platformLanguage;
 
   NewDictionaryScreenPresenter() {
     _init();
@@ -22,7 +20,6 @@ class NewDictionaryScreenPresenter with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     _languages = await _user.getLanguages();
-    _platformLanguage = await _user.getLocalLanguage();
     _isLoading = false;
     notifyListeners();
   }

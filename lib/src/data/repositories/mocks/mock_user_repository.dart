@@ -82,10 +82,8 @@ class MockUserRepository extends UserRepository {
   }
 
   @override
-  Future<List<Language>> getLanguages() async => [Language.byDefault()];
-
-  @override
-  Future<Language> getLocalLanguage() async => Language.byDefault();
+  Future<List<Language>> getDictionaryLanguages() async =>
+      [Language.byDefault()];
 }
 
 List<Dictionary> _loadDictionaries(Map<String, dynamic> data) {

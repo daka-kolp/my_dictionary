@@ -47,11 +47,7 @@ class User {
     await _userRepository.removeDictionary(dictionaryId, await _id);
   }
 
-  Future<Language> getLocalLanguage() async {
-    return _userRepository.getLocalLanguage();
-  }
-
   Future<List<Language>> getLanguages() async {
-    return _userRepository.getLanguages();
+    return _userRepository.getDictionaryLanguages();
   }
 }

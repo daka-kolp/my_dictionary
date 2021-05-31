@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
