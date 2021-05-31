@@ -1,12 +1,12 @@
 class FirestoreIds {
-  static final USERS = 'users';
-  static final DICTIONARIES = 'dictionaries';
-  static final ID = 'id';
-  static final ORIGINAL_LANGUAGE = 'originalLanguage';
-  static final TITLE = 'title';
-  static final ADDING_TIME = 'addingTime';
-  static final HINT = 'hint';
-  static final TRANSLATIONS = 'translations';
-  static final WORD = 'word';
-  static final TRANSLATION = 'translation';
+  static final users = 'users';
+  static final dictionaries = 'dictionaries';
+  static final id = 'id';
+  static final originalLanguage = 'originalLanguage';
+  static final title = 'title';
+  static final addingTime = 'addingTime';
+  static final hint = 'hint';
+  static final translations = 'translations';
+  static final word = 'word';
+  static final translation = 'translation';
 }

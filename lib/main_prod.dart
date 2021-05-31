@@ -11,7 +11,6 @@ import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repositor
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
-import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,10 +40,10 @@ Future<void> main() async {
       ),
     )
     ..registerSingleton<GoogleService>(GoogleService())
-    ..registerSingleton<StoreInteractor>(StoreInteractor())
     ..registerSingleton<AuthRepository>(FirebaseAuthRepository())
     ..registerSingleton<UserRepository>(FirebaseUserRepository())
     ..registerSingleton<DictionaryRepository>(FirebaseDictionaryRepository());
+
   await Firebase.initializeApp();
   await runMyDictionaryApp();
 }

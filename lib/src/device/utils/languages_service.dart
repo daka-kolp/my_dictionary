@@ -5,22 +5,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
-import 'package:mydictionaryapp/src/domain/repositories_contracts/languages_repository.dart';
 
-class IndependentLanguagesRepository extends LanguagesRepository {
-  @override
+class LanguagesService {
   Future<List<Language>> getLanguages() {
     return rootBundle
         .loadString('assets/target_languages.json')
         .then((v) => compute(_languagesDecoder, v));
   }
 
-  @override
   Future<Language> getLocalLanguage() {
     return getLanguageByCode(window.locale.languageCode);
   }
 
-  @override
   Future<Language> getLanguageByCode(String code) {
     return getLanguages().then(
       (languages) => compute(

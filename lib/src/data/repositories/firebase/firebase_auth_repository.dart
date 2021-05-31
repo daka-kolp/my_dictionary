@@ -6,7 +6,7 @@ import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 
 class FirebaseAuthRepository extends AuthRepository {
-  late final FirebaseAuth _auth = FirebaseAuth.instance;
+  late final _auth = FirebaseAuth.instance;
   late final _storeInteractor = GetIt.I<StoreInteractor>();
   late final _googleService = GetIt.I<GoogleService>();
 

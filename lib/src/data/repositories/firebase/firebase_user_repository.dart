@@ -3,13 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/data/repositories/firebase/firestore_ids.dart';
+import 'package:mydictionaryapp/src/device/utils/languages_service.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
-import 'package:mydictionaryapp/src/domain/repositories_contracts/languages_repository.dart';
+import 'package:mydictionaryapp/src/domain/entities/language.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 
 class FirebaseUserRepository extends UserRepository {
   late final _firestore = FirebaseFirestore.instance;
-  late final _langsRepository = GetIt.I<LanguagesRepository>();
+  late final _languagesService = GetIt.I<LanguagesService>();
 
   @override
   Future<List<Dictionary>> getDictionaries(
@@ -26,12 +27,12 @@ class FirebaseUserRepository extends UserRepository {
     final dictionaryJson = await compute(_parseDictionaryToJson, dictionary);
     try {
       await _users.doc(userId).update({
-        FirestoreIds.DICTIONARIES: FieldValue.arrayUnion([dictionaryJson]),
+        FirestoreIds.dictionaries: FieldValue.arrayUnion([dictionaryJson]),
       });
     } on FirebaseException catch (e) {
       if (e.code == 'not-found') {
         await _users.doc(userId).set({
-          FirestoreIds.DICTIONARIES: [dictionaryJson],
+          FirestoreIds.dictionaries: [dictionaryJson],
         });
         return;
       }
@@ -52,7 +53,7 @@ class FirebaseUserRepository extends UserRepository {
   }
 
   CollectionReference<Map<String, dynamic>> get _users =>
-      _firestore.collection(FirestoreIds.USERS);
+      _firestore.collection(FirestoreIds.users);
 
   Future<List<Dictionary>> _parseDictionariesFromJson(
     Map<String, dynamic>? userDataJson,
@@ -60,27 +61,33 @@ class FirebaseUserRepository extends UserRepository {
     if (userDataJson == null) {
       return [];
     }
-    final List dictionariesJson = userDataJson[FirestoreIds.DICTIONARIES];
+    final List dictionariesJson = userDataJson[FirestoreIds.dictionaries];
     return Future.wait(
       dictionariesJson.map<Future<Dictionary>>(
         (json) async {
-          final String langCode = json[FirestoreIds.ORIGINAL_LANGUAGE];
-          final language = await _langsRepository.getLanguageByCode(langCode);
+          final String langCode = json[FirestoreIds.originalLanguage];
+          final language = await _languagesService.getLanguageByCode(langCode);
           return Dictionary(
-            id: json[FirestoreIds.ID],
+            id: json[FirestoreIds.id],
             originalLanguage: language,
-            title: json[FirestoreIds.TITLE],
+            title: json[FirestoreIds.title],
           );
         },
       ).toList(),
     );
   }
+
+  @override
+  Future<List<Language>> getLanguages() => _languagesService.getLanguages();
+
+  @override
+  Future<Language> getLocalLanguage() => _languagesService.getLocalLanguage();
 }
 
 Map<String, dynamic> _parseDictionaryToJson(Dictionary dictionary) {
   return {
-    FirestoreIds.ID: dictionary.id,
-    FirestoreIds.ORIGINAL_LANGUAGE: dictionary.originalLanguage.code,
-    FirestoreIds.TITLE: dictionary.title,
+    FirestoreIds.id: dictionary.id,
+    FirestoreIds.originalLanguage: dictionary.originalLanguage.code,
+    FirestoreIds.title: dictionary.title,
   };
 }

@@ -80,6 +80,12 @@ class MockUserRepository extends UserRepository {
       throw DictionaryNotExistException(dictionaryId);
     }
   }
+
+  @override
+  Future<List<Language>> getLanguages() async => [Language.byDefault()];
+
+  @override
+  Future<Language> getLocalLanguage() async => Language.byDefault();
 }
 
 List<Dictionary> _loadDictionaries(Map<String, dynamic> data) {

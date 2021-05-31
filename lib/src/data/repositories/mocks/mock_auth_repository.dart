@@ -6,9 +6,7 @@ import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 
 class MockAuthRepository extends AuthRepository {
-  final StoreInteractor _storeInteractor;
-
-  MockAuthRepository() : _storeInteractor = GetIt.I<StoreInteractor>();
+  late final _storeInteractor = GetIt.I<StoreInteractor>();
 
   @override
   Future<String> get userId async => _storeInteractor.getToken();

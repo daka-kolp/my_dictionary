@@ -19,7 +19,7 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
     String dictionaryId,
   ) async {
     final query = _dictionaryReference(userId, dictionaryId)
-        .orderBy(FirestoreIds.ADDING_TIME, descending: true)
+        .orderBy(FirestoreIds.addingTime, descending: true)
         .limit(_fetchStep);
     final querySnapshot = _lastDocument == null
         ? await query.get()
@@ -67,7 +67,7 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
     String dictionaryId,
   ) {
     return _firestore
-        .collection(FirestoreIds.USERS)
+        .collection(FirestoreIds.users)
         .doc(userId)
         .collection(dictionaryId);
   }
@@ -75,17 +75,17 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
 
 Word _parseWordFromJson(Map<String, dynamic> json) {
   return Word(
-    id: json[FirestoreIds.ID],
-    word: json[FirestoreIds.WORD],
-    translations: json[FirestoreIds.TRANSLATIONS]
+    id: json[FirestoreIds.id],
+    word: json[FirestoreIds.word],
+    translations: json[FirestoreIds.translations]
         .map<Translation>(
           (e) => Translation(
-            id: e[FirestoreIds.ID],
-            translation: e[FirestoreIds.TRANSLATION],
+            id: e[FirestoreIds.id],
+            translation: e[FirestoreIds.translation],
           ),
         )
         .toList(),
-    hint: json[FirestoreIds.HINT],
-    addingTime: json[FirestoreIds.ADDING_TIME].toDate(),
+    hint: json[FirestoreIds.hint],
+    addingTime: json[FirestoreIds.addingTime].toDate(),
   );
 }

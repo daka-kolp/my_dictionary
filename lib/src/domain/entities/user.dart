@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
-import 'package:mydictionaryapp/src/domain/repositories_contracts/languages_repository.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 
 class User {
@@ -11,12 +10,10 @@ class User {
 
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
-  final LanguagesRepository _languagesRepository;
 
   User._()
       : _authRepository = GetIt.I<AuthRepository>(),
-        _userRepository = GetIt.I<UserRepository>(),
-        _languagesRepository = GetIt.I<LanguagesRepository>();
+        _userRepository = GetIt.I<UserRepository>();
 
   Future<String> get _id => _authRepository.userId;
 
@@ -51,10 +48,10 @@ class User {
   }
 
   Future<Language> getLocalLanguage() async {
-    return _languagesRepository.getLocalLanguage();
+    return _userRepository.getLocalLanguage();
   }
 
   Future<List<Language>> getLanguages() async {
-    return _languagesRepository.getLanguages();
+    return _userRepository.getLanguages();
   }
 }
