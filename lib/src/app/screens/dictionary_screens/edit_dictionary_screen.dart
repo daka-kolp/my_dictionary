@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
@@ -10,9 +11,6 @@ import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
-
-//TODO: remove the import
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 class EditDictionaryScreen extends StatefulWidget {
   final Dictionary dictionary;
@@ -40,6 +38,8 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
   final _dictionaryNameStateKey = GlobalKey<FormFieldState<String>>();
 
   bool _isFromValid = false;
+
+  MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.delete),
-          tooltip: remove,
+          tooltip: _locale.remove,
           onPressed: _showDialogOnRemoveDictionary,
         ),
       ],
@@ -80,7 +80,7 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
   Future<void> _showDialogOnRemoveDictionary() async {
     await showDialog(
       context: context,
-      builder: dialogBuilder(context, removeDictionaryQuestion, _onRemove),
+      builder: dialogBuilder(context, _locale.removeDictionaryQuestion, _onRemove),
     );
   }
 
@@ -102,7 +102,7 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TitleTile(title: editDictionaryName),
+                  TitleTile(title: _locale.editDictionaryName),
                   _buildDictionaryNameFormField(),
                   _buildEditDictionaryButton(),
                 ],
@@ -142,7 +142,7 @@ class _EditDictionaryScreenState extends State<EditDictionaryScreen> {
         margin: const EdgeInsets.all(16.0),
         width: double.infinity,
         child: ElevatedButton(
-          child: Text(edit),
+          child: Text(_locale.edit),
           onPressed: _isFromValid ? _onEdit : null,
         ),
       ),

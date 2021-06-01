@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/screens/word_screens/edit_word_screen.dart';
@@ -15,9 +16,6 @@ import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-
-//TODO: remove the import
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 class WordsScreen extends StatefulWidget {
   static PageRoute buildPageRoute(Dictionary dictionary) {
@@ -44,6 +42,7 @@ class _WordsScreenState extends State<WordsScreen> {
 
   bool get _isIOS => Platform.isIOS;
 
+  MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
   WordsScreenPresenter get _watch => context.watch<WordsScreenPresenter>();
   WordsScreenPresenter get _read => context.read<WordsScreenPresenter>();
 
@@ -99,7 +98,7 @@ class _WordsScreenState extends State<WordsScreen> {
       return Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Text(listEmptyInfo, textAlign: TextAlign.center),
+        child: Text(_locale.listEmptyInfo, textAlign: TextAlign.center),
       );
     }
 
@@ -147,7 +146,7 @@ class _WordsScreenState extends State<WordsScreen> {
           await _read.updateWord(returnedValue);
         }
       } on WordNotExistException {
-        showErrorMessage(context, wordNotExistException);
+        showErrorMessage(context, _locale.wordNotExistException);
       } catch (e) {
         //TODO: handle errors
         showErrorMessage(context, e.toString());
@@ -171,7 +170,7 @@ class _WordsScreenState extends State<WordsScreen> {
       try {
         await _read.addNewWord(returnedValue);
       } on WordAlreadyExistException {
-        showErrorMessage(context, wordAlreadyExistException);
+        showErrorMessage(context, _locale.wordAlreadyExistException);
       } catch (e) {
         //TODO: handle errors
         showErrorMessage(context, e.toString());

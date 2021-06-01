@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-//TODO: remove the import
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
+import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 
 WidgetBuilder dialogBuilder(
   BuildContext context,
@@ -12,9 +10,10 @@ WidgetBuilder dialogBuilder(
   VoidCallback onOkPressed, {
   bool isCancelButtonExist = true,
 }) {
+  final locale = MyDictionaryLocalizations.of(context)!;
   final content = Text(contentText);
-  final okText = Text(ok);
-  final cancelText = Text(cancel);
+  final okText = Text(locale.ok);
+  final cancelText = Text(locale.cancel);
 
   return (context) {
     if (Platform.isIOS) {

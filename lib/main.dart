@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:get_it/get_it.dart';
 import 'package:uuid/uuid.dart';
 
@@ -7,9 +8,6 @@ import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries
 import 'package:mydictionaryapp/src/app/widgets/environment_banner.dart';
 import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
 import 'package:mydictionaryapp/src/domain/entities/user.dart';
-
-//TODO: remove the import
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 Future<void> runMyDictionaryApp() async {
   GetIt.I
@@ -32,11 +30,17 @@ class MyDictionaryApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return EnvironmentBanner(
       child: MaterialApp(
-        title: appName,
+        onGenerateTitle: _onGenerateTitle,
         theme: GetIt.I<ThemeData>(),
         onGenerateRoute: _onGenerateRoute,
+        localizationsDelegates: MyDictionaryLocalizations.localizationsDelegates,
+        supportedLocales: MyDictionaryLocalizations.supportedLocales,
       ),
     );
+  }
+
+  String _onGenerateTitle(BuildContext context) {
+    return MyDictionaryLocalizations.of(context)!.appName;
   }
 
   Route _onGenerateRoute(RouteSettings settings) {

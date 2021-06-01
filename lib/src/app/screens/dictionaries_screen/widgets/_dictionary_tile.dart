@@ -45,10 +45,14 @@ class _DictionaryTile extends StatelessWidget {
   }
 
   Widget _buildEditButton() {
-    return IconButton(
-      tooltip: edit,
-      icon: Icon(Icons.edit),
-      onPressed: () async => await onEdit(dictionary),
+    return Builder(
+      builder: (BuildContext context) {
+        return IconButton(
+          tooltip: MyDictionaryLocalizations.of(context)!.edit,
+          icon: Icon(Icons.edit),
+          onPressed: () async => await onEdit(dictionary),
+        );
+      },
     );
   }
 }

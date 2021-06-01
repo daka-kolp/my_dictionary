@@ -15,7 +15,7 @@ class _TranslationPopupButton extends StatelessWidget {
     }
 
     return PopupMenuButton(
-      tooltip: showTranslation,
+      tooltip: MyDictionaryLocalizations.of(context)!.showTranslation,
       icon: Icon(Icons.translate),
       itemBuilder: _translationBuilder,
     );

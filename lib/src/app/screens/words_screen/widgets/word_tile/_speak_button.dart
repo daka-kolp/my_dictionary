@@ -11,7 +11,7 @@ class _SpeakButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      tooltip: listen,
+      tooltip: MyDictionaryLocalizations.of(context)!.listen,
       icon: Icon(Icons.volume_up),
       onPressed: () => _onSpeak(context),
     );

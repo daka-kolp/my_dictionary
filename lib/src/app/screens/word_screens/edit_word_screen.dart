@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
@@ -10,9 +11,6 @@ import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-
-//TODO: remove the import
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 class EditWordScreen extends StatefulWidget {
   final Word word;
@@ -41,6 +39,8 @@ class _EditWordScreenState extends State<EditWordScreen> {
   final _hintStateKey = GlobalKey<FormFieldState<String>>();
 
   bool _isFromValid = false;
+
+  MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.delete),
-          tooltip: remove,
+          tooltip: _locale.remove,
           onPressed: _showDialogOnRemoveWord,
         ),
       ],
@@ -84,7 +84,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
   Future<void> _showDialogOnRemoveWord() async {
     await showDialog(
       context: context,
-      builder: dialogBuilder(context, removeWordQuestion, _onRemove),
+      builder: dialogBuilder(context, _locale.removeWordQuestion, _onRemove),
     );
   }
 
@@ -102,11 +102,11 @@ class _EditWordScreenState extends State<EditWordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TitleTile(title: editWord, isRequired: true),
+              TitleTile(title: _locale.editWord, isRequired: true),
               _buildWordFormField(),
-              TitleTile(title: editTranslation, isRequired: true),
+              TitleTile(title: _locale.editTranslation, isRequired: true),
               _buildTranslationsListFormField(),
-              TitleTile(title: editHint),
+              TitleTile(title: _locale.editHint),
               _buildHintFormField(),
               _buildEditWordButton(),
             ],
@@ -147,7 +147,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
         keyboardType: TextInputType.multiline,
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
-        decoration: InputDecoration(hintText: writeAssociationOrHint),
+        decoration: InputDecoration(hintText: _locale.writeAssociationOrHint),
       ),
     );
   }
@@ -158,7 +158,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
         margin: const EdgeInsets.all(16.0),
         width: double.infinity,
         child: ElevatedButton(
-          child: Text(edit),
+          child: Text(_locale.edit),
           onPressed: _isFromValid ? _onEdit : null,
         ),
       ),

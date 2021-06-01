@@ -1,0 +1,192 @@
+{
+  "appName": "MyDictionary",
+  "@appName": {
+    "type": "text",
+    "description": ""
+  },
+  "hint": "A hint",
+  "@hint": {
+    "type": "text",
+    "description": ""
+  },
+  "ok": "Ok",
+  "@ok": {
+    "type": "text",
+    "description": ""
+  },
+  "showTranslation": "Show a translation",
+  "@showTranslation": {
+    "type": "text",
+    "description": ""
+  },
+  "add": "Add",
+  "@add": {
+    "type": "text",
+    "description": ""
+  },
+  "listen": "Listen",
+  "@listen": {
+    "type": "text",
+    "description": ""
+  },
+  "edit": "Edit",
+  "@edit": {
+    "type": "text",
+    "description": ""
+  },
+  "enterWord": "Enter a word",
+  "@enterWord": {
+    "type": "text",
+    "description": ""
+  },
+  "addTranslation": "Add translations",
+  "@addTranslation": {
+    "type": "text",
+    "description": ""
+  },
+  "addHint": "Add a hint",
+  "@addHint": {
+    "type": "text",
+    "description": ""
+  },
+  "editWord": "Edit the word",
+  "@editWord": {
+    "type": "text",
+    "description": ""
+  },
+  "editTranslation": "Edit the translations",
+  "@editTranslation": {
+    "type": "text",
+    "description": ""
+  },
+  "editHint": "Edit the hint",
+  "@editHint": {
+    "type": "text",
+    "description": ""
+  },
+  "newWord": "A new word",
+  "@newWord": {
+    "type": "text",
+    "description": ""
+  },
+  "writeTranslation": "Write a translation",
+  "@writeTranslation": {
+    "type": "text",
+    "description": ""
+  },
+  "writeAssociationOrHint": "Write an association or hint",
+  "@writeAssociationOrHint": {
+    "type": "text",
+    "description": ""
+  },
+  "remove": "Remove",
+  "@remove": {
+    "type": "text",
+    "description": ""
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "type": "text",
+    "description": ""
+  },
+  "removeWordQuestion": "Are you sure you want to delete this word?",
+  "@removeWordQuestion": {
+    "type": "text",
+    "description": ""
+  },
+  "wordAlreadyExistException": "This word already exists in the dictionary",
+  "@wordAlreadyExistException": {
+    "type": "text",
+    "description": ""
+  },
+  "wordNotExistException": "This word does not exist in the dictionary",
+  "@wordNotExistException": {
+    "type": "text",
+    "description": ""
+  },
+  "userDictionaries": "User's dictionaries",
+  "@userDictionaries": {
+    "type": "text",
+    "description": ""
+  },
+  "enterWithGoogle": "Login with Google",
+  "@enterWithGoogle": {
+    "type": "text",
+    "description": ""
+  },
+  "or": "or",
+  "@or": {
+    "type": "text",
+    "description": ""
+  },
+  "enterWithApple": "Login with Apple",
+  "@enterWithApple": {
+    "type": "text",
+    "description": ""
+  },
+  "askChangeUser": "Do you want to change user?",
+  "@askChangeUser": {
+    "type": "text",
+    "description": ""
+  },
+  "listEmptyInfo": "The list is empty. Use \"+\" to add a new item",
+  "@listEmptyInfo": {
+    "type": "text",
+    "description": ""
+  },
+  "changeUser": "Change user",
+  "@changeUser": {
+    "type": "text",
+    "description": ""
+  },
+  "logOutException": "The problems related to user change. Try restarting the app",
+  "@logOutException": {
+    "type": "text",
+    "description": ""
+  },
+  "newDictionary": "A new dictionary",
+  "@newDictionary": {
+    "type": "text",
+    "description": ""
+  },
+  "addOriginalLanguage": "Select the language of the dictionary",
+  "@addOriginalLanguage": {
+    "type": "text",
+    "description": ""
+  },
+  "enterDictionaryName": "Enter the name of the dictionary (generated automatically, the field can be edited)",
+  "@enterDictionaryName": {
+    "type": "text",
+    "description": ""
+  },
+  "wrongCredentials": "Invalid credentials",
+  "@wrongCredentials": {
+    "type": "text",
+    "description": ""
+  },
+  "choseTargetLanguage": "Select target language",
+  "@choseTargetLanguage": {
+    "type": "text",
+    "description": ""
+  },
+  "dictionaryAlreadyExistException": "A dictionary with the same name already exists",
+  "@dictionaryAlreadyExistException": {
+    "type": "text",
+    "description": ""
+  },
+  "dictionaryNotExistException": "This word does not exist in the dictionary",
+  "@dictionaryNotExistException": {
+    "type": "text",
+    "description": ""
+  },
+  "editDictionaryName": "Edit the name of the dictionary",
+  "@editDictionaryName": {
+    "type": "text",
+    "description": ""
+  },
+  "removeDictionaryQuestion": "Are you sure you want to delete this dictionary?",
+  "@removeDictionaryQuestion": {
+    "type": "text",
+    "description": ""
+  }
+}

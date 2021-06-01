@@ -1,0 +1,192 @@
+{
+  "appName": "MyDictionary",
+  "@appName": {
+    "type": "text",
+    "description": ""
+  },
+  "hint": "Подсказка",
+  "@hint": {
+    "type": "text",
+    "description": ""
+  },
+  "ok": "Ок",
+  "@ok": {
+    "type": "text",
+    "description": ""
+  },
+  "showTranslation": "Показать перевод",
+  "@showTranslation": {
+    "type": "text",
+    "description": ""
+  },
+  "add": "Добавить",
+  "@add": {
+    "type": "text",
+    "description": ""
+  },
+  "listen": "Слушать",
+  "@listen": {
+    "type": "text",
+    "description": ""
+  },
+  "edit": "Править",
+  "@edit": {
+    "type": "text",
+    "description": ""
+  },
+  "enterWord": "Введите слово",
+  "@enterWord": {
+    "type": "text",
+    "description": ""
+  },
+  "addTranslation": "Добавьте перевод",
+  "@addTranslation": {
+    "type": "text",
+    "description": ""
+  },
+  "addHint": "Добавьте подсказку",
+  "@addHint": {
+    "type": "text",
+    "description": ""
+  },
+  "editWord": "Отредактируйте слово",
+  "@editWord": {
+    "type": "text",
+    "description": ""
+  },
+  "editTranslation": "Отредактируйте перевод",
+  "@editTranslation": {
+    "type": "text",
+    "description": ""
+  },
+  "editHint": "Отредактируйте подсказку",
+  "@editHint": {
+    "type": "text",
+    "description": ""
+  },
+  "newWord": "Новое слово",
+  "@newWord": {
+    "type": "text",
+    "description": ""
+  },
+  "writeTranslation": "Напишите предполагаемый перевод",
+  "@writeTranslation": {
+    "type": "text",
+    "description": ""
+  },
+  "writeAssociationOrHint": "Напишите ассоциацию или подсказку",
+  "@writeAssociationOrHint": {
+    "type": "text",
+    "description": ""
+  },
+  "remove": "Удалить",
+  "@remove": {
+    "type": "text",
+    "description": ""
+  },
+  "cancel": "Отмена",
+  "@cancel": {
+    "type": "text",
+    "description": ""
+  },
+  "removeWordQuestion": "Вы уверены что хотите удалить это слово?",
+  "@removeWordQuestion": {
+    "type": "text",
+    "description": ""
+  },
+  "wordAlreadyExistException": "Это слово уже существует в словаре",
+  "@wordAlreadyExistException": {
+    "type": "text",
+    "description": ""
+  },
+  "wordNotExistException": "Это слово не существует в словаре",
+  "@wordNotExistException": {
+    "type": "text",
+    "description": ""
+  },
+  "userDictionaries": "Словари пользователя",
+  "@userDictionaries": {
+    "type": "text",
+    "description": ""
+  },
+  "enterWithGoogle": "Войти с помощью Google",
+  "@enterWithGoogle": {
+    "type": "text",
+    "description": ""
+  },
+  "or": "или",
+  "@or": {
+    "type": "text",
+    "description": ""
+  },
+  "enterWithApple": "Войти с помощью Apple",
+  "@enterWithApple": {
+    "type": "text",
+    "description": ""
+  },
+  "askChangeUser": "Вы хотите сменить пользователя?",
+  "@askChangeUser": {
+    "type": "text",
+    "description": ""
+  },
+  "listEmptyInfo": "Список пуст. Используйте «+», чтобы добавить новый элемент",
+  "@listEmptyInfo": {
+    "type": "text",
+    "description": ""
+  },
+  "changeUser": "Сменить пользователя",
+  "@changeUser": {
+    "type": "text",
+    "description": ""
+  },
+  "logOutException": "Проблемы связанные со сменой пользователя. Попробуйте перезагрузить приложение",
+  "@logOutException": {
+    "type": "text",
+    "description": ""
+  },
+  "newDictionary": "Новый словарь",
+  "@newDictionary": {
+    "type": "text",
+    "description": ""
+  },
+  "addOriginalLanguage": "Выберите язык словаря",
+  "@addOriginalLanguage": {
+    "type": "text",
+    "description": ""
+  },
+  "enterDictionaryName": "Введите название словаря (генерируется автоматически, поле может редактироваться)",
+  "@enterDictionaryName": {
+    "type": "text",
+    "description": ""
+  },
+  "wrongCredentials": "Неверные учетные данные",
+  "@wrongCredentials": {
+    "type": "text",
+    "description": ""
+  },
+  "choseTargetLanguage": "Выберите целевой язык",
+  "@choseTargetLanguage": {
+    "type": "text",
+    "description": ""
+  },
+  "dictionaryAlreadyExistException": "Словарь с таким названием уже существует",
+  "@dictionaryAlreadyExistException": {
+    "type": "text",
+    "description": ""
+  },
+  "dictionaryNotExistException": "Это слово не существует в словаре",
+  "@dictionaryNotExistException": {
+    "type": "text",
+    "description": ""
+  },
+  "editDictionaryName": "Отредактируйте название словаря",
+  "@editDictionaryName": {
+    "type": "text",
+    "description": ""
+  },
+  "removeDictionaryQuestion": "Вы уверены что хотите удалить этот словарь?",
+  "@removeDictionaryQuestion": {
+    "type": "text",
+    "description": ""
+  }
+}

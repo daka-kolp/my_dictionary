@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
@@ -15,9 +16,6 @@ import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
 import 'package:mydictionaryapp/src/app/utils/show_snack_bar.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
-
-//TODO: remove the import
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 part 'widgets/_dictionary_tile.dart';
 
@@ -44,11 +42,10 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = ScrollController();
 
+  MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
   bool get _isIOS => Platform.isIOS;
-  DictionariesScreenPresenter get _watch =>
-      context.watch<DictionariesScreenPresenter>();
-  DictionariesScreenPresenter get _read =>
-      context.read<DictionariesScreenPresenter>();
+  DictionariesScreenPresenter get _watch => context.watch<DictionariesScreenPresenter>();
+  DictionariesScreenPresenter get _read => context.read<DictionariesScreenPresenter>();
 
   @override
   void initState() {
@@ -79,7 +76,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   PreferredSizeWidget _buildAppBar() {
-    final title = Text(userDictionaries);
+    final title = Text(_locale.userDictionaries);
 
     if (_isIOS) {
       return CupertinoNavigationBar(
@@ -107,7 +104,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
       return Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Text(listEmptyInfo, textAlign: TextAlign.center),
+        child: Text(_locale.listEmptyInfo, textAlign: TextAlign.center),
       );
     }
 
@@ -157,7 +154,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
           await _read.editDictionary(returnedValue);
         }
       } on DictionaryNotExistException {
-        showErrorMessage(context, dictionaryNotExistException);
+        showErrorMessage(context, _locale.dictionaryNotExistException);
       } catch (e) {
         //TODO: handle errors
         showErrorMessage(context, e.toString());
@@ -181,7 +178,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
       try {
         await _read.createDictionary(returnedValue);
       } on DictionaryAlreadyExistException {
-        showErrorMessage(context, dictionaryAlreadyExistException);
+        showErrorMessage(context, _locale.dictionaryAlreadyExistException);
       } catch (e) {
         //TODO: handle errors
         showErrorMessage(context, e.toString());
@@ -190,7 +187,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   Widget _buildBottomNavigationBar() {
-    final title = Text(changeUser);
+    final title = Text(_locale.changeUser);
 
     if (_isIOS) {
       return SafeArea(
@@ -219,7 +216,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   Future<void> _showDialogOnLogout() async {
     await showDialog(
       context: context,
-      builder: dialogBuilder(context, askChangeUser, _onExit),
+      builder: dialogBuilder(context, _locale.askChangeUser, _onExit),
     );
   }
 
@@ -232,7 +229,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
         (route) => false,
       );
     } on LogOutException {
-      showErrorMessage(context, logOutException);
+      showErrorMessage(context, _locale.logOutException);
     } catch (e) {
       //TODO: handle errors
       showErrorMessage(context, e.toString());

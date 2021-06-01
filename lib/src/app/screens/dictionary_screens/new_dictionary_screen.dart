@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_screen_presenter.dart';
@@ -13,9 +14,6 @@ import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
-
-//TODO: remove the import
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 class NewDictionaryScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {
@@ -43,6 +41,8 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
 
   bool _isFromValid = false;
 
+  MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
+
   NewDictionaryScreenPresenter get _watch => context.watch<NewDictionaryScreenPresenter>();
 
   @override
@@ -56,7 +56,7 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   void _resetFocusNode() => FocusScope.of(context).requestFocus(FocusNode());
 
   PreferredSizeWidget _buildAppBar() {
-    final title = Text(newDictionary);
+    final title = Text(_locale.newDictionary);
 
     if (Platform.isIOS) {
       return CupertinoNavigationBar(middle: title);
@@ -78,9 +78,9 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TitleTile(title: addOriginalLanguage, isRequired: true),
+                  TitleTile(title: _locale.addOriginalLanguage, isRequired: true),
                   _watch.isLoading ? _buildEmptyTile() : _buildTargetLanguagesListButton(),
-                  TitleTile(title: enterDictionaryName, isRequired: true),
+                  TitleTile(title: _locale.enterDictionaryName, isRequired: true),
                   _buildDictionaryNameFormField(),
                   _buildAddDictionaryButton(),
                 ],
@@ -101,7 +101,7 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
   Widget _buildTargetLanguagesListButton() {
     return LanguagesListButton(
       languagesListKey: _targetLanguagesStateKey,
-      hint: choseTargetLanguage,
+      hint: _locale.choseTargetLanguage,
       languages: _watch.languages,
       onChanged: _onTargetLanguagesChanged,
     );
@@ -131,7 +131,7 @@ class _NewDictionaryScreenState extends State<NewDictionaryScreen> {
         margin: const EdgeInsets.all(16.0),
         width: double.infinity,
         child: ElevatedButton(
-          child: Text(add),
+          child: Text(_locale.add),
           onPressed: _isFromValid ? _onAdd : null,
         ),
       ),

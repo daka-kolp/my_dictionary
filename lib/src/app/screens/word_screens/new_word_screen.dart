@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
@@ -9,9 +10,6 @@ import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/translation
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-
-//TODO: remove the import
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 class NewWordScreen extends StatefulWidget {
   static PageRoute buildPageRoute() {
@@ -35,6 +33,8 @@ class _NewWordScreenState extends State<NewWordScreen> {
 
   bool _isFromValid = false;
 
+  MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -49,7 +49,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
   void _resetFocusNode() => FocusScope.of(context).requestFocus(FocusNode());
 
   PreferredSizeWidget _buildAppBar() {
-    final title = Text(newWord);
+    final title = Text(_locale.newWord);
 
     if (Platform.isIOS) {
       return CupertinoNavigationBar(middle: title);
@@ -67,11 +67,11 @@ class _NewWordScreenState extends State<NewWordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TitleTile(title: enterWord, isRequired: true),
+              TitleTile(title: _locale.enterWord, isRequired: true),
               _buildWordFormField(),
-              TitleTile(title: addTranslation, isRequired: true),
+              TitleTile(title: _locale.addTranslation, isRequired: true),
               _buildTranslationsListFormField(),
-              TitleTile(title: addHint),
+              TitleTile(title: _locale.addHint),
               _buildHintFormField(),
               _buildAddWordButton(),
             ],
@@ -111,7 +111,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
         keyboardType: TextInputType.multiline,
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
-        decoration: InputDecoration(hintText: writeAssociationOrHint),
+        decoration: InputDecoration(hintText: _locale.writeAssociationOrHint),
       ),
     );
   }
@@ -122,7 +122,7 @@ class _NewWordScreenState extends State<NewWordScreen> {
         margin: const EdgeInsets.all(16.0),
         width: double.infinity,
         child: ElevatedButton(
-          child: Text(add),
+          child: Text(_locale.add),
           onPressed: _isFromValid ? _onAdd : null,
         ),
       ),

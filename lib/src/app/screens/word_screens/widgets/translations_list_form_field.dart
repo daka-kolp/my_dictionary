@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
-
-//TODO: remove the import
-import 'package:mydictionaryapp/src/device/utils/localization.dart';
 
 part '_translation_list_tile.dart';
 
@@ -11,7 +9,6 @@ class TranslationListFormField extends FormField<List<Translation>> {
   TranslationListFormField({
     Key? key,
     List<Translation> initialList = const [],
-    // FormFieldSetter<List<Translation>> onSaved,
   }) : super(
           key: key,
           initialValue: initialList,
@@ -70,16 +67,20 @@ class _TranslationListState extends State<_TranslationList> {
   }
 
   Widget _buildNewTranslationField() {
-    return TextField(
-      controller: _translationController,
-      onSubmitted: _textNotEmpty ? (value) => _onAdd() : null,
-      decoration: InputDecoration(
-        hintText: writeTranslation,
-        suffixIcon: IconButton(
-          icon: Icon(Icons.add),
-          onPressed: _textNotEmpty ? _onAdd : null,
-        ),
-      ),
+    return Builder(
+      builder: (context) {
+        return TextField(
+          controller: _translationController,
+          onSubmitted: _textNotEmpty ? (value) => _onAdd() : null,
+          decoration: InputDecoration(
+            hintText: MyDictionaryLocalizations.of(context)!.writeTranslation,
+            suffixIcon: IconButton(
+              icon: Icon(Icons.add),
+              onPressed: _textNotEmpty ? _onAdd : null,
+            ),
+          ),
+        );
+      },
     );
   }
 
