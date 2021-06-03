@@ -109,7 +109,6 @@ class _WordsScreenState extends State<WordsScreen> {
         controller: _controller,
         slivers: <Widget>[
           SliverList(
-            childCount: words.length,
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 return WordTile(
@@ -118,6 +117,7 @@ class _WordsScreenState extends State<WordsScreen> {
                   onEdit: () => _onEditWordPressed(words[index]),
                 );
               },
+              childCount: words.length,
             ),
           ),
           if (_watch.isNewWordsLoading)
