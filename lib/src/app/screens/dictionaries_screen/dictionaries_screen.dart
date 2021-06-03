@@ -40,26 +40,11 @@ class DictionariesScreen extends StatefulWidget {
 
 class _DictionariesScreenState extends State<DictionariesScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _controller = ScrollController();
 
   MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
   bool get _isIOS => Platform.isIOS;
   DictionariesScreenPresenter get _watch => context.watch<DictionariesScreenPresenter>();
   DictionariesScreenPresenter get _read => context.read<DictionariesScreenPresenter>();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(_scrollListener);
-  }
-
-  Future<void> _scrollListener() async {
-    final position = _controller.position;
-
-    if (position.pixels >= position.maxScrollExtent * 0.8) {
-      await _read.uploadNewDictionaries();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,31 +94,17 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
     }
 
     final dictionaries = _watch.dictionaries;
-    return CustomScrollView(
-      controller: _controller,
-      slivers: <Widget>[
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final dictionary = dictionaries[index];
-              return _DictionaryTile(
-                isEven: (index + 1).isEven,
-                dictionary: dictionary,
-                onPressed: _onItemPressed,
-                onEdit: _onItemEdit,
-              );
-            },
-            childCount: dictionaries.length,
-          ),
-        ),
-        if (_watch.isNewDictionariesLoading)
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 96.0,
-              child: LoadingIndicator(),
-            ),
-          ),
-      ],
+    return ListView.builder(
+      itemCount: dictionaries.length,
+      itemBuilder: (context, index) {
+        final dictionary = dictionaries[index];
+        return _DictionaryTile(
+          isEven: (index + 1).isEven,
+          dictionary: dictionary,
+          onPressed: _onItemPressed,
+          onEdit: _onItemEdit,
+        );
+      },
     );
   }
 
@@ -234,11 +205,5 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
       //TODO: handle errors
       showErrorMessage(context, e.toString());
     }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }

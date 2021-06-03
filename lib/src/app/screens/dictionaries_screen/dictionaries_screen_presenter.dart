@@ -1,24 +1,19 @@
 import 'package:flutter/widgets.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/user.dart';
-import 'package:mydictionaryapp/src/global_config.dart';
 
 class DictionariesScreenPresenter with ChangeNotifier {
-  final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
-
   late List<Dictionary> _dictionaries;
   bool _isInit = true;
-  bool _isNewDictionariesAvailable = true;
-  bool _isNewDictionariesLoading = false;
+  bool _isDictionariesLoading = false;
   bool _isLoading = false;
   bool _isDictionariesListUpdating = false;
 
   User get _user => User.I;
   List<Dictionary> get dictionaries => _dictionaries;
-  bool get isNewDictionariesLoading => _isNewDictionariesLoading;
+  bool get isDictionariesLoading => _isDictionariesLoading;
   bool get isInit => _isInit;
   bool get isLoading => _isLoading || _isDictionariesListUpdating;
 
@@ -27,41 +22,16 @@ class DictionariesScreenPresenter with ChangeNotifier {
   }
 
   Future<void> _init() async {
-    _isNewDictionariesLoading = true;
+    _isDictionariesLoading = true;
     notifyListeners();
     try {
       _dictionaries = await _user.getDictionaries();
-      if (_dictionaries.length < _fetchStep) {
-        _isNewDictionariesAvailable = false;
-      }
     } catch (e) {
       _dictionaries = <Dictionary>[];
-      print('DictionariesScreenPresenter: _init() => $e');
     } finally {
-      _isNewDictionariesLoading = false;
+      _isDictionariesLoading = false;
       _isInit = false;
       notifyListeners();
-    }
-  }
-
-  Future<void> uploadNewDictionaries() async {
-    if (_isNewDictionariesLoading) return;
-    if (_isNewDictionariesAvailable) {
-      _isNewDictionariesLoading = true;
-      notifyListeners();
-      try {
-        final newDictionaries = await _user.getDictionaries();
-        if (newDictionaries.length < _fetchStep) {
-          _isNewDictionariesAvailable = false;
-        }
-        _dictionaries += newDictionaries;
-      } catch (e) {
-        print('DictionariesScreenPresenter: uploadNewDictionaries() => $e');
-        rethrow;
-      } finally {
-        _isNewDictionariesLoading = false;
-        notifyListeners();
-      }
     }
   }
 
