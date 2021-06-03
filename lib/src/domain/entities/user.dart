@@ -31,8 +31,8 @@ class User {
     return _authRepository.logOut();
   }
 
-  Future<List<Dictionary>> getDictionaries(int firstIndex, int offset) async {
-    return _userRepository.getDictionaries(firstIndex, offset, await _id);
+  Future<List<Dictionary>> getDictionaries() async {
+    return _userRepository.getDictionaries(await _id);
   }
 
   Future<void> createDictionary(Dictionary dictionary) async {

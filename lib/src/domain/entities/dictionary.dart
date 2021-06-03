@@ -55,25 +55,20 @@ class Dictionary {
 
   Future<String> get _userId => _authRepository.userId;
 
-  Future<List<Word>> getWords(int firstIndex, int offset) async {
-    return await _dictionaryRepository.getWords(
-      firstIndex,
-      offset,
-      await _userId,
-      id,
-    );
+  Future<List<Word>> getWords() async {
+    return await _dictionaryRepository.getWords(await _userId, id);
   }
 
   Future<void> addWord(Word word) async {
-    await _dictionaryRepository.addNewWord(word, await _userId, id);
+    await _dictionaryRepository.addNewWord(await _userId, id, word);
   }
 
   Future<void> editWord(Word word) async {
-    await _dictionaryRepository.editWord(word, await _userId, id);
+    await _dictionaryRepository.editWord(await _userId, id, word);
   }
 
   Future<void> removeWord(String wordId) async {
-    await _dictionaryRepository.removeWord(wordId, await _userId, id);
+    await _dictionaryRepository.removeWord(await _userId, id, wordId);
   }
 
   void reset() {

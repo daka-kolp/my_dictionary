@@ -13,11 +13,7 @@ class FirebaseUserRepository extends UserRepository {
   late final _dictionariesService = GetIt.I<DictionariesService>();
 
   @override
-  Future<List<Dictionary>> getDictionaries(
-    int firstIndex,
-    int offset,
-    String userId,
-  ) async {
+  Future<List<Dictionary>> getDictionaries(String userId) async {
     final userDataJson = await _users.doc(userId).get();
     return _parseDictionariesFromJson(userDataJson.data());
   }

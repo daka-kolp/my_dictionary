@@ -30,8 +30,8 @@ class MyDictionaryApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return EnvironmentBanner(
       child: MaterialApp(
-        onGenerateTitle: _onGenerateTitle,
         theme: GetIt.I<ThemeData>(),
+        onGenerateTitle: _onGenerateTitle,
         onGenerateRoute: _onGenerateRoute,
         localizationsDelegates: MyDictionaryLocalizations.localizationsDelegates,
         supportedLocales: MyDictionaryLocalizations.supportedLocales,

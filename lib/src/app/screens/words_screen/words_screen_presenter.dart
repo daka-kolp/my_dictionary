@@ -7,16 +7,15 @@ import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 
 class WordsScreenPresenter with ChangeNotifier {
+  final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
   final Dictionary dictionary;
   final FlutterTts tts;
-  final _fetchedStep = GetIt.I<GlobalConfig>().fetchStep;
 
   late List<Word> _words;
   bool _isInit = true;
   bool _isNewWordsAvailable = true;
   bool _isNewWordsLoading = false;
   bool _isWordsListUpdating = false;
-  int _firstIndex = 0;
 
   List<Word> get words => _words;
   bool get isNewWordsLoading => _isNewWordsLoading;
@@ -32,11 +31,10 @@ class WordsScreenPresenter with ChangeNotifier {
     _isNewWordsLoading = true;
     notifyListeners();
     try {
-      _words = await dictionary.getWords(_firstIndex, _fetchedStep);
-      if (_words.length < _fetchedStep) {
+      _words = await dictionary.getWords();
+      if (_words.length < _fetchStep) {
         _isNewWordsAvailable = false;
       }
-      _firstIndex += _fetchedStep;
     } catch (e) {
       _words = <Word>[];
       print('WordsScreenPresenter: _init() => $e');
@@ -62,18 +60,13 @@ class WordsScreenPresenter with ChangeNotifier {
     if (_isNewWordsAvailable) {
       _isNewWordsLoading = true;
       notifyListeners();
-
       try {
-        final newWords = await dictionary.getWords(
-          _firstIndex,
-          _fetchedStep,
-        );
+        final newWords = await dictionary.getWords();
 
-        if (newWords.length < _fetchedStep) {
+        if (newWords.length < _fetchStep) {
           _isNewWordsAvailable = false;
         }
         _words += newWords;
-        _firstIndex += _fetchedStep;
       } catch (e) {
         print('WordsScreenPresenter: uploadNewWords() => $e');
         rethrow;

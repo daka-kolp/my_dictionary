@@ -7,7 +7,7 @@ import 'package:mydictionaryapp/src/domain/entities/user.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 
 class DictionariesScreenPresenter with ChangeNotifier {
-  final _fetchedStep = GetIt.I<GlobalConfig>().fetchStep;
+  final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
 
   late List<Dictionary> _dictionaries;
   bool _isInit = true;
@@ -15,7 +15,6 @@ class DictionariesScreenPresenter with ChangeNotifier {
   bool _isNewDictionariesLoading = false;
   bool _isLoading = false;
   bool _isDictionariesListUpdating = false;
-  int _firstIndex = 0;
 
   User get _user => User.I;
   List<Dictionary> get dictionaries => _dictionaries;
@@ -31,14 +30,10 @@ class DictionariesScreenPresenter with ChangeNotifier {
     _isNewDictionariesLoading = true;
     notifyListeners();
     try {
-      _dictionaries = await _user.getDictionaries(
-        _firstIndex,
-        _fetchedStep,
-      );
-      if (_dictionaries.length < _fetchedStep) {
+      _dictionaries = await _user.getDictionaries();
+      if (_dictionaries.length < _fetchStep) {
         _isNewDictionariesAvailable = false;
       }
-      _firstIndex += _fetchedStep;
     } catch (e) {
       _dictionaries = <Dictionary>[];
       print('DictionariesScreenPresenter: _init() => $e');
@@ -55,16 +50,11 @@ class DictionariesScreenPresenter with ChangeNotifier {
       _isNewDictionariesLoading = true;
       notifyListeners();
       try {
-        final newDictionaries = await _user.getDictionaries(
-          _firstIndex,
-          _fetchedStep,
-        );
-
-        if (newDictionaries.length < _fetchedStep) {
+        final newDictionaries = await _user.getDictionaries();
+        if (newDictionaries.length < _fetchStep) {
           _isNewDictionariesAvailable = false;
         }
         _dictionaries += newDictionaries;
-        _firstIndex += _fetchedStep;
       } catch (e) {
         print('DictionariesScreenPresenter: uploadNewDictionaries() => $e');
         rethrow;

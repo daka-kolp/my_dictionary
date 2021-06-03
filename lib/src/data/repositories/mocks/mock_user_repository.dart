@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
@@ -22,23 +20,9 @@ class MockUserRepository extends UserRepository {
   }
 
   @override
-  Future<List<Dictionary>> getDictionaries(
-      int firstIndex,
-      int offset,
-      String userId,
-    ) async {
+  Future<List<Dictionary>> getDictionaries(String userId) async {
     await Future.delayed(Duration(seconds: 1));
-    final length = _dictionaries.length;
-    final lastIndex = firstIndex + offset;
-    final dictionaries = await compute(
-      _loadDictionaries,
-      {
-        'dictionaries': _dictionaries,
-        'firstIndex': firstIndex,
-        'lastIndex': lastIndex > length ? length : lastIndex,
-      },
-    );
-    return dictionaries;
+    return _dictionaries;
   }
 
   @override
@@ -84,12 +68,4 @@ class MockUserRepository extends UserRepository {
   @override
   Future<List<Language>> getDictionaryLanguages() async =>
       [Language.byDefault()];
-}
-
-List<Dictionary> _loadDictionaries(Map<String, dynamic> data) {
-  final dictionaries = data['dictionaries'];
-  final first = data['firstIndex'];
-  final last = data['lastIndex'];
-
-  return dictionaries.getRange(first, last).toList();
 }

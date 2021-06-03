@@ -1,36 +1,39 @@
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
+import 'package:mydictionaryapp/src/global_config.dart';
 
 class MockDictionaryRepository extends DictionaryRepository {
+  late final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
+
+  int _firstIndex = 0;
+
   @override
-  Future<List<Word>> getWords(
-    int firstIndex,
-    int offset,
-    String userId,
-    String dictionaryId,
-  ) async {
+  Future<List<Word>> getWords(String userId, String dictionaryId) async {
     await Future.delayed(Duration(seconds: 1));
     final words = _getWords(dictionaryId);
     final length = words.length;
-    final lastIndex = firstIndex + offset;
-    return await compute(
+    final lastIndex = _firstIndex + _fetchStep;
+    final selectedWords = await compute(
       _loadWords,
       {
         'words': words,
-        'firstIndex': firstIndex,
+        'firstIndex': _firstIndex,
         'lastIndex': lastIndex > length ? length : lastIndex,
       },
     );
+    _firstIndex = lastIndex;
+    return selectedWords;
   }
 
   @override
   Future<void> addNewWord(
-    Word newWord,
     String userId,
     String dictionaryId,
+    Word newWord,
   ) async {
     await Future.delayed(Duration(seconds: 1));
     final words = _getWords(dictionaryId);
@@ -41,7 +44,7 @@ class MockDictionaryRepository extends DictionaryRepository {
   }
 
   @override
-  Future<void> editWord(Word word, String userId, String dictionaryId) async {
+  Future<void> editWord(String userId, String dictionaryId, Word word) async {
     await Future.delayed(Duration(seconds: 1));
     final words = _getWords(dictionaryId);
     final wordIndex = words.indexWhere(
@@ -57,9 +60,9 @@ class MockDictionaryRepository extends DictionaryRepository {
 
   @override
   Future<void> removeWord(
-    String wordId,
     String userId,
-    String dictionaryId
+    String dictionaryId,
+    String wordId,
   ) async {
     await Future.delayed(Duration(seconds: 1));
     final words = _getWords(dictionaryId);
@@ -72,7 +75,9 @@ class MockDictionaryRepository extends DictionaryRepository {
   }
 
   @override
-  void reset() {}
+  void reset() {
+    _firstIndex = 0;
+  }
 
   List<Word> _getWords(String dictionaryId) {
     return _dictionaries[dictionaryId] ?? <Word>[];

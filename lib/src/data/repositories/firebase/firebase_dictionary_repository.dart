@@ -11,13 +11,10 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
   late final _firestore = FirebaseFirestore.instance;
   late final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
 
+  DocumentSnapshot? _lastDocument;
+
   @override
-  Future<List<Word>> getWords(
-    int firstIndex,
-    int offset,
-    String userId,
-    String dictionaryId,
-  ) async {
+  Future<List<Word>> getWords(String userId, String dictionaryId) async {
     final query = _dictionaryReference(userId, dictionaryId)
         .orderBy(FirestoreIds.addingTime, descending: true)
         .limit(_fetchStep);
@@ -35,22 +32,22 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
 
   @override
   Future<void> addNewWord(
-    Word newWord,
     String userId,
     String dictionaryId,
+    Word newWord,
   ) {
     // TODO: implement addNewWord
     throw UnimplementedError();
   }
 
   @override
-  Future<void> editWord(Word word, String userId, String dictionaryId) {
+  Future<void> editWord(String userId, String dictionaryId, Word word) {
     // TODO: implement editWord
     throw UnimplementedError();
   }
 
   @override
-  Future<void> removeWord(String id, String userId, String dictionaryId) {
+  Future<void> removeWord(String userId, String dictionaryId, String id) {
     // TODO: implement removeWord
     throw UnimplementedError();
   }
@@ -59,8 +56,6 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
   void reset() {
     _lastDocument = null;
   }
-
-  DocumentSnapshot? _lastDocument;
 
   CollectionReference<Map<String, dynamic>> _dictionaryReference(
     String userId,

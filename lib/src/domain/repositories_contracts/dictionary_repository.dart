@@ -1,18 +1,13 @@
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
 abstract class DictionaryRepository {
-  Future<List<Word>> getWords(
-    int firstIndex,
-    int offset,
-    String userId,
-    String dictionaryId,
-  );
+  Future<List<Word>> getWords(String userId, String dictionaryId);
 
-  Future<void> addNewWord(Word newWord, String userId, String dictionaryId);
+  Future<void> addNewWord(String userId, String dictionaryId, Word newWord);
 
-  Future<void> editWord(Word word, String userId, String dictionaryId);
+  Future<void> editWord(String userId, String dictionaryId, Word word);
 
-  Future<void> removeWord(String id, String userId, String dictionaryId);
+  Future<void> removeWord(String userId, String dictionaryId, String id);
 
   void reset();
 }
