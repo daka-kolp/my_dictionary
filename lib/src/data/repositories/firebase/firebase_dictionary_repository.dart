@@ -27,7 +27,7 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
     }
     _lastDocument = querySnapshot.docs.last;
     return Future.wait(
-      querySnapshot.docs.map((doc) => compute(_parseWordFromJson, doc.data())),
+      querySnapshot.docs.map((doc) => compute(_wordFromJson, doc.data())),
     );
   }
 
@@ -47,14 +47,14 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
 
     await _dictionaryRef(userId, dictionaryId)
       .doc(newWord.id)
-      .set(await compute(_parseWordToJson, newWord));
+      .set(await compute(_wordToJson, newWord));
   }
 
   @override
   Future<void> editWord(String userId, String dictionaryId, Word word) async {
     await _dictionaryRef(userId, dictionaryId)
       .doc(word.id)
-      .update(await compute(_parseWordToJson, word));
+      .update(await compute(_wordToJson, word));
   }
 
   @override
@@ -81,7 +81,7 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
   }
 }
 
-Word _parseWordFromJson(Map<String, dynamic> json) {
+Word _wordFromJson(Map<String, dynamic> json) {
   return Word(
     id: json[FirestoreIds.id],
     word: json[FirestoreIds.word],
@@ -96,7 +96,7 @@ Word _parseWordFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _parseWordToJson(Word word) {
+Map<String, dynamic> _wordToJson(Word word) {
   return {
     FirestoreIds.id: word.id,
     FirestoreIds.word: word.word,
