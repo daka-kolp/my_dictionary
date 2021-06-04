@@ -15,7 +15,7 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
 
   @override
   Future<List<Word>> getWords(String userId, String dictionaryId) async {
-    final query = _dictionaryReference(userId, dictionaryId)
+    final query = _dictionaryRef(userId, dictionaryId)
         .orderBy(FirestoreIds.addingTime, descending: true)
         .limit(_fetchStep);
     final querySnapshot = _lastDocument == null
@@ -35,21 +35,25 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
     String userId,
     String dictionaryId,
     Word newWord,
-  ) {
-    // TODO: implement addNewWord
-    throw UnimplementedError();
+  ) async {
+    await _dictionaryRef(userId, dictionaryId)
+      .doc(newWord.id)
+      .set(await compute(_parseWordToJson, newWord));
   }
 
   @override
-  Future<void> editWord(String userId, String dictionaryId, Word word) {
-    // TODO: implement editWord
-    throw UnimplementedError();
+  Future<void> editWord(String userId, String dictionaryId, Word word) async {
+    await _dictionaryRef(userId, dictionaryId)
+      .doc(word.id)
+      .update(await compute(_parseWordToJson, word));
   }
 
   @override
-  Future<void> removeWord(String userId, String dictionaryId, String id) {
-    // TODO: implement removeWord
-    throw UnimplementedError();
+  Future<void> removeWord(String userId, String dictionaryId, String id) async {
+    final snapshot = await _dictionaryRef(userId, dictionaryId).doc(id).get();
+    if (snapshot.exists) {
+      await _dictionaryRef(userId, dictionaryId).doc(id).delete();
+    }
   }
 
   @override
@@ -57,7 +61,7 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
     _lastDocument = null;
   }
 
-  CollectionReference<Map<String, dynamic>> _dictionaryReference(
+  CollectionReference<Map<String, dynamic>> _dictionaryRef(
     String userId,
     String dictionaryId,
   ) {
@@ -73,14 +77,27 @@ Word _parseWordFromJson(Map<String, dynamic> json) {
     id: json[FirestoreIds.id],
     word: json[FirestoreIds.word],
     translations: json[FirestoreIds.translations]
-        .map<Translation>(
-          (e) => Translation(
-            id: e[FirestoreIds.id],
-            translation: e[FirestoreIds.translation],
-          ),
-        )
+        .map((e) => Translation(
+              id: e[FirestoreIds.id],
+              translation: e[FirestoreIds.translation],
+            ))
         .toList(),
     hint: json[FirestoreIds.hint],
-    addingTime: json[FirestoreIds.addingTime].toDate(),
+    addingTime: (json[FirestoreIds.addingTime] as Timestamp).toDate(),
   );
+}
+
+Map<String, dynamic> _parseWordToJson(Word word) {
+  return {
+    FirestoreIds.id: word.id,
+    FirestoreIds.word: word.word,
+    FirestoreIds.translations: word.translations
+        .map((t) => {
+              FirestoreIds.id: t.id,
+              FirestoreIds.translation: t.translation,
+            })
+        .toList(),
+    FirestoreIds.hint: word.hint,
+    FirestoreIds.addingTime: Timestamp.fromDate(word.addingTime),
+  };
 }
