@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/data/repositories/firebase/firestore_ids.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/dictionary_repository.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
@@ -36,6 +37,14 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
     String dictionaryId,
     Word newWord,
   ) async {
+    final query = await _dictionaryRef(userId, dictionaryId).where(
+      FirestoreIds.word, isEqualTo: newWord.word,
+    ).get();
+
+    if(query.docs.isNotEmpty) {
+      throw WordAlreadyExistException(newWord.word);
+    }
+
     await _dictionaryRef(userId, dictionaryId)
       .doc(newWord.id)
       .set(await compute(_parseWordToJson, newWord));
@@ -77,7 +86,7 @@ Word _parseWordFromJson(Map<String, dynamic> json) {
     id: json[FirestoreIds.id],
     word: json[FirestoreIds.word],
     translations: json[FirestoreIds.translations]
-        .map((e) => Translation(
+        .map<Translation>((e) => Translation(
               id: e[FirestoreIds.id],
               translation: e[FirestoreIds.translation],
             ))
