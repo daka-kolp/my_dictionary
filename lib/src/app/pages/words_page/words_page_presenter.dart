@@ -6,7 +6,7 @@ import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 
-class WordsScreenPresenter with ChangeNotifier {
+class WordsPagePresenter with ChangeNotifier {
   final _fetchStep = GetIt.I<GlobalConfig>().fetchStep;
   final Dictionary dictionary;
   final FlutterTts tts;
@@ -22,7 +22,7 @@ class WordsScreenPresenter with ChangeNotifier {
   bool get isInit => _isInit;
   bool get isLoading => _isWordsListUpdating;
 
-  WordsScreenPresenter(this.dictionary) : tts = FlutterTts() {
+  WordsPagePresenter(this.dictionary) : tts = FlutterTts() {
     _init();
   }
 

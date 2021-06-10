@@ -4,19 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 
-import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
-import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/title_tile.dart';
-import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/translations_list_form_field.dart';
-import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
+import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/padding_wrapper.dart';
+import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/title_tile.dart';
+import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/translations_list_form_field.dart';
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
-class EditWordPage extends Page {
-  final Word word;
-
-  const EditWordPage(this.word);
-
+class NewWordPage extends Page {
   @override
   Route createRoute(BuildContext context) {
     if (Platform.isIOS) {
@@ -25,21 +20,15 @@ class EditWordPage extends Page {
     return MaterialPageRoute(builder: _builder);
   }
 
-  Widget _builder(BuildContext context) {
-    return _EditWordScreen(word: word);
-  }
+  Widget _builder(BuildContext context) => _NewWordScreen();
 }
 
-class _EditWordScreen extends StatefulWidget {
-  final Word word;
-
-  const _EditWordScreen({Key? key, required this.word}) : super(key: key);
-
+class _NewWordScreen extends StatefulWidget {
   @override
-  _EditWordScreenState createState() => _EditWordScreenState();
+  _NewWordScreenState createState() => _NewWordScreenState();
 }
 
-class _EditWordScreenState extends State<_EditWordScreen> {
+class _NewWordScreenState extends State<_NewWordScreen> {
   final _formStateKey = GlobalKey<FormState>();
   final _wordStateKey = GlobalKey<FormFieldState<String>>();
   final _listStateKey = GlobalKey<FormFieldState<List<Translation>>>();
@@ -63,42 +52,14 @@ class _EditWordScreenState extends State<_EditWordScreen> {
   void _resetFocusNode() => FocusScope.of(context).requestFocus(FocusNode());
 
   PreferredSizeWidget _buildAppBar() {
-    final title = Text(widget.word.word);
+    final title = Text(_locale.newWord);
 
     if (Platform.isIOS) {
-      return CupertinoNavigationBar(
-        middle: title,
-        trailing: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: Icon(CupertinoIcons.delete_simple),
-          onPressed: _showDialogOnRemoveWord,
-        ),
-      );
+      return CupertinoNavigationBar(middle: title);
     }
-
-    return AppBar(
-      title: title,
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.delete),
-          tooltip: _locale.remove,
-          onPressed: _showDialogOnRemoveWord,
-        ),
-      ],
-    );
+    return AppBar(title: title);
   }
-
-  Future<void> _showDialogOnRemoveWord() async {
-    await showDialog(
-      context: context,
-      builder: dialogBuilder(context, _locale.removeWordQuestion, _onRemove),
-    );
-  }
-
-  void _onRemove() {
-    Navigator.of(context)..pop()..pop<String>(widget.word.id);
-  }
-
+  
   Widget _buildBody() {
     return ScrollConfiguration(
       behavior: NoOverScrollBehavior(),
@@ -109,13 +70,13 @@ class _EditWordScreenState extends State<_EditWordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TitleTile(title: _locale.editWord, isRequired: true),
+              TitleTile(title: _locale.enterWord, isRequired: true),
               _buildWordFormField(),
-              TitleTile(title: _locale.editTranslation, isRequired: true),
+              TitleTile(title: _locale.addTranslation, isRequired: true),
               _buildTranslationsListFormField(),
-              TitleTile(title: _locale.editHint),
+              TitleTile(title: _locale.addHint),
               _buildHintFormField(),
-              _buildEditWordButton(),
+              _buildAddWordButton(),
             ],
           ),
         ),
@@ -124,15 +85,16 @@ class _EditWordScreenState extends State<_EditWordScreen> {
   }
 
   void _onFormChange() {
-    setState(() => _isFromValid = _formStateKey.currentState?.validate() ?? false);
+    setState(() {
+      _isFromValid = _formStateKey.currentState?.validate() ?? false;
+    });
   }
 
   Widget _buildWordFormField() {
     return PaddingWrapper(
       child: WithoutErrorTextFormField(
         key: _wordStateKey,
-        initialValue: widget.word.word,
-        validator: (value) => value?.isEmpty ?? true ? '' : null,
+        validator: (value) => value?.isEmpty ?? false ? '' : null,
       ),
     );
   }
@@ -141,7 +103,6 @@ class _EditWordScreenState extends State<_EditWordScreen> {
     return PaddingWrapper(
       child: TranslationListFormField(
         key: _listStateKey,
-        initialList: widget.word.translations,
       ),
     );
   }
@@ -150,7 +111,6 @@ class _EditWordScreenState extends State<_EditWordScreen> {
     return PaddingWrapper(
       child: TextFormField(
         key: _hintStateKey,
-        initialValue: widget.word.hint,
         keyboardType: TextInputType.multiline,
         maxLines: null,
         textCapitalization: TextCapitalization.sentences,
@@ -159,25 +119,25 @@ class _EditWordScreenState extends State<_EditWordScreen> {
     );
   }
 
-  Widget _buildEditWordButton() {
+  Widget _buildAddWordButton() {
     return SafeArea(
       child: Container(
         margin: const EdgeInsets.all(16.0),
         width: double.infinity,
         child: ElevatedButton(
-          child: Text(_locale.edit),
-          onPressed: _isFromValid ? _onEdit : null,
+          child: Text(_locale.add),
+          onPressed: _isFromValid ? _onAdd : null,
         ),
       ),
     );
   }
 
-  Future<void> _onEdit() async {
-    final editedWord = widget.word.copyWith(
+  Future<void> _onAdd() async {
+    final newWord = Word.newInstance(
       word: _wordStateKey.currentState?.value,
       translations: _listStateKey.currentState?.value,
       hint: _hintStateKey.currentState?.value,
     );
-    Navigator.pop<Word>(context, editedWord);
+    Navigator.pop<Word>(context, newWord);
   }
 }

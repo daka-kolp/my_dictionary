@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_page.dart';
+import 'package:mydictionaryapp/src/app/pages/auth_pages/login_page_presenter.dart';
+import 'package:mydictionaryapp/src/app/pages/dictionaries_page/dictionaries_page.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/utils/show_snack_bar.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
@@ -22,7 +22,7 @@ class LoginPage extends Page {
 
   Widget _builder(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => LoginScreenPresenter(),
+      create: (context) => LoginPagePresenter(),
       child: _LoginScreen(),
     );
   }
@@ -46,8 +46,8 @@ class _LoginScreenState extends State<_LoginScreen> {
           end: Alignment.bottomRight,
         ),
       );
-  LoginScreenPresenter get _watch => context.watch<LoginScreenPresenter>();
-  LoginScreenPresenter get _read => context.read<LoginScreenPresenter>();
+  LoginPagePresenter get _watch => context.watch<LoginPagePresenter>();
+  LoginPagePresenter get _read => context.read<LoginPagePresenter>();
 
   @override
   Widget build(BuildContext context) {

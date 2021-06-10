@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 import 'package:mydictionaryapp/src/domain/entities/user.dart';
 
-class NewDictionaryScreenPresenter with ChangeNotifier {
+class NewDictionaryPagePresenter with ChangeNotifier {
   User get _user => User.I;
 
   bool _isLoading = false;
@@ -12,7 +12,7 @@ class NewDictionaryScreenPresenter with ChangeNotifier {
   bool get isLoading => _isLoading;
   List<Language> get languages => _languages;
 
-  NewDictionaryScreenPresenter() {
+  NewDictionaryPagePresenter() {
     _init();
   }
 

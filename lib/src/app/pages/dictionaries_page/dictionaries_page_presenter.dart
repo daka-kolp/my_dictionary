@@ -4,7 +4,7 @@ import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/user.dart';
 
-class DictionariesScreenPresenter with ChangeNotifier {
+class DictionariesPagePresenter with ChangeNotifier {
   late List<Dictionary> _dictionaries;
   bool _isInit = true;
   bool _isDictionariesLoading = false;
@@ -17,7 +17,7 @@ class DictionariesScreenPresenter with ChangeNotifier {
   bool get isInit => _isInit;
   bool get isLoading => _isLoading || _isDictionariesListUpdating;
 
-  DictionariesScreenPresenter() {
+  DictionariesPagePresenter() {
     _init();
   }
 

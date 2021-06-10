@@ -4,13 +4,13 @@ import 'package:get_it/get_it.dart';
 import 'package:mydictionaryapp/src/domain/entities/user.dart';
 import 'package:mydictionaryapp/src/global_config.dart';
 
-class LoginScreenPresenter extends ChangeNotifier {
+class LoginPagePresenter extends ChangeNotifier {
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
   String get logo => GetIt.I<GlobalConfig>().mainImagePath;
 
-  LoginScreenPresenter();
+  LoginPagePresenter();
 
   Future<void> loginWithGoogle() async {
     _isLoading = true;

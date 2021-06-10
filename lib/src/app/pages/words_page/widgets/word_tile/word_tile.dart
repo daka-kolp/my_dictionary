@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 
-import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provider.dart';
+import 'package:mydictionaryapp/src/app/pages/words_page/widgets/tts_provider.dart';
 import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 

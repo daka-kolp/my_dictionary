@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mydictionaryapp/src/app/screens/auth_screens/login_page.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionary_screens/edit_dictionary_page.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_page.dart';
-import 'package:mydictionaryapp/src/app/screens/words_screen/words_page.dart';
+import 'package:mydictionaryapp/src/app/pages/auth_pages/login_page.dart';
+import 'package:mydictionaryapp/src/app/pages/dictionaries_page/dictionaries_page_presenter.dart';
+import 'package:mydictionaryapp/src/app/pages/dictionary_pages/edit_dictionary_page.dart';
+import 'package:mydictionaryapp/src/app/pages/dictionary_pages/new_dictionary_page.dart';
+import 'package:mydictionaryapp/src/app/pages/words_page/words_page.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
@@ -30,7 +30,7 @@ class DictionariesPage extends Page {
 
   Widget _builder(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => DictionariesScreenPresenter(),
+      create: (context) => DictionariesPagePresenter(),
       child: _DictionariesScreen(),
     );
   }
@@ -44,8 +44,8 @@ class _DictionariesScreen extends StatefulWidget {
 class _DictionariesScreenState extends State<_DictionariesScreen> {
   MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
   bool get _isIOS => Platform.isIOS;
-  DictionariesScreenPresenter get _watch => context.watch<DictionariesScreenPresenter>();
-  DictionariesScreenPresenter get _read => context.read<DictionariesScreenPresenter>();
+  DictionariesPagePresenter get _watch => context.watch<DictionariesPagePresenter>();
+  DictionariesPagePresenter get _read => context.read<DictionariesPagePresenter>();
 
   @override
   Widget build(BuildContext context) {

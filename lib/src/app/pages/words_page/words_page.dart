@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mydictionaryapp/src/app/screens/word_screens/edit_word_page.dart';
-import 'package:mydictionaryapp/src/app/screens/word_screens/new_word_page.dart';
-import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/tts_provider.dart';
-import 'package:mydictionaryapp/src/app/screens/words_screen/widgets/word_tile/word_tile.dart';
+import 'package:mydictionaryapp/src/app/pages/word_pages/edit_word_page.dart';
+import 'package:mydictionaryapp/src/app/pages/word_pages/new_word_page.dart';
+import 'package:mydictionaryapp/src/app/pages/words_page/words_page_presenter.dart';
+import 'package:mydictionaryapp/src/app/pages/words_page/widgets/tts_provider.dart';
+import 'package:mydictionaryapp/src/app/pages/words_page/widgets/word_tile/word_tile.dart';
 import 'package:mydictionaryapp/src/app/utils/show_snack_bar.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
@@ -31,7 +31,7 @@ class WordsPage extends Page {
 
   Widget _builder(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => WordsScreenPresenter(dictionary),
+      create: (context) => WordsPagePresenter(dictionary),
       child: _WordsScreen(),
     );
   }
@@ -49,8 +49,8 @@ class _WordsScreenState extends State<_WordsScreen> {
   bool get _isIOS => Platform.isIOS;
 
   MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
-  WordsScreenPresenter get _watch => context.watch<WordsScreenPresenter>();
-  WordsScreenPresenter get _read => context.read<WordsScreenPresenter>();
+  WordsPagePresenter get _watch => context.watch<WordsPagePresenter>();
+  WordsPagePresenter get _read => context.read<WordsPagePresenter>();
 
   @override
   void initState() {

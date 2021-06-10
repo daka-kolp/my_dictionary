@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:mydictionaryapp/src/app/screens/word_screens/widgets/padding_wrapper.dart';
+import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 
 part '_without_error_dropdown_button_form_field.dart';
