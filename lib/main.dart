@@ -3,8 +3,8 @@ import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:get_it/get_it.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/auth_screens/login_page.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_page.dart';
 import 'package:mydictionaryapp/src/app/widgets/environment_banner.dart';
 import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
 import 'package:mydictionaryapp/src/domain/entities/user.dart';
@@ -32,7 +32,7 @@ class MyDictionaryApp extends StatelessWidget {
       child: MaterialApp(
         theme: GetIt.I<ThemeData>(),
         onGenerateTitle: _onGenerateTitle,
-        onGenerateRoute: _onGenerateRoute,
+        onGenerateRoute: (settings) => _onGenerateRoute(context, settings),
         localizationsDelegates: MyDictionaryLocalizations.localizationsDelegates,
         supportedLocales: MyDictionaryLocalizations.supportedLocales,
       ),
@@ -43,10 +43,10 @@ class MyDictionaryApp extends StatelessWidget {
     return MyDictionaryLocalizations.of(context)!.appName;
   }
 
-  Route _onGenerateRoute(RouteSettings settings) {
+  Route _onGenerateRoute(BuildContext context, RouteSettings settings) {
     if (isLoggedIn) {
-      return DictionariesScreen.buildPageRoute();
+      return DictionariesPage().createRoute(context);
     }
-    return LoginScreen.buildPageRoute();
+    return LoginPage().createRoute(context);
   }
 }

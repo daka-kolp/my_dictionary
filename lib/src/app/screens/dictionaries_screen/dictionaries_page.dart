@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/auth_screens/login_page.dart';
 import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionary_screens/edit_dictionary_screen.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_screen.dart';
-import 'package:mydictionaryapp/src/app/screens/words_screen/words_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionary_screens/edit_dictionary_page.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionary_screens/new_dictionary_page.dart';
+import 'package:mydictionaryapp/src/app/screens/words_screen/words_page.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_indicator.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
@@ -19,28 +19,29 @@ import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 
 part 'widgets/_dictionary_tile.dart';
 
-class DictionariesScreen extends StatefulWidget {
-  static PageRoute buildPageRoute() {
+class DictionariesPage extends Page {
+  @override
+  Route createRoute(BuildContext context) {
     if (Platform.isIOS) {
       return CupertinoPageRoute(builder: _builder);
     }
     return MaterialPageRoute(builder: _builder);
   }
 
-  static Widget _builder(BuildContext context) {
+  Widget _builder(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => DictionariesScreenPresenter(),
-      child: DictionariesScreen(),
+      child: _DictionariesScreen(),
     );
   }
+}
 
+class _DictionariesScreen extends StatefulWidget {
   @override
   _DictionariesScreenState createState() => _DictionariesScreenState();
 }
 
-class _DictionariesScreenState extends State<DictionariesScreen> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
+class _DictionariesScreenState extends State<_DictionariesScreen> {
   MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
   bool get _isIOS => Platform.isIOS;
   DictionariesScreenPresenter get _watch => context.watch<DictionariesScreenPresenter>();
@@ -51,7 +52,6 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
     return LoadingLayout(
       isLoading: _watch.isLoading,
       child: Scaffold(
-        key: _scaffoldKey,
         appBar: _buildAppBar(),
         body: _buildBody(),
         floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
@@ -109,12 +109,12 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
   }
 
   Future<void> _onItemPressed(Dictionary dictionary) async {
-    await Navigator.of(context).push(WordsScreen.buildPageRoute(dictionary));
+    await Navigator.of(context).push(WordsPage(dictionary).createRoute(context));
   }
 
   Future<void> _onItemEdit(Dictionary dictionary) async {
     final returnedValue = await Navigator.of(context).push(
-      EditDictionaryScreen.buildPageRoute(dictionary),
+      EditDictionaryPage(dictionary).createRoute(context),
     );
 
     if (returnedValue != null) {
@@ -142,7 +142,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
 
   Future<void> _onAddNewDictionaryPressed() async {
     final returnedValue = await Navigator.of(context).push(
-      NewDictionaryScreen.buildPageRoute(),
+      NewDictionaryPage().createRoute(context),
     );
 
     if (returnedValue != null && returnedValue.runtimeType == Dictionary) {
@@ -196,7 +196,7 @@ class _DictionariesScreenState extends State<DictionariesScreen> {
       Navigator.of(context).pop();
       await _read.changeUser();
       await Navigator.of(context).pushAndRemoveUntil(
-        LoginScreen.buildPageRoute(),
+        LoginPage().createRoute(context),
         (route) => false,
       );
     } on LogOutException {

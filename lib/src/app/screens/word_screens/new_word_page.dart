@@ -11,21 +11,24 @@ import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
-class NewWordScreen extends StatefulWidget {
-  static PageRoute buildPageRoute() {
+class NewWordPage extends Page {
+  @override
+  Route createRoute(BuildContext context) {
     if (Platform.isIOS) {
       return CupertinoPageRoute(builder: _builder);
     }
     return MaterialPageRoute(builder: _builder);
   }
 
-  static Widget _builder(BuildContext context) => NewWordScreen();
+  Widget _builder(BuildContext context) => _NewWordScreen();
+}
 
+class _NewWordScreen extends StatefulWidget {
   @override
   _NewWordScreenState createState() => _NewWordScreenState();
 }
 
-class _NewWordScreenState extends State<NewWordScreen> {
+class _NewWordScreenState extends State<_NewWordScreen> {
   final _formStateKey = GlobalKey<FormState>();
   final _wordStateKey = GlobalKey<FormFieldState<String>>();
   final _listStateKey = GlobalKey<FormFieldState<List<Translation>>>();

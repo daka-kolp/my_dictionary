@@ -20,7 +20,7 @@ class FirebaseUserRepository extends UserRepository {
 
   @override
   Future<void> createNewDictionary(Dictionary dictionary, String userId) async {
-    final dictionaryJson = await compute(_dictionaryToJson, dictionary);
+    final dictionaryJson = _dictionaryToJson(dictionary);
     try {
       await _users.doc(userId).update({
         FirestoreIds.dictionaries: FieldValue.arrayUnion([dictionaryJson]),
@@ -42,8 +42,7 @@ class FirebaseUserRepository extends UserRepository {
 
     final dictionaries = await userDoc.get()
       .then((json) => _dictionariesFromJson(json.data()));
-    final dictionaryJson = await compute(
-      _dictionaryToJson,
+    final dictionaryJson = _dictionaryToJson(
       dictionaries.firstWhere((d) => d.id == editedDictionary.id),
     );
 
@@ -53,7 +52,7 @@ class FirebaseUserRepository extends UserRepository {
       }),
       userDoc.update({
         FirestoreIds.dictionaries: FieldValue.arrayUnion([
-          await compute(_dictionaryToJson, editedDictionary),
+          _dictionaryToJson(editedDictionary),
         ]),
       }),
     ]);
@@ -65,8 +64,7 @@ class FirebaseUserRepository extends UserRepository {
 
     final dictionaries = await userDoc.get()
       .then((json) => _dictionariesFromJson(json.data()));
-    final dictionaryJson = await compute(
-      _dictionaryToJson,
+    final dictionaryJson = _dictionaryToJson(
       dictionaries.firstWhere((d) => d.id == id),
     );
 
@@ -79,6 +77,10 @@ class FirebaseUserRepository extends UserRepository {
       })
     ]);
   }
+
+  @override
+  Future<List<Language>> getDictionaryLanguages() =>
+      _dictionariesService.getLanguages();
 
   CollectionReference<Map<String, dynamic>> get _users =>
       _firestore.collection(FirestoreIds.users);
@@ -105,15 +107,12 @@ class FirebaseUserRepository extends UserRepository {
     );
   }
 
-  @override
-  Future<List<Language>> getDictionaryLanguages() =>
-      _dictionariesService.getLanguages();
+  Map<String, dynamic> _dictionaryToJson(Dictionary dictionary) {
+    return {
+      FirestoreIds.id: dictionary.id,
+      FirestoreIds.originalLanguage: dictionary.originalLanguage.code,
+      FirestoreIds.title: dictionary.title,
+    };
+  }
 }
 
-Map<String, dynamic> _dictionaryToJson(Dictionary dictionary) {
-  return {
-    FirestoreIds.id: dictionary.id,
-    FirestoreIds.originalLanguage: dictionary.originalLanguage.code,
-    FirestoreIds.title: dictionary.title,
-  };
-}

@@ -12,27 +12,34 @@ import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
-class EditWordScreen extends StatefulWidget {
+class EditWordPage extends Page {
   final Word word;
 
-  const EditWordScreen({Key? key, required this.word}) : super(key: key);
+  const EditWordPage(this.word);
 
-  static PageRoute buildPageRoute(Word word) {
+  @override
+  Route createRoute(BuildContext context) {
     if (Platform.isIOS) {
-      return CupertinoPageRoute(builder: _builder(word));
+      return CupertinoPageRoute(builder: _builder);
     }
-    return MaterialPageRoute(builder: _builder(word));
+    return MaterialPageRoute(builder: _builder);
   }
 
-  static WidgetBuilder _builder(Word word) {
-    return (context) => EditWordScreen(word: word);
+  Widget _builder(BuildContext context) {
+    return _EditWordScreen(word: word);
   }
+}
+
+class _EditWordScreen extends StatefulWidget {
+  final Word word;
+
+  const _EditWordScreen({Key? key, required this.word}) : super(key: key);
 
   @override
   _EditWordScreenState createState() => _EditWordScreenState();
 }
 
-class _EditWordScreenState extends State<EditWordScreen> {
+class _EditWordScreenState extends State<_EditWordScreen> {
   final _formStateKey = GlobalKey<FormState>();
   final _wordStateKey = GlobalKey<FormFieldState<String>>();
   final _listStateKey = GlobalKey<FormFieldState<List<Translation>>>();

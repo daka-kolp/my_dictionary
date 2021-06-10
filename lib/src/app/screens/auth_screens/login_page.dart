@@ -6,31 +6,34 @@ import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/screens/auth_screens/login_screen_presenter.dart';
-import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_screen.dart';
+import 'package:mydictionaryapp/src/app/screens/dictionaries_screen/dictionaries_page.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/utils/show_snack_bar.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 
-class LoginScreen extends StatefulWidget {
-  static PageRoute buildPageRoute() {
+class LoginPage extends Page {
+  @override
+  Route createRoute(BuildContext context) {
     if (Platform.isIOS) {
       return CupertinoPageRoute(builder: _builder);
     }
     return MaterialPageRoute(builder: _builder);
   }
 
-  static Widget _builder(BuildContext context) {
+  Widget _builder(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => LoginScreenPresenter(),
-      child: LoginScreen(),
+      child: _LoginScreen(),
     );
   }
+}
 
+class _LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<_LoginScreen> {
   MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
   ThemeData get _theme => Theme.of(context);
   BoxDecoration get _decoration => BoxDecoration(
@@ -111,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _routeToDictionariesScreen() async {
     await Navigator.of(context).pushAndRemoveUntil(
-      DictionariesScreen.buildPageRoute(),
+      DictionariesPage().createRoute(context),
       (route) => false,
     );
   }
