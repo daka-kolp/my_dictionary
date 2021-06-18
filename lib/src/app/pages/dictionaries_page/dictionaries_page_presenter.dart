@@ -12,7 +12,7 @@ class DictionariesPagePresenter with ChangeNotifier {
   bool _isDictionariesListUpdating = false;
 
   User get _user => User.I;
-  List<Dictionary> get dictionaries => _dictionaries;
+  List<Dictionary> get dictionaries => List.unmodifiable(_dictionaries);
   bool get isDictionariesLoading => _isDictionariesLoading;
   bool get isInit => _isInit;
   bool get isLoading => _isLoading || _isDictionariesListUpdating;

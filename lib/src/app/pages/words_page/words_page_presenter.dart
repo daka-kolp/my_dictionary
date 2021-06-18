@@ -17,7 +17,7 @@ class WordsPagePresenter with ChangeNotifier {
   bool _isNewWordsLoading = false;
   bool _isWordsListUpdating = false;
 
-  List<Word> get words => _words;
+  List<Word> get words => List.unmodifiable(_words);
   bool get isNewWordsLoading => _isNewWordsLoading;
   bool get isInit => _isInit;
   bool get isLoading => _isWordsListUpdating;

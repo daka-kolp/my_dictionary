@@ -10,7 +10,7 @@ class NewDictionaryPagePresenter with ChangeNotifier {
   List<Language> _languages = [];
 
   bool get isLoading => _isLoading;
-  List<Language> get languages => _languages;
+  List<Language> get languages => List.unmodifiable(_languages);
 
   NewDictionaryPagePresenter() {
     _init();
