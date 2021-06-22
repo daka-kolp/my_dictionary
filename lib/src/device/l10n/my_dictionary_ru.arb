@@ -188,5 +188,10 @@
   "@removeDictionaryQuestion": {
     "type": "text",
     "description": ""
+  },
+  "isWordLearned": "Это слово выучено?",
+  "@isWordLearned": {
+    "type": "text",
+    "description": ""
   }
 }

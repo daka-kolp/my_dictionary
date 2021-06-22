@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 
 import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/padding_wrapper.dart';
+import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/switch_form_field.dart';
 import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/translations_list_form_field.dart';
 import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
@@ -44,6 +45,7 @@ class _EditWordScreenState extends State<_EditWordScreen> {
   final _wordStateKey = GlobalKey<FormFieldState<String>>();
   final _listStateKey = GlobalKey<FormFieldState<List<Translation>>>();
   final _hintStateKey = GlobalKey<FormFieldState<String>>();
+  final _isWordLearnedStateKey = GlobalKey<FormFieldState<bool>>();
 
   bool _isFromValid = false;
 
@@ -109,6 +111,7 @@ class _EditWordScreenState extends State<_EditWordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              _buildWordIsLearnedSwitch(),
               TitleTile(title: _locale.editWord, isRequired: true),
               _buildWordFormField(),
               TitleTile(title: _locale.editTranslation, isRequired: true),
@@ -127,6 +130,25 @@ class _EditWordScreenState extends State<_EditWordScreen> {
     setState(() => _isFromValid = _formStateKey.currentState?.validate() ?? false);
   }
 
+  Widget _buildWordIsLearnedSwitch() {
+    return PaddingWrapper(
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              _locale.isWordLearned,
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+          ),
+          SwitchFormField(
+            key: _isWordLearnedStateKey,
+            initialValue: widget.word.isLearned,
+          ),
+        ],
+      ),
+    );
+  }
+  
   Widget _buildWordFormField() {
     return PaddingWrapper(
       child: WithoutErrorTextFormField(
@@ -177,6 +199,7 @@ class _EditWordScreenState extends State<_EditWordScreen> {
       word: _wordStateKey.currentState?.value,
       translations: _listStateKey.currentState?.value,
       hint: _hintStateKey.currentState?.value,
+      isLearned: _isWordLearnedStateKey.currentState?.value,
     );
     Navigator.pop<Word>(context, editedWord);
   }

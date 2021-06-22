@@ -41,7 +41,7 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
       FirestoreIds.word, isEqualTo: newWord.word,
     ).get();
 
-    if(query.docs.isNotEmpty) {
+    if (query.docs.isNotEmpty) {
       throw WordAlreadyExistException(newWord.word);
     }
 
@@ -93,6 +93,7 @@ Word _wordFromJson(Map<String, dynamic> json) {
         .toList(),
     hint: json[FirestoreIds.hint],
     addingTime: (json[FirestoreIds.addingTime] as Timestamp).toDate(),
+    isLearned: json[FirestoreIds.isLearned],
   );
 }
 
@@ -108,5 +109,6 @@ Map<String, dynamic> _wordToJson(Word word) {
         .toList(),
     FirestoreIds.hint: word.hint,
     FirestoreIds.addingTime: Timestamp.fromDate(word.addingTime),
+    FirestoreIds.isLearned: word.isLearned,
   };
 }

@@ -7,6 +7,7 @@ class Word {
   final List<Translation> translations;
   final String hint;
   final DateTime addingTime;
+  final bool isLearned;
 
   Word({
     required this.id,
@@ -14,9 +15,11 @@ class Word {
     List<Translation>? translations,
     String? hint,
     DateTime? addingTime,
+    bool? isLearned,
   })  : this.translations = translations ?? [],
         this.hint = hint ?? '',
         this.addingTime = addingTime ?? DateTime.utc(1970),
+        this.isLearned = isLearned ?? false,
         assert(word.isNotEmpty);
 
   factory Word.newInstance({
@@ -37,6 +40,7 @@ class Word {
     String? word,
     List<Translation>? translations,
     String? hint,
+    bool? isLearned,
   }) {
     return Word(
       id: id,
@@ -44,6 +48,7 @@ class Word {
       translations: translations ?? this.translations,
       hint: hint ?? this.hint,
       addingTime: addingTime,
+      isLearned: isLearned ?? this.isLearned,
     );
   }
 

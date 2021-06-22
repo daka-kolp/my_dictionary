@@ -188,5 +188,10 @@
   "@removeDictionaryQuestion": {
     "type": "text",
     "description": ""
+  },
+  "isWordLearned": "Is the word learned?",
+  "@isWordLearned": {
+    "type": "text",
+    "description": ""
   }
 }

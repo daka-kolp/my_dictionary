@@ -15,7 +15,7 @@ class TranslationListFormField extends FormField<List<Translation>> {
           validator: (list) => list?.isEmpty ?? true ? '' : null,
           builder: (field) {
             return _TranslationList(
-              initialList: initialList,
+              initialList: field.value ?? initialList,
               onChanged: field.didChange,
             );
           },
