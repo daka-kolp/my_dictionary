@@ -91,7 +91,7 @@ class FirebaseUserRepository extends UserRepository {
       return [];
     }
     final List dictionariesJson = userDataJson[FirestoreIds.dictionaries];
-    return Future.wait(
+    final dictionaries = await Future.wait(
       dictionariesJson.map<Future<Dictionary>>(
         (json) async {
           final String langCode = json[FirestoreIds.originalLanguage];
@@ -104,6 +104,7 @@ class FirebaseUserRepository extends UserRepository {
         },
       ).toList(),
     );
+    return dictionaries..sort((d1, d2) => d1.title.compareTo(d2.title));
   }
 
   Map<String, dynamic> _dictionaryToJson(Dictionary dictionary) {
