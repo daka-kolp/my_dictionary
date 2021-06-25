@@ -8,7 +8,7 @@ class MyDictionaryTheme {
   ThemeData get theme => _themeData;
 
   MyDictionaryTheme.dev() {
-    _materialColor = _createMaterialColor(Color(0xff5eaaa8));
+    _materialColor = _createMaterialColor(Color(0xff00848C));
     _accentColor = _createMaterialAccentColor(Color(0xfff05945));
     _themeData = _getTheme(_materialColor, _accentColor);
   }
@@ -28,8 +28,8 @@ class MyDictionaryTheme {
         primarySwatch: materialColor,
         primaryColorDark: materialColor.shade700,
         accentColor: accentColor,
-        cardColor: Color(0xfff7f3e9),
-        backgroundColor: Color(0xfff7f3e9),
+        cardColor: Color(0xffffffff),
+        backgroundColor: Color(0xffffffff),
         errorColor: Colors.red.shade700,
         brightness: Brightness.light,
       ),
@@ -41,7 +41,7 @@ class MyDictionaryTheme {
           onPrimary: Colors.black,
           padding: const EdgeInsets.all(16.0),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16.0)),
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
         ),
       ),
