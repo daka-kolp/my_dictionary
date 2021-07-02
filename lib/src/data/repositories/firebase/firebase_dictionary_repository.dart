@@ -32,7 +32,7 @@ class FirebaseDictionaryRepository extends DictionaryRepository {
   }
 
   @override
-  Future<void> addNewWord(
+  Future<void> addWord(
     String userId,
     String dictionaryId,
     Word newWord,

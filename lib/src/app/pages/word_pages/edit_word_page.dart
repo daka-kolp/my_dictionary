@@ -127,7 +127,9 @@ class _EditWordScreenState extends State<_EditWordScreen> {
   }
 
   void _onFormChange() {
-    setState(() => _isFromValid = _formStateKey.currentState?.validate() ?? false);
+    setState(() {
+      _isFromValid = _formStateKey.currentState?.validate() ?? false;
+    });
   }
 
   Widget _buildWordIsLearnedSwitch() {

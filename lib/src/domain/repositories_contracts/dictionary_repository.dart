@@ -3,7 +3,7 @@ import 'package:mydictionaryapp/src/domain/entities/word.dart';
 abstract class DictionaryRepository {
   Future<List<Word>> getWords(String userId, String dictionaryId);
 
-  Future<void> addNewWord(String userId, String dictionaryId, Word newWord);
+  Future<void> addWord(String userId, String dictionaryId, Word newWord);
 
   Future<void> editWord(String userId, String dictionaryId, Word word);
 

@@ -62,7 +62,6 @@ class WordsPagePresenter with ChangeNotifier {
       notifyListeners();
       try {
         final newWords = await dictionary.getWords();
-
         if (newWords.length < _fetchStep) {
           _isNewWordsAvailable = false;
         }

@@ -60,7 +60,7 @@ class Dictionary {
   }
 
   Future<void> addWord(Word word) async {
-    await _dictionaryRepository.addNewWord(await _userId, id, word);
+    await _dictionaryRepository.addWord(await _userId, id, word);
   }
 
   Future<void> editWord(Word word) async {
