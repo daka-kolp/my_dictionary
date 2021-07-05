@@ -18,6 +18,7 @@ import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 
 part 'widgets/_dictionary_tile.dart';
+part 'widgets/_main_screen_header.dart';
 
 class MainPage extends Page {
   @override
@@ -43,7 +44,7 @@ class _MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<_MainScreen> {
   MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
-  bool get _isIOS => Platform.isIOS;
+  ThemeData get _theme => Theme.of(context);
   MainPagePresenter get _watch => context.watch<MainPagePresenter>();
   MainPagePresenter get _read => context.read<MainPagePresenter>();
 
@@ -52,36 +53,37 @@ class _MainScreenState extends State<_MainScreen> {
     return LoadingLayout(
       isLoading: _watch.isLoading,
       child: Scaffold(
-        appBar: _buildAppBar(),
+        appBar: _MainScreenHeader(),
         body: _buildBody(),
-        floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
-        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
     );
   }
 
-  PreferredSizeWidget _buildAppBar() {
-    final title = Text(_locale.userDictionaries);
-
-    if (_isIOS) {
-      return CupertinoNavigationBar(
-        middle: title,
-        trailing: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: Icon(CupertinoIcons.add_circled_solid),
-          onPressed: _onAddNewDictionaryPressed,
-        ),
-      );
-    }
-    return AppBar(
-      automaticallyImplyLeading: false,
-      title: title,
+  Widget _buildBody() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ListTile(
+            tileColor: _theme.primaryColor.withOpacity(0.3),
+            title: Text(
+              _locale.userDictionaries,
+              style: _theme.textTheme.subtitle1,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          _buildDictionariesList(),
+          _buildAddDictionaryButton(),
+        ],
+      ),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildDictionariesList() {
     if (_watch.isInit) {
-      return LoadingIndicator();
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: LoadingIndicator(),
+      );
     }
 
     if (_watch.dictionaries.isEmpty) {
@@ -94,6 +96,8 @@ class _MainScreenState extends State<_MainScreen> {
 
     final dictionaries = _watch.dictionaries;
     return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       itemCount: dictionaries.length,
       itemBuilder: (context, index) {
         final dictionary = dictionaries[index];
@@ -135,10 +139,16 @@ class _MainScreenState extends State<_MainScreen> {
     }
   }
 
-  Widget _buildFloatingActionButton() {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
-      onPressed: _onAddNewDictionaryPressed,
+  Widget _buildAddDictionaryButton() {
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.all(16.0),
+        width: double.infinity,
+        child: ElevatedButton(
+          child: Text(_locale.addNewDictionary),
+          onPressed: _onAddNewDictionaryPressed,
+        ),
+      ),
     );
   }
 
@@ -156,56 +166,6 @@ class _MainScreenState extends State<_MainScreen> {
         //TODO: handle errors
         showErrorMessage(context, e.toString());
       }
-    }
-  }
-
-  Widget _buildBottomNavigationBar() {
-    final title = Text(_locale.changeUser);
-
-    if (_isIOS) {
-      return SafeArea(
-        child: CupertinoButton(
-          child: title,
-          onPressed: _showDialogOnLogout,
-        ),
-      );
-    }
-
-    return SafeArea(
-      child: Material(
-        elevation: 8.0,
-        child: InkWell(
-          child: Container(
-            height: 48.0,
-            alignment: Alignment.center,
-            child: title,
-          ),
-          onTap: _showDialogOnLogout,
-        ),
-      ),
-    );
-  }
-
-  Future<void> _showDialogOnLogout() async {
-    await showDialog(
-      context: context,
-      builder: dialogBuilder(context, _locale.askChangeUser, _onExit),
-    );
-  }
-
-  Future<void> _onExit() async {
-    try {
-      Navigator.of(context).pop();
-      await _read.changeUser();
-      await Navigator.of(context).pushAndRemoveUntil(
-        LoginPage().createRoute(context),
-        (route) => false,
-      );
-    } on LogOutException {
-      showErrorMessage(context, _locale.logOutException);
-    } catch (e) {
-      //TODO: handle errors
-      showErrorMessage(context, e.toString());
     }
   }
 }

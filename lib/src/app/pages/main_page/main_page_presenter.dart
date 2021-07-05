@@ -44,7 +44,7 @@ class MainPagePresenter with ChangeNotifier {
         throw LogOutException();
       }
     } catch (e) {
-      print('DictionariesPagePresenter: changeUser() => $e');
+      print('MainPagePresenter: changeUser() => $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -58,7 +58,7 @@ class MainPagePresenter with ChangeNotifier {
       await _user.createDictionary(newDictionary);
       _dictionaries.insert(0, newDictionary);
     } catch (e) {
-      print('DictionariesPagePresenter: createDictionary(newDictionary) => $e');
+      print('MainPagePresenter: createDictionary(newDictionary) => $e');
       rethrow;
     } finally {
       _isLoading = false;
@@ -77,7 +77,7 @@ class MainPagePresenter with ChangeNotifier {
         ..removeAt(dictionaryIndex)
         ..insert(dictionaryIndex, editedDictionary);
     } catch (e) {
-      print('DictionariesPagePresenter: editDictionary(editedWord) => $e');
+      print('MainPagePresenter: editDictionary(editedWord) => $e');
       rethrow;
     } finally {
       _isDictionariesListUpdating = false;
@@ -92,7 +92,7 @@ class MainPagePresenter with ChangeNotifier {
       await _user.removeDictionary(removedDictionaryId);
       _dictionaries.removeWhere((w) => w.id == removedDictionaryId);
     } catch (e) {
-      print('DictionariesPagePresenter: removeDictionary(removedDictionaryId) => $e');
+      print('MainPagePresenter: removeDictionary(removedDictionaryId) => $e');
       rethrow;
     } finally {
       _isDictionariesListUpdating = false;

@@ -24,9 +24,9 @@
   "enterWithGoogle": "Войти с помощью Google",
   "or": "или",
   "enterWithApple": "Войти с помощью Apple",
-  "askChangeUser": "Вы хотите сменить пользователя?",
+  "askToExit": "Вы хотите выйти?",
   "listEmptyInfo": "Список пуст. Используйте «+», чтобы добавить новый элемент",
-  "changeUser": "Сменить пользователя",
+  "exit": "Выйти",
   "logOutException": "Проблемы связанные со сменой пользователя. Попробуйте перезагрузить приложение",
   "newDictionary": "Новый словарь",
   "addOriginalLanguage": "Выберите язык словаря",
@@ -38,5 +38,6 @@
   "editDictionaryName": "Отредактируйте название словаря",
   "removeDictionaryQuestion": "Вы уверены что хотите удалить этот словарь?",
   "isWordLearned": "Это слово выучено?",
-  "goToMainPage": "Перейти на главный экран"
+  "goToMainPage": "Перейти на главный экран",
+  "addNewDictionary": "Добавить новый словарь"
 }

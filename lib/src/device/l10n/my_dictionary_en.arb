@@ -124,8 +124,8 @@
     "type": "text",
     "description": ""
   },
-  "askChangeUser": "Do you want to change user?",
-  "@askChangeUser": {
+  "askToExit": "Do you want to exit?",
+  "@askToExit": {
     "type": "text",
     "description": ""
   },
@@ -134,8 +134,8 @@
     "type": "text",
     "description": ""
   },
-  "changeUser": "Change user",
-  "@changeUser": {
+  "exit": "Exit",
+  "@exit": {
     "type": "text",
     "description": ""
   },
@@ -196,6 +196,11 @@
   },
   "goToMainPage": "Go to main screen",
   "@goToMainPage": {
+    "type": "text",
+    "description": ""
+  },
+  "addNewDictionary": "Add new dictionary",
+  "@addNewDictionary": {
     "type": "text",
     "description": ""
   }
