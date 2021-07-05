@@ -4,7 +4,7 @@ import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/user.dart';
 
-class DictionariesPagePresenter with ChangeNotifier {
+class MainPagePresenter with ChangeNotifier {
   late List<Dictionary> _dictionaries;
   bool _isInit = true;
   bool _isDictionariesLoading = false;
@@ -17,7 +17,7 @@ class DictionariesPagePresenter with ChangeNotifier {
   bool get isInit => _isInit;
   bool get isLoading => _isLoading || _isDictionariesListUpdating;
 
-  DictionariesPagePresenter() {
+  MainPagePresenter() {
     _init();
   }
 
@@ -44,7 +44,7 @@ class DictionariesPagePresenter with ChangeNotifier {
         throw LogOutException();
       }
     } catch (e) {
-      print('DictionariesScreenPresenter: changeUser() => $e');
+      print('DictionariesPagePresenter: changeUser() => $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -58,7 +58,7 @@ class DictionariesPagePresenter with ChangeNotifier {
       await _user.createDictionary(newDictionary);
       _dictionaries.insert(0, newDictionary);
     } catch (e) {
-      print('DictionariesScreenPresenter: createDictionary(newDictionary) => $e');
+      print('DictionariesPagePresenter: createDictionary(newDictionary) => $e');
       rethrow;
     } finally {
       _isLoading = false;
@@ -77,7 +77,7 @@ class DictionariesPagePresenter with ChangeNotifier {
         ..removeAt(dictionaryIndex)
         ..insert(dictionaryIndex, editedDictionary);
     } catch (e) {
-      print('DictionariesScreenPresenter: editDictionary(editedWord) => $e');
+      print('DictionariesPagePresenter: editDictionary(editedWord) => $e');
       rethrow;
     } finally {
       _isDictionariesListUpdating = false;
@@ -92,7 +92,7 @@ class DictionariesPagePresenter with ChangeNotifier {
       await _user.removeDictionary(removedDictionaryId);
       _dictionaries.removeWhere((w) => w.id == removedDictionaryId);
     } catch (e) {
-      print('DictionariesScreenPresenter: removeDictionary(removedDictionaryId) => $e');
+      print('DictionariesPagePresenter: removeDictionary(removedDictionaryId) => $e');
       rethrow;
     } finally {
       _isDictionariesListUpdating = false;

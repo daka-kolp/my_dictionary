@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/pages/auth_pages/login_page_presenter.dart';
-import 'package:mydictionaryapp/src/app/pages/dictionaries_page/dictionaries_page.dart';
+import 'package:mydictionaryapp/src/app/pages/main_page/main_page.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/utils/show_snack_bar.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<_LoginScreen> {
   Future<void> _loginWithGoogle() async {
     try {
       await _read.loginWithGoogle();
-      await _routeToDictionariesScreen();
+      await _routeToMainPage();
     } on WrongCredentialsException {
       showErrorMessage(context, _locale.wrongCredentials);
     } catch (e) {
@@ -112,9 +112,9 @@ class _LoginScreenState extends State<_LoginScreen> {
     //TODO: implement _loginWithApple
   }
 
-  Future<void> _routeToDictionariesScreen() async {
+  Future<void> _routeToMainPage() async {
     await Navigator.of(context).pushAndRemoveUntil(
-      DictionariesPage().createRoute(context),
+      MainPage().createRoute(context),
       (route) => false,
     );
   }

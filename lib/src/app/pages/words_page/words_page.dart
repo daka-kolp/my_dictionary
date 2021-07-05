@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
+import 'package:mydictionaryapp/src/app/pages/main_page/main_page.dart';
 import 'package:mydictionaryapp/src/app/pages/word_pages/edit_word_page.dart';
 import 'package:mydictionaryapp/src/app/pages/word_pages/new_word_page.dart';
 import 'package:mydictionaryapp/src/app/pages/words_page/words_page_presenter.dart';
@@ -75,6 +76,7 @@ class _WordsScreenState extends State<_WordsScreen> {
         appBar: _buildAppBar(),
         body: _buildBody(),
         floatingActionButton: _isIOS ? null : _buildFloatingActionButton(),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
     );
   }
@@ -181,6 +183,40 @@ class _WordsScreenState extends State<_WordsScreen> {
         showErrorMessage(context, e.toString());
       }
     }
+  }
+
+  Widget _buildBottomNavigationBar() {
+    final title = Text(_locale.goToMainPage);
+
+    if (_isIOS) {
+      return SafeArea(
+        child: CupertinoButton(
+          child: title,
+          onPressed: _routeToMainPage,
+        ),
+      );
+    }
+
+    return SafeArea(
+      child: Material(
+        elevation: 8.0,
+        child: InkWell(
+          child: Container(
+            height: 48.0,
+            alignment: Alignment.center,
+            child: title,
+          ),
+          onTap: _routeToMainPage,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _routeToMainPage() async {
+    await Navigator.of(context).pushAndRemoveUntil(
+      MainPage().createRoute(context),
+      (route) => false,
+    );
   }
 
   @override

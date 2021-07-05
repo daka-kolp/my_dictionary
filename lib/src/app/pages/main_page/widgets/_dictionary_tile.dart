@@ -1,4 +1,4 @@
-part of '../dictionaries_page.dart';
+part of '../main_page.dart';
 
 typedef DictionaryCallback = Future<void> Function(Dictionary dictionary);
 

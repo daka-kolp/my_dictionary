@@ -37,5 +37,6 @@
   "dictionaryNotExistException": "Это слово не существует в словаре",
   "editDictionaryName": "Отредактируйте название словаря",
   "removeDictionaryQuestion": "Вы уверены что хотите удалить этот словарь?",
-  "isWordLearned": "Это слово выучено?"
+  "isWordLearned": "Это слово выучено?",
+  "goToMainPage": "Перейти на главный экран"
 }

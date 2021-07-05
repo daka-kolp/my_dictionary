@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:mydictionaryapp/src/app/pages/auth_pages/login_page.dart';
-import 'package:mydictionaryapp/src/app/pages/dictionaries_page/dictionaries_page.dart';
+import 'package:mydictionaryapp/src/app/pages/main_page/main_page.dart';
 import 'package:mydictionaryapp/src/app/widgets/environment_banner.dart';
 import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
 import 'package:mydictionaryapp/src/domain/entities/user.dart';
@@ -45,7 +45,7 @@ class MyDictionaryApp extends StatelessWidget {
 
   Route _onGenerateRoute(BuildContext context, RouteSettings settings) {
     if (isLoggedIn) {
-      return DictionariesPage().createRoute(context);
+      return MainPage().createRoute(context);
     }
     return LoginPage().createRoute(context);
   }

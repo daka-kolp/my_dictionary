@@ -193,5 +193,10 @@
   "@isWordLearned": {
     "type": "text",
     "description": ""
+  },
+  "goToMainPage": "Go to main screen",
+  "@goToMainPage": {
+    "type": "text",
+    "description": ""
   }
 }

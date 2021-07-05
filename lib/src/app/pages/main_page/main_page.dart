@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:mydictionaryapp/src/app/pages/auth_pages/login_page.dart';
-import 'package:mydictionaryapp/src/app/pages/dictionaries_page/dictionaries_page_presenter.dart';
+import 'package:mydictionaryapp/src/app/pages/main_page/main_page_presenter.dart';
 import 'package:mydictionaryapp/src/app/pages/dictionary_pages/edit_dictionary_page.dart';
 import 'package:mydictionaryapp/src/app/pages/dictionary_pages/new_dictionary_page.dart';
 import 'package:mydictionaryapp/src/app/pages/words_page/words_page.dart';
@@ -19,7 +19,7 @@ import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 
 part 'widgets/_dictionary_tile.dart';
 
-class DictionariesPage extends Page {
+class MainPage extends Page {
   @override
   Route createRoute(BuildContext context) {
     if (Platform.isIOS) {
@@ -30,22 +30,22 @@ class DictionariesPage extends Page {
 
   Widget _builder(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => DictionariesPagePresenter(),
-      child: _DictionariesScreen(),
+      create: (context) => MainPagePresenter(),
+      child: _MainScreen(),
     );
   }
 }
 
-class _DictionariesScreen extends StatefulWidget {
+class _MainScreen extends StatefulWidget {
   @override
-  _DictionariesScreenState createState() => _DictionariesScreenState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _DictionariesScreenState extends State<_DictionariesScreen> {
+class _MainScreenState extends State<_MainScreen> {
   MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
   bool get _isIOS => Platform.isIOS;
-  DictionariesPagePresenter get _watch => context.watch<DictionariesPagePresenter>();
-  DictionariesPagePresenter get _read => context.read<DictionariesPagePresenter>();
+  MainPagePresenter get _watch => context.watch<MainPagePresenter>();
+  MainPagePresenter get _read => context.read<MainPagePresenter>();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,6 @@ class _DictionariesScreenState extends State<_DictionariesScreen> {
 
     if (_isIOS) {
       return CupertinoNavigationBar(
-        automaticallyImplyLeading: false,
         middle: title,
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
@@ -109,7 +108,10 @@ class _DictionariesScreenState extends State<_DictionariesScreen> {
   }
 
   Future<void> _onItemPressed(Dictionary dictionary) async {
-    await Navigator.of(context).push(WordsPage(dictionary).createRoute(context));
+    await Navigator.of(context).pushAndRemoveUntil(
+      WordsPage(dictionary).createRoute(context),
+      (route) => false,
+    );
   }
 
   Future<void> _onItemEdit(Dictionary dictionary) async {

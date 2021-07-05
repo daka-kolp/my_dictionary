@@ -37,7 +37,7 @@ class WordsPagePresenter with ChangeNotifier {
       }
     } catch (e) {
       _words = <Word>[];
-      print('WordsScreenPresenter: _init() => $e');
+      print('WordsPagePresenter: _init() => $e');
     } finally {
       _isNewWordsLoading = false;
       _isInit = false;
@@ -67,7 +67,7 @@ class WordsPagePresenter with ChangeNotifier {
         }
         _words += newWords;
       } catch (e) {
-        print('WordsScreenPresenter: uploadNewWords() => $e');
+        print('WordsPagePresenter: uploadNewWords() => $e');
         rethrow;
       } finally {
         _isNewWordsLoading = false;
@@ -83,7 +83,7 @@ class WordsPagePresenter with ChangeNotifier {
       await dictionary.addWord(newWord);
       _words.insert(0, newWord);
     } catch (e) {
-      print('WordsScreenPresenter: addNewWord(newWord) => $e');
+      print('WordsPagePresenter: addNewWord(newWord) => $e');
       rethrow;
     } finally {
       _isWordsListUpdating = false;
@@ -101,7 +101,7 @@ class WordsPagePresenter with ChangeNotifier {
         ..removeAt(wordIndex)
         ..insert(wordIndex, editedWord);
     } catch (e) {
-      print('WordsScreenPresenter: editWord(editedWord) => $e');
+      print('WordsPagePresenter: editWord(editedWord) => $e');
       rethrow;
     } finally {
       _isWordsListUpdating = false;
@@ -116,7 +116,7 @@ class WordsPagePresenter with ChangeNotifier {
       await dictionary.removeWord(removedWordId);
       _words.removeWhere((w) => w.id == removedWordId);
     } catch (e) {
-      print('WordsScreenPresenter: removeWord(removedWordId) => $e');
+      print('WordsPagePresenter: removeWord(removedWordId) => $e');
       rethrow;
     } finally {
       _isWordsListUpdating = false;

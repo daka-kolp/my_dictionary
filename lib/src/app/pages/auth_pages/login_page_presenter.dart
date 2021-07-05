@@ -18,7 +18,7 @@ class LoginPagePresenter extends ChangeNotifier {
     try {
       await User.I.loginWithGoogle();
     } catch (e) {
-      print('LoginScreenPresenter: loginWithGoogle() => $e');
+      print('LoginPagePresenter: loginWithGoogle() => $e');
       rethrow;
     } finally {
       _isLoading = false;
