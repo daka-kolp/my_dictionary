@@ -27,6 +27,7 @@ class _MainScreenHeaderState extends State<_MainScreenHeader> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
+                //TODO: fetch personal user data
                 children: [
                   Text('Name Surname', style: _theme.textTheme.headline6),
                   Text('mail@mail.com', style: _theme.textTheme.subtitle1),

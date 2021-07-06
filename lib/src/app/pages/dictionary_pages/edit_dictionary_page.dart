@@ -9,6 +9,7 @@ import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/title_tile.dart
 import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
+import 'package:mydictionaryapp/src/app/widgets/switch_form_field.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 
@@ -42,6 +43,7 @@ class _EditDictionaryScreen extends StatefulWidget {
 
 class _EditDictionaryScreenState extends State<_EditDictionaryScreen> {
   final _formStateKey = GlobalKey<FormState>();
+  final _isDictionaryMainStateKey = GlobalKey<FormFieldState<bool>>();
   final _dictionaryNameStateKey = GlobalKey<FormFieldState<String>>();
 
   bool _isFromValid = false;
@@ -109,6 +111,7 @@ class _EditDictionaryScreenState extends State<_EditDictionaryScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  _buildDictionaryIsMainSwitch(),
                   TitleTile(title: _locale.editDictionaryName),
                   _buildDictionaryNameFormField(),
                   _buildEditDictionaryButton(),
@@ -127,20 +130,33 @@ class _EditDictionaryScreenState extends State<_EditDictionaryScreen> {
     });
   }
 
+  Widget _buildDictionaryIsMainSwitch() {
+    return PaddingWrapper(
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              _locale.isDictionaryMain,
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+          ),
+          SwitchFormField(
+            key: _isDictionaryMainStateKey,
+            initialValue: widget.dictionary.isMain,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildDictionaryNameFormField() {
     return PaddingWrapper(
       child: WithoutErrorTextFormField(
         key: _dictionaryNameStateKey,
         initialValue: widget.dictionary.title,
-        validator: _dictionaryNameValidator,
+        validator: (value) => value?.isEmpty ?? true ? '' : null,
       ),
     );
-  }
-
-  String? _dictionaryNameValidator(String? value) {
-    final isValidate = value == null || value.isEmpty ||
-        value.compareTo(widget.dictionary.title) == 0;
-    return isValidate ? '' : null;
   }
 
   Widget _buildEditDictionaryButton() {
@@ -159,7 +175,12 @@ class _EditDictionaryScreenState extends State<_EditDictionaryScreen> {
   Future<void> _onEdit() async {
     final editDictionary = widget.dictionary.copyWith(
       title: _dictionaryNameStateKey.currentState?.value,
+      isMain: _isDictionaryMainStateKey.currentState?.value
     );
-    Navigator.pop<Dictionary>(context, editDictionary);
+    if(widget.dictionary != editDictionary) {
+      Navigator.pop<Dictionary>(context, editDictionary);
+    } else {
+      Navigator.pop(context);
+    }
   }
 }

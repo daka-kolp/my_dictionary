@@ -55,10 +55,23 @@ class Word {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Word && runtimeType == other.runtimeType && word == other.word;
+      other is Word &&
+      runtimeType == other.runtimeType &&
+      id == other.id &&
+      word == other.word &&
+      translations == other.translations &&
+      hint == other.hint &&
+      addingTime == other.addingTime &&
+      isLearned == other.isLearned;
 
   @override
-  int get hashCode => word.hashCode;
+  int get hashCode =>
+      id.hashCode ^
+      word.hashCode ^
+      translations.hashCode ^
+      hint.hashCode ^
+      addingTime.hashCode ^
+      isLearned.hashCode;
 
   bool get isHintExist => hint.isNotEmpty;
 }

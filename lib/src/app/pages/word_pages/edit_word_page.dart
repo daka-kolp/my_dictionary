@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/my_dictionary_localization.dart';
 
 import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/padding_wrapper.dart';
-import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/switch_form_field.dart';
 import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/title_tile.dart';
 import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/translations_list_form_field.dart';
 import 'package:mydictionaryapp/src/app/utils/dialog_builder.dart';
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
+import 'package:mydictionaryapp/src/app/widgets/switch_form_field.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/word.dart';
 
@@ -42,10 +42,10 @@ class _EditWordScreen extends StatefulWidget {
 
 class _EditWordScreenState extends State<_EditWordScreen> {
   final _formStateKey = GlobalKey<FormState>();
+  final _isWordLearnedStateKey = GlobalKey<FormFieldState<bool>>();
   final _wordStateKey = GlobalKey<FormFieldState<String>>();
   final _listStateKey = GlobalKey<FormFieldState<List<Translation>>>();
   final _hintStateKey = GlobalKey<FormFieldState<String>>();
-  final _isWordLearnedStateKey = GlobalKey<FormFieldState<bool>>();
 
   bool _isFromValid = false;
 
@@ -203,6 +203,11 @@ class _EditWordScreenState extends State<_EditWordScreen> {
       hint: _hintStateKey.currentState?.value,
       isLearned: _isWordLearnedStateKey.currentState?.value,
     );
-    Navigator.pop<Word>(context, editedWord);
+
+    if(widget.word != editedWord) {
+      Navigator.pop<Word>(context, editedWord);
+    } else {
+      Navigator.pop(context);
+    }
   }
 }

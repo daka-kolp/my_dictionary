@@ -203,5 +203,10 @@
   "@addNewDictionary": {
     "type": "text",
     "description": ""
+  },
+  "isDictionaryMain": "Is this the main dictionary?",
+  "@isDictionaryMain": {
+    "type": "text",
+    "description": ""
   }
 }

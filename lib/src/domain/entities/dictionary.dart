@@ -12,6 +12,7 @@ class Dictionary {
   final String id;
   final Language originalLanguage;
   final String title;
+  final bool isMain;
   final TtsProperties ttsProperties;
   final AuthRepository _authRepository;
   final DictionaryRepository _dictionaryRepository;
@@ -20,6 +21,7 @@ class Dictionary {
     required this.id,
     required this.originalLanguage,
     required this.title,
+    required this.isMain
   })  : ttsProperties = TtsProperties(originalLanguage.code),
         _authRepository = GetIt.I<AuthRepository>(),
         _dictionaryRepository = GetIt.I.get<DictionaryRepository>();
@@ -32,26 +34,31 @@ class Dictionary {
       id: GetIt.I.get<Uuid>().v1(),
       title: title ?? '',
       originalLanguage: originalLanguage ?? Language.byDefault(),
+      isMain: true,
     );
   }
 
-  Dictionary copyWith({String? title}) {
+  Dictionary copyWith({String? title, bool? isMain}) {
     return Dictionary(
       id: id,
       title: title ?? this.title,
       originalLanguage: originalLanguage,
+      isMain: isMain ?? this.isMain,
     );
   }
+
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Dictionary &&
-          runtimeType == other.runtimeType &&
-          title == other.title;
+      runtimeType == other.runtimeType &&
+      id == other.id &&
+      title == other.title &&
+      isMain == other.isMain;
 
   @override
-  int get hashCode => title.hashCode;
+  int get hashCode => id.hashCode ^ title.hashCode ^ isMain.hashCode;
 
   Future<String> get _userId => _authRepository.userId;
 

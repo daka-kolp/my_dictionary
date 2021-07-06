@@ -10,4 +10,5 @@ class FirestoreIds {
   static final word = 'word';
   static final translation = 'translation';
   static final isLearned = 'isLearned';
+  static final mainDictionaryId = 'mainDictionaryId';
 }
