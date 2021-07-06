@@ -81,7 +81,7 @@ class _MainScreenState extends State<_MainScreen> {
   Widget _buildDictionariesList() {
     if (_watch.isInit) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: LoadingIndicator(),
       );
     }
@@ -89,13 +89,14 @@ class _MainScreenState extends State<_MainScreen> {
     if (_watch.dictionaries.isEmpty) {
       return Container(
         alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Text(_locale.listEmptyInfo, textAlign: TextAlign.center),
       );
     }
 
     final dictionaries = _watch.dictionaries;
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 16.0),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemCount: dictionaries.length,
@@ -142,7 +143,7 @@ class _MainScreenState extends State<_MainScreen> {
   Widget _buildAddDictionaryButton() {
     return SafeArea(
       child: Container(
-        margin: const EdgeInsets.all(16.0),
+        margin: const EdgeInsets.symmetric(horizontal: 16.0),
         width: double.infinity,
         child: ElevatedButton(
           child: Text(_locale.addNewDictionary),
