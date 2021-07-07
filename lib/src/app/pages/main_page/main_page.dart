@@ -153,20 +153,6 @@ class _MainScreenState extends State<_MainScreen> {
     );
   }
 
-  Future<void> _onAddNewDictionaryPressed() async {
-    final returnedValue = await Navigator.of(context).push(
-      NewDictionaryPage().createRoute(context),
-    );
-
-    if (returnedValue != null && returnedValue.runtimeType == Dictionary) {
-      try {
-        await _read.createDictionary(returnedValue);
-      } on DictionaryAlreadyExistException {
-        showErrorMessage(context, _locale.dictionaryAlreadyExistException);
-      } catch (e) {
-        //TODO: handle errors
-        showErrorMessage(context, e.toString());
-      }
-    }
-  }
+  Future<void> _onAddNewDictionaryPressed() =>
+    Navigator.of(context).push(NewDictionaryPage().createRoute(context));
 }

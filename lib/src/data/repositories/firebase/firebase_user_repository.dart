@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mydictionaryapp/src/data/repositories/firebase/firestore_ids.dart';
 import 'package:mydictionaryapp/src/data/utils/dictionaries_service.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 
@@ -16,9 +17,16 @@ class FirebaseUserRepository extends UserRepository {
       _firestore.collection(FirestoreIds.users);
 
   @override
-  Future<Dictionary?> getMainDictionary(String userId) {
-    // TODO: implement getMainDictionary
-    throw UnimplementedError();
+  Future<Dictionary?> getMainDictionary(String userId) async {
+    final userDocRef = _users.doc(userId);
+    final userData = await userDocRef.get().then((value) => value.data()) ?? {};
+    final mainDictionaryId = userData[FirestoreIds.mainDictionaryId] ?? '';
+    final dictionaries = await _dictionariesFromJson(userData);
+    try {
+      return dictionaries.firstWhere((d) => d.id == mainDictionaryId);
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
@@ -31,7 +39,11 @@ class FirebaseUserRepository extends UserRepository {
   Future<void> createNewDictionary(Dictionary dictionary, String userId) async {
     final userDocRef = _users.doc(userId);
     final dictionaryJson = _dictionaryToJson(dictionary);
+    final dictionaries = await getDictionaries(userId);
     try {
+      if (dictionaries.contains(dictionary)) {
+        throw DictionaryAlreadyExistException(dictionary.title);
+      }
       await Future.wait([
         userDocRef.update({
           FirestoreIds.dictionaries: FieldValue.arrayUnion([dictionaryJson]),

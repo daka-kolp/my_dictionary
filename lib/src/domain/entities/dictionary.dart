@@ -47,18 +47,15 @@ class Dictionary {
     );
   }
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Dictionary &&
       runtimeType == other.runtimeType &&
-      id == other.id &&
-      title == other.title &&
-      isMain == other.isMain;
+      title == other.title;
 
   @override
-  int get hashCode => id.hashCode ^ title.hashCode ^ isMain.hashCode;
+  int get hashCode => title.hashCode;
 
   Future<String> get _userId => _authRepository.userId;
 

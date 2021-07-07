@@ -14,6 +14,7 @@ class MockUserRepository extends UserRepository {
 
   @override
   Future<Dictionary?> getMainDictionary(String userId) async {
+    await Future.delayed(Duration(seconds: 1));
     try {
       return _dictionaries.firstWhere((d) => d.id == _mainDictionaryId);
     } catch (e) {

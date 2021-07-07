@@ -9,10 +9,13 @@ import 'package:mydictionaryapp/src/app/pages/dictionary_pages/new_dictionary_pa
 import 'package:mydictionaryapp/src/app/pages/dictionary_pages/widgets/languages_list_button.dart';
 import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/padding_wrapper.dart';
 import 'package:mydictionaryapp/src/app/pages/word_pages/widgets/title_tile.dart';
+import 'package:mydictionaryapp/src/app/pages/words_page/words_page.dart';
+import 'package:mydictionaryapp/src/app/utils/show_snack_bar.dart';
 import 'package:mydictionaryapp/src/app/utils/no_scroll_behavior.dart';
 import 'package:mydictionaryapp/src/app/widgets/loading_layout.dart';
 import 'package:mydictionaryapp/src/app/widgets/without_error_text_form_field.dart';
 import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
+import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 
 class NewDictionaryPage extends Page {
@@ -45,8 +48,8 @@ class _NewDictionaryScreenState extends State<_NewDictionaryScreen> {
   bool _isFromValid = false;
 
   MyDictionaryLocalizations get _locale => MyDictionaryLocalizations.of(context)!;
-
   NewDictionaryPagePresenter get _watch => context.watch<NewDictionaryPagePresenter>();
+  NewDictionaryPagePresenter get _read => context.read<NewDictionaryPagePresenter>();
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +84,17 @@ class _NewDictionaryScreenState extends State<_NewDictionaryScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TitleTile(title: _locale.addOriginalLanguage, isRequired: true),
-                  _watch.isLoading ? _buildEmptyTile() : _buildTargetLanguagesListButton(),
-                  TitleTile(title: _locale.enterDictionaryName, isRequired: true),
+                  TitleTile(
+                    title: _locale.addOriginalLanguage,
+                    isRequired: true,
+                  ),
+                  _watch.isLanguagesLoading
+                    ? _buildEmptyTile()
+                    : _buildTargetLanguagesListButton(),
+                  TitleTile(
+                    title: _locale.enterDictionaryName,
+                    isRequired: true,
+                  ),
                   _buildDictionaryNameFormField(),
                   _buildAddDictionaryButton(),
                 ],
@@ -146,6 +157,17 @@ class _NewDictionaryScreenState extends State<_NewDictionaryScreen> {
       title: _dictionaryNameStateKey.currentState?.value,
       originalLanguage: _targetLanguagesStateKey.currentState?.value,
     );
-    Navigator.pop<Dictionary>(context, newDictionary);
+    try {
+      await _read.createDictionary(newDictionary);
+      await Navigator.of(context).pushAndRemoveUntil(
+        WordsPage(newDictionary).createRoute(context),
+        (route) => false,
+      );
+    } on DictionaryAlreadyExistException {
+      showErrorMessage(context, _locale.dictionaryAlreadyExistException);
+    } catch (e) {
+      //TODO: handle errors
+      showErrorMessage(context, e.toString());
+    }
   }
 }

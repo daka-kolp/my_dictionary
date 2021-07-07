@@ -51,21 +51,6 @@ class MainPagePresenter with ChangeNotifier {
     }
   }
 
-  Future<void> createDictionary(Dictionary newDictionary) async {
-    _isLoading = true;
-    notifyListeners();
-    try {
-      await _user.createDictionary(newDictionary);
-      _dictionaries = await _user.dictionaries;
-    } catch (e) {
-      print('MainPagePresenter: createDictionary(newDictionary) => $e');
-      rethrow;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
-
   Future<void> editDictionary(Dictionary editedDictionary) async {
     _isDictionariesListUpdating = true;
     notifyListeners();
