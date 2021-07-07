@@ -23,22 +23,32 @@ class _MainScreenHeaderState extends State<_MainScreenHeader> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                //TODO: fetch personal user data
-                children: [
-                  Text('Name Surname', style: _theme.textTheme.headline6),
-                  Text('mail@mail.com', style: _theme.textTheme.subtitle1),
-                ],
-              ),
-            ),
+            Expanded(child: _buildUserData()),
             _buildExitButton(),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildUserData() {
+    if (_watch.isUserDataLoading) return Container();
+    final userData = _watch.userData;
+    if (userData == null) {
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: Text(_locale.tryLogoutAndLoginToFetchUserData),
+      );
+    } else {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(userData.name, style: _theme.textTheme.headline6),
+          Text(userData.email, style: _theme.textTheme.subtitle1),
+        ],
+      );
+    }
   }
 
   Widget _buildExitButton() {

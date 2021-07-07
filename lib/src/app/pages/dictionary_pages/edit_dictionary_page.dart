@@ -177,10 +177,13 @@ class _EditDictionaryScreenState extends State<_EditDictionaryScreen> {
       title: _dictionaryNameStateKey.currentState?.value,
       isMain: _isDictionaryMainStateKey.currentState?.value
     );
-    if(widget.dictionary != editDictionary) {
-      Navigator.pop<Dictionary>(context, editDictionary);
-    } else {
+    if (_isDictionariesEqual(widget.dictionary, editDictionary)) {
       Navigator.pop(context);
+    } else {
+      Navigator.pop<Dictionary>(context, editDictionary);
     }
   }
+
+  bool _isDictionariesEqual(Dictionary d1, Dictionary d2) =>
+      d1.title == d2.title && d1.isMain == d2.isMain;
 }

@@ -1,24 +1,25 @@
 import 'dart:async';
 
+import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
+import 'package:mydictionaryapp/src/domain/entities/user.dart';
 
 class GoogleService {
-  final _googleSignIn = GoogleSignIn(
-    scopes: <String>[
-      'email',
-    ],
-  );
-
-  GoogleSignInAccount? _account;
+  late final _storeInteractor = GetIt.I<StoreInteractor>();
+  late final _googleSignIn = GoogleSignIn(scopes: <String>['email']);
 
   Future<GoogleSignInAuthentication> getGoogleAuthData() async {
-    _account = await _googleSignIn.signIn();
+    GoogleSignInAccount? _account = await _googleSignIn.signIn();
     final isSignedIn = await _googleSignIn.isSignedIn();
-    if (isSignedIn) {
+    if (isSignedIn && _account != null) {
       try {
-        return await _account!.authentication;
+        _storeInteractor.setUserData(
+          UserData(_account.displayName ?? '', _account.email),
+        );
+        return await _account.authentication;
       } finally {
         await _googleSignIn.disconnect();
       }

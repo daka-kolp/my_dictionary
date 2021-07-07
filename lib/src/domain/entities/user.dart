@@ -31,6 +31,8 @@ class User {
     return _authRepository.logOut();
   }
 
+  Future<UserData?> get userData => _userRepository.getUserData();
+
   Future<Dictionary?> get mainDictionary async {
     return _userRepository.getMainDictionary(await _id);
   }
@@ -54,4 +56,17 @@ class User {
   Future<List<Language>> get languages async {
     return _userRepository.getDictionaryLanguages();
   }
+}
+
+class UserData {
+  final String name;
+  final String email;
+
+  UserData(this.name, this.email);
+
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    return UserData(json['name'] as String, json['email'] as String);
+  }
+
+  Map<String, dynamic> toJson() => {'name': name, 'email': email};
 }

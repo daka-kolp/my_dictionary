@@ -208,5 +208,10 @@
   "@isDictionaryMain": {
     "type": "text",
     "description": ""
+  },
+  "tryLogoutAndLoginToFetchUserData": "Try to logout and login to get user data",
+  "@tryLogoutAndLoginToFetchUserData": {
+    "type": "text",
+    "description": ""
   }
 }

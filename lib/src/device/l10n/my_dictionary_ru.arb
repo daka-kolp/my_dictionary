@@ -40,5 +40,6 @@
   "isWordLearned": "Это слово выучено?",
   "goToMainPage": "Перейти на главный экран",
   "addNewDictionary": "Добавить новый словарь",
-  "isDictionaryMain": "Является ли это словарь основным?"
+  "isDictionaryMain": "Является ли это словарь основным?",
+  "tryLogoutAndLoginToFetchUserData": "Попробуйте выйти и войти, чтобы получить данные пользователя"
 }

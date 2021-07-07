@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 
 import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
 import 'package:mydictionaryapp/src/domain/entities/exceptions.dart';
+import 'package:mydictionaryapp/src/domain/entities/user.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/auth_repository.dart';
 
 class MockAuthRepository extends AuthRepository {
@@ -14,8 +15,10 @@ class MockAuthRepository extends AuthRepository {
   Future<void> loginWith(LoginService service) async {
     await Future.delayed(Duration(seconds: 1));
     try {
-      final loginPayload = _MockLoginPayload('test@test.com');
-      await _login(loginPayload);
+      await _storeInteractor.setUserData(
+        UserData('Name Surname', 'test@test.com'),
+      );
+      await _login(_MockLoginPayload('test@test.com'));
     } catch (e) {
       rethrow;
     }
