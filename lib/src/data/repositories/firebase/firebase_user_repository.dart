@@ -12,29 +12,30 @@ class FirebaseUserRepository extends UserRepository {
   late final _firestore = FirebaseFirestore.instance;
   late final _dictionariesService = GetIt.I<DictionariesService>();
 
+  CollectionReference<Map<String, dynamic>> get _users =>
+      _firestore.collection(FirestoreIds.users);
+
   @override
   Future<List<Dictionary>> getDictionaries(String userId) async {
-    final userDataJson = await _users.doc(userId).get();
-    return _dictionariesFromJson(userDataJson.data());
+    final userDoc = await _users.doc(userId).get();
+    return _dictionariesFromJson(userDoc.data());
   }
 
   @override
   Future<void> createNewDictionary(Dictionary dictionary, String userId) async {
+    final userDocRef = _users.doc(userId);
     final dictionaryJson = _dictionaryToJson(dictionary);
-    final doc = _users.doc(userId);
     try {
       await Future.wait([
-        doc.update({
+        userDocRef.update({
           FirestoreIds.dictionaries: FieldValue.arrayUnion([dictionaryJson]),
         }),
         if (dictionary.isMain)
-          doc.update({
-            FirestoreIds.mainDictionaryId: dictionary.id,
-          }),
+          userDocRef.update({FirestoreIds.mainDictionaryId: dictionary.id}),
       ]);
     } on FirebaseException catch (e) {
       if (e.code == 'not-found') {
-        await doc.set({
+        await userDocRef.set({
           FirestoreIds.mainDictionaryId: dictionary.id,
           FirestoreIds.dictionaries: [dictionaryJson],
         });
@@ -46,49 +47,57 @@ class FirebaseUserRepository extends UserRepository {
 
   @override
   Future<void> editDictionary(Dictionary editedDictionary, String userId) async {
-    final userDoc = _users.doc(userId);
-
-    final dictionaries = await userDoc.get()
-      .then((json) => _dictionariesFromJson(json.data()));
-    final oldDictionaryJson = _dictionaryToJson(
-      dictionaries.firstWhere((d) => d.id == editedDictionary.id),
-    );
+    final userDocRef = _users.doc(userId);
+    final userData = await userDocRef.get().then((value) => value.data()) ?? {};
     final dictionaryJson = _dictionaryToJson(editedDictionary);
-    if(!mapEquals(oldDictionaryJson, dictionaryJson)) {
+    late final oldDictionaryJson;
+    try {
+      final dictionariesJson = userData[FirestoreIds.dictionaries] ?? [];
+      oldDictionaryJson = dictionariesJson
+        .firstWhere((json) => json[FirestoreIds.id] == editedDictionary.id);
+    } catch (_) {
+      oldDictionaryJson = {};
+    }
+
+    if (!mapEquals(dictionaryJson, oldDictionaryJson)) {
       await Future.wait([
-        userDoc.update({
+        userDocRef.update({
           FirestoreIds.dictionaries: FieldValue.arrayUnion([dictionaryJson]),
         }),
-        userDoc.update({
+        userDocRef.update({
           FirestoreIds.dictionaries: FieldValue.arrayRemove([oldDictionaryJson]),
         }),
       ]);
     }
     if (editedDictionary.isMain) {
-      await userDoc.update({
+      await userDocRef.update({
         FirestoreIds.mainDictionaryId: editedDictionary.id,
       });
+    } else {
+      final mainDictionaryId = userData[FirestoreIds.mainDictionaryId] ?? '';
+      if(mainDictionaryId == editedDictionary.id) {
+        await userDocRef.update({
+          FirestoreIds.mainDictionaryId: FieldValue.delete(),
+        });
+      }
     }
   }
 
   @override
   Future<void> removeDictionary(String id, String userId) async {
     final userDoc = _users.doc(userId);
-    final json = await userDoc.get();
-    final mainDictionaryId = (json.data())?[FirestoreIds.mainDictionaryId] ?? '';
-    final dictionaries = await _dictionariesFromJson(json.data());
-    final dictionaryJson = _dictionaryToJson(
-      dictionaries.firstWhere((d) => d.id == id),
-    );
+    final userData = await userDoc.get().then((value) => value.data()) ?? {};
+    final mainDictionaryId = userData[FirestoreIds.mainDictionaryId] ?? '';
+    final dictionariesJson = userData[FirestoreIds.dictionaries] ?? [];
+    final dictionaryJson = dictionariesJson
+        .firstWhere((json) => json[FirestoreIds.id] == id);
 
     await Future.wait([
       userDoc.update({
         FirestoreIds.dictionaries: FieldValue.arrayRemove([dictionaryJson]),
-      }),
-      if(mainDictionaryId == id)
-        userDoc.update({
+        if (mainDictionaryId == id)
           FirestoreIds.mainDictionaryId: FieldValue.delete(),
-        }),
+      }),
       userDoc.collection(id).get().then((words) {
         Future.wait(words.docs.map((word) => word.reference.delete()));
       })
@@ -98,9 +107,6 @@ class FirebaseUserRepository extends UserRepository {
   @override
   Future<List<Language>> getDictionaryLanguages() =>
       _dictionariesService.getLanguages();
-
-  CollectionReference<Map<String, dynamic>> get _users =>
-      _firestore.collection(FirestoreIds.users);
 
   Future<List<Dictionary>> _dictionariesFromJson(
     Map<String, dynamic>? userDataJson,
