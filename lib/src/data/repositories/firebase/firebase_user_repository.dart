@@ -16,6 +16,12 @@ class FirebaseUserRepository extends UserRepository {
       _firestore.collection(FirestoreIds.users);
 
   @override
+  Future<Dictionary?> getMainDictionary(String userId) {
+    // TODO: implement getMainDictionary
+    throw UnimplementedError();
+  }
+
+  @override
   Future<List<Dictionary>> getDictionaries(String userId) async {
     final userDoc = await _users.doc(userId).get();
     return _dictionariesFromJson(userDoc.data());

@@ -5,8 +5,10 @@ import 'package:uuid/uuid.dart';
 
 import 'package:mydictionaryapp/src/app/pages/auth_pages/login_page.dart';
 import 'package:mydictionaryapp/src/app/pages/main_page/main_page.dart';
+import 'package:mydictionaryapp/src/app/pages/words_page/words_page.dart';
 import 'package:mydictionaryapp/src/app/widgets/environment_banner.dart';
 import 'package:mydictionaryapp/src/device/utils/store_interator.dart';
+import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/user.dart';
 
 Future<void> runMyDictionaryApp() async {
@@ -14,16 +16,18 @@ Future<void> runMyDictionaryApp() async {
     ..registerSingleton<StoreInteractor>(StoreInteractor())
     ..registerSingleton<Uuid>(Uuid());
   final isLoggedIn = await User.I.isLoggedIn;
-
-  runApp(MyDictionaryApp(isLoggedIn: isLoggedIn));
+  final dictionary = await User.I.mainDictionary;
+  runApp(MyDictionaryApp(isLoggedIn: isLoggedIn, mainDictionary: dictionary));
 }
 
 class MyDictionaryApp extends StatelessWidget {
   final bool isLoggedIn;
+  final Dictionary? mainDictionary;
 
   const MyDictionaryApp({
     Key? key,
     required this.isLoggedIn,
+    this.mainDictionary,
   }) : super(key: key);
 
   @override
@@ -45,6 +49,9 @@ class MyDictionaryApp extends StatelessWidget {
 
   Route _onGenerateRoute(BuildContext context, RouteSettings settings) {
     if (isLoggedIn) {
+      if(mainDictionary != null) {
+        return WordsPage(mainDictionary!).createRoute(context);
+      }
       return MainPage().createRoute(context);
     }
     return LoginPage().createRoute(context);

@@ -2,6 +2,8 @@ import 'package:mydictionaryapp/src/domain/entities/dictionary.dart';
 import 'package:mydictionaryapp/src/domain/entities/language.dart';
 
 abstract class UserRepository {
+  Future<Dictionary?> getMainDictionary(String userId);
+
   Future<List<Dictionary>> getDictionaries(String userId);
 
   Future<void> createNewDictionary(Dictionary dictionary, String userId);

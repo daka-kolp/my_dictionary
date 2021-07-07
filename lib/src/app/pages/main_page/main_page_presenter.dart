@@ -25,7 +25,7 @@ class MainPagePresenter with ChangeNotifier {
     _isDictionariesLoading = true;
     notifyListeners();
     try {
-      _dictionaries = await _user.getDictionaries();
+      _dictionaries = await _user.dictionaries;
     } catch (e) {
       _dictionaries = <Dictionary>[];
     } finally {
@@ -56,7 +56,7 @@ class MainPagePresenter with ChangeNotifier {
     notifyListeners();
     try {
       await _user.createDictionary(newDictionary);
-      _dictionaries = await _user.getDictionaries();
+      _dictionaries = await _user.dictionaries;
     } catch (e) {
       print('MainPagePresenter: createDictionary(newDictionary) => $e');
       rethrow;
@@ -71,7 +71,7 @@ class MainPagePresenter with ChangeNotifier {
     notifyListeners();
     try {
       await _user.editDictionary(editedDictionary);
-      _dictionaries = await _user.getDictionaries();
+      _dictionaries = await _user.dictionaries;
     } catch (e) {
       print('MainPagePresenter: editDictionary(editedWord) => $e');
       rethrow;
@@ -86,7 +86,7 @@ class MainPagePresenter with ChangeNotifier {
     notifyListeners();
     try {
       await _user.removeDictionary(removedDictionaryId);
-      _dictionaries = await _user.getDictionaries();
+      _dictionaries = await _user.dictionaries;
     } catch (e) {
       print('MainPagePresenter: removeDictionary(removedDictionaryId) => $e');
       rethrow;

@@ -19,7 +19,7 @@ class NewDictionaryPagePresenter with ChangeNotifier {
   Future<void> _init() async {
     _isLoading = true;
     notifyListeners();
-    _languages = await _user.getLanguages();
+    _languages = await _user.languages;
     _isLoading = false;
     notifyListeners();
   }

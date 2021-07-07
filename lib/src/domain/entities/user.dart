@@ -31,7 +31,11 @@ class User {
     return _authRepository.logOut();
   }
 
-  Future<List<Dictionary>> getDictionaries() async {
+  Future<Dictionary?> get mainDictionary async {
+    return _userRepository.getMainDictionary(await _id);
+  }
+
+  Future<List<Dictionary>> get dictionaries async {
     return _userRepository.getDictionaries(await _id);
   }
 
@@ -47,7 +51,7 @@ class User {
     await _userRepository.removeDictionary(dictionaryId, await _id);
   }
 
-  Future<List<Language>> getLanguages() async {
+  Future<List<Language>> get languages async {
     return _userRepository.getDictionaryLanguages();
   }
 }

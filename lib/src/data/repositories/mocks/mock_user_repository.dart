@@ -4,21 +4,21 @@ import 'package:mydictionaryapp/src/domain/entities/language.dart';
 import 'package:mydictionaryapp/src/domain/repositories_contracts/user_repository.dart';
 
 class MockUserRepository extends UserRepository {
+  String _mainDictionaryId = 'en-GB_ru-RU';
+
   List<Dictionary> get _dictionaries {
-    return [
-      Dictionary(
-        id: 'en-GB_ru-RU',
-        originalLanguage: Language('en-GB', 'English(GB)'),
-        title: 'English(GB)',
-        isMain: true,
-      ),
-      Dictionary(
-        id: 'uk-UA_ru-RU',
-        originalLanguage: Language('uk-UA', 'Українська'),
-        title: 'Ukrainian',
-        isMain: false,
-      ),
-    ];
+    return _staticDictionaries.map((d) => d.copyWith(
+      isMain: _mainDictionaryId == d.id
+    )).toList();
+  }
+
+  @override
+  Future<Dictionary?> getMainDictionary(String userId) async {
+    try {
+      return _dictionaries.firstWhere((d) => d.id == _mainDictionaryId);
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
@@ -34,7 +34,8 @@ class MockUserRepository extends UserRepository {
       if (_dictionaries.contains(dictionary)) {
         throw DictionaryAlreadyExistException(dictionary.title);
       }
-      _dictionaries.add(dictionary);
+      _staticDictionaries.add(dictionary);
+      _mainDictionaryId = dictionary.id;
     } on DictionaryAlreadyExistException {
       rethrow;
     }
@@ -49,9 +50,15 @@ class MockUserRepository extends UserRepository {
     if (dictionaryIndex == -1) {
       throw DictionaryNotExistException(dictionary.title);
     }
-    _dictionaries
+    _staticDictionaries
       ..removeAt(dictionaryIndex)
       ..insert(dictionaryIndex, dictionary);
+
+    if(dictionary.isMain) {
+      _mainDictionaryId = dictionary.id;
+    } else if (_mainDictionaryId == dictionary.id) {
+      _mainDictionaryId = '';
+    }
   }
 
   @override
@@ -61,7 +68,8 @@ class MockUserRepository extends UserRepository {
       final dictionary = _dictionaries.firstWhere(
         (dictionary) => dictionary.id == dictionaryId,
       );
-      _dictionaries.remove(dictionary);
+      _staticDictionaries.remove(dictionary);
+      if (_mainDictionaryId == dictionaryId) _mainDictionaryId = '';
     } on StateError {
       throw DictionaryNotExistException(dictionaryId);
     }
@@ -71,3 +79,18 @@ class MockUserRepository extends UserRepository {
   Future<List<Language>> getDictionaryLanguages() async =>
       [Language.byDefault()];
 }
+
+final List<Dictionary> _staticDictionaries = [
+  Dictionary(
+    id: 'en-GB_ru-RU',
+    originalLanguage: Language('en-GB', 'English(GB)'),
+    title: 'English(GB)',
+    isMain: false,
+  ),
+  Dictionary(
+    id: 'uk-UA_ru-RU',
+    originalLanguage: Language('uk-UA', 'Українська'),
+    title: 'Ukrainian',
+    isMain: false,
+  ),
+];
